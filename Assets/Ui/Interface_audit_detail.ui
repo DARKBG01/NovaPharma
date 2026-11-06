@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>720</width>
+    <height>754</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Détail de l'action — Nova Pharma</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog#Dialog { background: #f0f4f8; }
+QDialog#Dialog QLabel { background: transparent; }</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="header">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>88</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>88</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QFrame#header { background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #023E8A, stop:1 #0077B6); border: none; }
+QFrame#header QLabel { background: transparent; color: #ffffff; }</string>
+     </property>
+     <layout class="QHBoxLayout" name="headerLayout">
+      <property name="spacing">
+       <number>16</number>
+      </property>
+      <property name="leftMargin">
+       <number>24</number>
+      </property>
+      <property name="rightMargin">
+       <number>24</number>
+      </property>
+      <item>
+       <widget class="QToolButton" name="lbl_header_icon">
+        <property name="minimumSize">
+         <size>
+          <width>44</width>
+          <height>44</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>44</width>
+          <height>44</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QToolButton { background: rgba(255,255,255,0.15); border-radius: 12px; border: none; padding: 11px; }</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../Icon.qrc">
+          <normaloff>:/Icon/Icons/history_white.svg</normaloff>:/Icon/Icons/history_white.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>22</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="headerTitleBox">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="lbl_header_title">
+          <property name="styleSheet">
+           <string notr="true">font-size: 18px; font-weight: 800; color: #ffffff; background: transparent;</string>
+          </property>
+          <property name="text">
+           <string>Détail de l'action</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbl_header_sub">
+          <property name="styleSheet">
+           <string notr="true">font-size: 11px; color: rgba(255,255,255,0.75); background: transparent;</string>
+          </property>
+          <property name="text">
+           <string>Informations complètes de l'entrée d'audit</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="headerSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="bodyScroll">
+     <property name="styleSheet">
+      <string notr="true">QScrollArea { background: #f0f4f8; border: none; }</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="bodyContent">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>720</width>
+        <height>594</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QWidget#bodyContent { background: #f0f4f8; }</string>
+      </property>
+      <layout class="QVBoxLayout" name="bodyLayout">
+       <property name="spacing">
+        <number>12</number>
+       </property>
+       <property name="leftMargin">
+        <number>24</number>
+       </property>
+       <property name="topMargin">
+        <number>20</number>
+       </property>
+       <property name="rightMargin">
+        <number>24</number>
+       </property>
+       <property name="bottomMargin">
+        <number>20</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="info_card">
+         <property name="styleSheet">
+          <string notr="true">QFrame#info_card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; }
+QFrame#info_card QLabel { background: transparent; }</string>
+         </property>
+         <layout class="QGridLayout" name="infoGrid">
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+          <property name="horizontalSpacing">
+           <number>24</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>14</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="lbl_k_action">
+            <property name="styleSheet">
+             <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px;</string>
+            </property>
+            <property name="text">
+             <string>ACTION</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="val_action">
+            <property name="styleSheet">
+             <string notr="true">color: #023E8A; font-size: 13px; font-weight: 800;</string>
+            </property>
+            <property name="text">
+             <string>—</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="lbl_k_user">
+            <property name="styleSheet">
+             <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px;</string>
+            </property>
+            <property name="text">
+             <string>UTILISATEUR</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="val_user">
+            <property name="styleSheet">
+             <string notr="true">color: #0f172a; font-size: 13px; font-weight: 600;</string>
+            </property>
+            <property name="text">
+             <string>—</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="lbl_k_date">
+            <property name="styleSheet">
+             <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px;</string>
+            </property>
+            <property name="text">
+             <string>DATE</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="val_date">
+            <property name="styleSheet">
+             <string notr="true">color: #0f172a; font-size: 13px; font-weight: 600;</string>
+            </property>
+            <property name="text">
+             <string>—</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="lbl_k_cible">
+            <property name="styleSheet">
+             <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px;</string>
+            </property>
+            <property name="text">
+             <string>CIBLE</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLabel" name="val_cible">
+            <property name="styleSheet">
+             <string notr="true">color: #0f172a; font-size: 13px; font-weight: 600;</string>
+            </property>
+            <property name="text">
+             <string>—</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="lbl_k_machine">
+            <property name="styleSheet">
+             <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px;</string>
+            </property>
+            <property name="text">
+             <string>MACHINE</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QLabel" name="val_machine">
+            <property name="styleSheet">
+             <string notr="true">color: #0f172a; font-size: 13px; font-weight: 600;</string>
+            </property>
+            <property name="text">
+             <string>—</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="lbl_k_id">
+            <property name="styleSheet">
+             <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px;</string>
+            </property>
+            <property name="text">
+             <string>ID ENTRÉE</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QLabel" name="val_id">
+            <property name="styleSheet">
+             <string notr="true">color: #64748b; font-size: 11px; font-family: 'Courier New';</string>
+            </property>
+            <property name="text">
+             <string>—</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="section_details">
+         <property name="cursor">
+          <cursorShape>ArrowCursor</cursorShape>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QToolButton { color: #023E8A; font-size: 12px; font-weight: 800; letter-spacing: 1.2px; background: transparent; border: none; padding: 0; }</string>
+         </property>
+         <property name="text">
+          <string>DÉTAILS</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../Icon.qrc">
+           <normaloff>:/Icon/Icons/file-text.svg</normaloff>:/Icon/Icons/file-text.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>18</width>
+           <height>18</height>
+          </size>
+         </property>
+         <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+         </property>
+         <property name="autoRaise">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPlainTextEdit" name="txt_details">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>120</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPlainTextEdit { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; font-family: 'Courier New'; font-size: 11px; color: #0f172a; }</string>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="avantApresRow">
+         <property name="spacing">
+          <number>12</number>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="avantCol">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="lbl_avant">
+             <property name="styleSheet">
+              <string notr="true">color: #b45309; font-size: 11px; font-weight: 800; letter-spacing: 1px; background: transparent;</string>
+             </property>
+             <property name="text">
+              <string>AVANT</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPlainTextEdit" name="txt_avant">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>120</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPlainTextEdit { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px; font-family: 'Courier New'; font-size: 11px; color: #78350f; }</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="apresCol">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="lbl_apres">
+             <property name="styleSheet">
+              <string notr="true">color: #15803d; font-size: 11px; font-weight: 800; letter-spacing: 1px; background: transparent;</string>
+             </property>
+             <property name="text">
+              <string>APRÈS</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPlainTextEdit" name="txt_apres">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>120</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPlainTextEdit { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 12px; font-family: 'Courier New'; font-size: 11px; color: #14532d; }</string>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="bodySpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="footer">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>72</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>72</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QFrame#footer { background: #ffffff; border-top: 1px solid #e2e8f0; }</string>
+     </property>
+     <layout class="QHBoxLayout" name="footerLayout">
+      <property name="spacing">
+       <number>12</number>
+      </property>
+      <property name="leftMargin">
+       <number>24</number>
+      </property>
+      <property name="rightMargin">
+       <number>24</number>
+      </property>
+      <item>
+       <spacer name="footerSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_close">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton { background: #023E8A; color: #ffffff; border: none; border-radius: 10px; font-size: 12px; font-weight: 800; padding: 0 24px; }
+QPushButton:hover { background: #0077B6; }</string>
+        </property>
+        <property name="text">
+         <string>Fermer</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../Icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>

@@ -1,0 +1,965 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1080</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>960</width>
+    <height>700</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Utilisateur — Nova Pharma</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog#Dialog { background: #f0f4f8; }
+QDialog#Dialog QLabel { background: transparent; }</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="header">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>88</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>88</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QFrame#header { background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #023E8A, stop:1 #0077B6); border: none; }
+QFrame#header QLabel { background: transparent; color: #ffffff; }</string>
+     </property>
+     <layout class="QHBoxLayout" name="headerLayout">
+      <property name="spacing">
+       <number>16</number>
+      </property>
+      <property name="leftMargin">
+       <number>24</number>
+      </property>
+      <property name="rightMargin">
+       <number>24</number>
+      </property>
+      <item>
+       <widget class="QToolButton" name="lbl_header_icon">
+        <property name="minimumSize">
+         <size>
+          <width>44</width>
+          <height>44</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>44</width>
+          <height>44</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QToolButton { background: rgba(255,255,255,0.15); border-radius: 12px; border: none; padding: 11px; }</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../Icon.qrc">
+          <normaloff>:/Icon/Icons/user_white.svg</normaloff>:/Icon/Icons/user_white.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>22</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="headerTitleBox">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="lbl_header_title">
+          <property name="styleSheet">
+           <string notr="true">font-size: 18px; font-weight: 800; color: #ffffff; background: transparent;</string>
+          </property>
+          <property name="text">
+           <string>Nouvel utilisateur</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbl_header_sub">
+          <property name="styleSheet">
+           <string notr="true">font-size: 11px; color: rgba(255,255,255,0.75); background: transparent;</string>
+          </property>
+          <property name="text">
+           <string>Définissez les informations et les permissions du compte</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="headerSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="lbl_status_badge">
+        <property name="visible">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background: rgba(255,255,255,0.18); color: #ffffff; padding: 6px 12px; border-radius: 10px; font-size: 10px; font-weight: 800; letter-spacing: 1px;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="bodyLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QFrame" name="sidebar">
+       <property name="minimumSize">
+        <size>
+         <width>280</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>280</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QFrame#sidebar { background: #ffffff; border-right: 1px solid #e2e8f0; }
+QFrame#sidebar QLabel { background: transparent; }</string>
+       </property>
+       <layout class="QVBoxLayout" name="sidebarLayout">
+        <property name="spacing">
+         <number>10</number>
+        </property>
+        <property name="leftMargin">
+         <number>24</number>
+        </property>
+        <property name="topMargin">
+         <number>24</number>
+        </property>
+        <property name="rightMargin">
+         <number>24</number>
+        </property>
+        <property name="bottomMargin">
+         <number>24</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="lbl_avatar">
+          <property name="minimumSize">
+           <size>
+            <width>96</width>
+            <height>96</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>96</width>
+            <height>96</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0077B6, stop:1 #00B4D8); color: #ffffff; border-radius: 48px; font-size: 32px; font-weight: 800;</string>
+          </property>
+          <property name="text">
+           <string>?</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbl_sidebar_name">
+          <property name="styleSheet">
+           <string notr="true">color: #0f172a; font-size: 14px; font-weight: 700;</string>
+          </property>
+          <property name="text">
+           <string>Nouvel utilisateur</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbl_sidebar_role">
+          <property name="styleSheet">
+           <string notr="true">color: #64748b; font-size: 11px; font-weight: 600;</string>
+          </property>
+          <property name="text">
+           <string>—</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="sidebarSpacerTop">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Policy::Fixed</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>8</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="check_identity">
+          <property name="styleSheet">
+           <string notr="true">QCheckBox { color: #475569; font-size: 11px; font-weight: 600; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 10px; spacing: 8px; }
+QCheckBox:checked { background: #dcfce7; border-color: #86efac; color: #15803d; }
+QCheckBox::indicator { width: 16px; height: 16px; }
+QCheckBox::indicator:unchecked { image: url(:/Icon/Icons/circle.svg); }
+QCheckBox::indicator:checked { image: url(:/Icon/Icons/check-circle.svg); }</string>
+          </property>
+          <property name="text">
+           <string>Identité complète</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="check_contact">
+          <property name="styleSheet">
+           <string notr="true">QCheckBox { color: #475569; font-size: 11px; font-weight: 600; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 10px; spacing: 8px; }
+QCheckBox:checked { background: #dcfce7; border-color: #86efac; color: #15803d; }
+QCheckBox::indicator { width: 16px; height: 16px; }
+QCheckBox::indicator:unchecked { image: url(:/Icon/Icons/circle.svg); }
+QCheckBox::indicator:checked { image: url(:/Icon/Icons/check-circle.svg); }</string>
+          </property>
+          <property name="text">
+           <string>Email + téléphone</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="check_role">
+          <property name="styleSheet">
+           <string notr="true">QCheckBox { color: #475569; font-size: 11px; font-weight: 600; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 10px; spacing: 8px; }
+QCheckBox:checked { background: #dcfce7; border-color: #86efac; color: #15803d; }
+QCheckBox::indicator { width: 16px; height: 16px; }
+QCheckBox::indicator:unchecked { image: url(:/Icon/Icons/circle.svg); }
+QCheckBox::indicator:checked { image: url(:/Icon/Icons/check-circle.svg); }</string>
+          </property>
+          <property name="text">
+           <string>Rôle défini</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="check_password">
+          <property name="styleSheet">
+           <string notr="true">QCheckBox { color: #475569; font-size: 11px; font-weight: 600; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 10px; spacing: 8px; }
+QCheckBox:checked { background: #dcfce7; border-color: #86efac; color: #15803d; }
+QCheckBox::indicator { width: 16px; height: 16px; }
+QCheckBox::indicator:unchecked { image: url(:/Icon/Icons/circle.svg); }
+QCheckBox::indicator:checked { image: url(:/Icon/Icons/check-circle.svg); }</string>
+          </property>
+          <property name="text">
+           <string>Mot de passe</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="check_perms">
+          <property name="styleSheet">
+           <string notr="true">QCheckBox { color: #475569; font-size: 11px; font-weight: 600; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 6px 10px; spacing: 8px; }
+QCheckBox:checked { background: #dcfce7; border-color: #86efac; color: #15803d; }
+QCheckBox::indicator { width: 16px; height: 16px; }
+QCheckBox::indicator:unchecked { image: url(:/Icon/Icons/circle.svg); }
+QCheckBox::indicator:checked { image: url(:/Icon/Icons/check-circle.svg); }</string>
+          </property>
+          <property name="text">
+           <string>Au moins 1 permission</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="sidebarSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="chk_actif">
+          <property name="styleSheet">
+           <string notr="true">QCheckBox { color: #0f172a; font-size: 12px; font-weight: 600; background: transparent; }
+QCheckBox::indicator { width: 18px; height: 18px; }</string>
+          </property>
+          <property name="text">
+           <string>Compte actif</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QScrollArea" name="formScroll">
+       <property name="styleSheet">
+        <string notr="true">QScrollArea { background: #f0f4f8; border: none; }</string>
+       </property>
+       <property name="frameShape">
+        <enum>QFrame::Shape::NoFrame</enum>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="formContent">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>784</width>
+          <height>741</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QWidget#formContent { background: #f0f4f8; }</string>
+        </property>
+        <layout class="QVBoxLayout" name="formLayout">
+         <property name="spacing">
+          <number>14</number>
+         </property>
+         <property name="leftMargin">
+          <number>32</number>
+         </property>
+         <property name="topMargin">
+          <number>24</number>
+         </property>
+         <property name="rightMargin">
+          <number>32</number>
+         </property>
+         <property name="bottomMargin">
+          <number>24</number>
+         </property>
+         <item>
+          <widget class="QToolButton" name="section_identity">
+           <property name="cursor">
+            <cursorShape>ArrowCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QToolButton { color: #023E8A; font-size: 12px; font-weight: 800; letter-spacing: 1.2px; background: transparent; border: none; padding: 0; }</string>
+           </property>
+           <property name="text">
+            <string>IDENTITÉ</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../Icon.qrc">
+             <normaloff>:/Icon/Icons/user.svg</normaloff>:/Icon/Icons/user.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QGridLayout" name="grid_identity">
+           <property name="horizontalSpacing">
+            <number>16</number>
+           </property>
+           <property name="verticalSpacing">
+            <number>12</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLineEdit" name="inp_prenom">
+             <property name="styleSheet">
+              <string notr="true">QLineEdit { background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #0f172a; }
+QLineEdit:focus { border-color: #0077B6; }</string>
+             </property>
+             <property name="placeholderText">
+              <string>Prénom *</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="inp_nom">
+             <property name="styleSheet">
+              <string notr="true">QLineEdit { background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #0f172a; }
+QLineEdit:focus { border-color: #0077B6; }</string>
+             </property>
+             <property name="placeholderText">
+              <string>Nom de famille *</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLineEdit" name="inp_post">
+             <property name="styleSheet">
+              <string notr="true">QLineEdit { background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #0f172a; }
+QLineEdit:focus { border-color: #0077B6; }</string>
+             </property>
+             <property name="placeholderText">
+              <string>Post-nom (optionnel)</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QComboBox" name="inp_natio">
+             <property name="styleSheet">
+              <string notr="true">QComboBox { background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #0f172a; }
+QLineEdit:focus { border-color: #0077B6; }</string>
+             </property>
+             <property name="placeholderText">
+              <string>Nationalité</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QComboBox" name="combo_sexe">
+             <property name="styleSheet">
+              <string notr="true">QComboBox { background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #0f172a; min-height: 20px; }
+QComboBox::drop-down { border: none; width: 28px; }
+QComboBox QAbstractItemView { background: #ffffff; color: #0f172a; border: 1px solid #e2e8f0; selection-background-color: #e0f2fe; selection-color: #0f172a; }</string>
+             </property>
+             <item>
+              <property name="text">
+               <string>M — Masculin</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>F — Féminin</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QDateEdit" name="inp_naissance">
+             <property name="styleSheet">
+              <string notr="true">QDateEdit { background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #0f172a; }</string>
+             </property>
+             <property name="displayFormat">
+              <string>dd/MM/yyyy</string>
+             </property>
+             <property name="calendarPopup">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QToolButton" name="section_contact">
+           <property name="cursor">
+            <cursorShape>ArrowCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QToolButton { color: #023E8A; font-size: 12px; font-weight: 800; letter-spacing: 1.2px; background: transparent; border: none; padding: 0; }</string>
+           </property>
+           <property name="text">
+            <string>CONTACT</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../Icon.qrc">
+             <normaloff>:/Icon/Icons/phone.svg</normaloff>:/Icon/Icons/phone.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QGridLayout" name="grid_contact">
+           <property name="horizontalSpacing">
+            <number>16</number>
+           </property>
+           <property name="verticalSpacing">
+            <number>12</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLineEdit" name="inp_email">
+             <property name="styleSheet">
+              <string notr="true">QLineEdit { background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #0f172a; }
+QLineEdit:focus { border-color: #0077B6; }</string>
+             </property>
+             <property name="placeholderText">
+              <string>Email * — ex : jean@pharma.cd</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="inp_numero">
+             <property name="styleSheet">
+              <string notr="true">QLineEdit { background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #0f172a; }
+QLineEdit:focus { border-color: #0077B6; }</string>
+             </property>
+             <property name="placeholderText">
+              <string>Téléphone * — ex : +243 800 000 000</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QToolButton" name="section_role">
+           <property name="cursor">
+            <cursorShape>ArrowCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QToolButton { color: #023E8A; font-size: 12px; font-weight: 800; letter-spacing: 1.2px; background: transparent; border: none; padding: 0; }</string>
+           </property>
+           <property name="text">
+            <string>RÔLE</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../Icon.qrc">
+             <normaloff>:/Icon/Icons/shield.svg</normaloff>:/Icon/Icons/shield.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="combo_role">
+           <property name="styleSheet">
+            <string notr="true">QComboBox { background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #0f172a; min-height: 20px; }
+QComboBox::drop-down { border: none; width: 28px; }
+QComboBox QAbstractItemView { background: #ffffff; color: #0f172a; border: 1px solid #e2e8f0; selection-background-color: #e0f2fe; selection-color: #0f172a; }
+QComboBox::down-arrow {
+    image: url(:/Icon/Icons/chevron-down.svg);
+    width: 12px; height: 12px;
+}</string>
+           </property>
+           <item>
+            <property name="text">
+             <string>UTILISATEUR</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>CAISSIER</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>ADMIN</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lbl_role_desc">
+           <property name="styleSheet">
+            <string notr="true">color: #64748b; font-size: 11px; padding: 8px 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;</string>
+           </property>
+           <property name="text">
+            <string>Un UTILISATEUR peut vendre et consulter les produits et clients.</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="section_password">
+           <property name="cursor">
+            <cursorShape>ArrowCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QToolButton { color: #023E8A; font-size: 12px; font-weight: 800; letter-spacing: 1.2px; background: transparent; border: none; padding: 0; }</string>
+           </property>
+           <property name="text">
+            <string>MOT DE PASSE</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../Icon.qrc">
+             <normaloff>:/Icon/Icons/lock.svg</normaloff>:/Icon/Icons/lock.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="pwdRow">
+           <property name="spacing">
+            <number>8</number>
+           </property>
+           <item>
+            <widget class="QLineEdit" name="inp_pwd">
+             <property name="styleSheet">
+              <string notr="true">QLineEdit { background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #0f172a; }
+QLineEdit:focus { border-color: #0077B6; }</string>
+             </property>
+             <property name="echoMode">
+              <enum>QLineEdit::EchoMode::Password</enum>
+             </property>
+             <property name="placeholderText">
+              <string>Min. 8 caractères</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btn_toggle_pwd">
+             <property name="minimumSize">
+              <size>
+               <width>44</width>
+               <height>44</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>44</width>
+               <height>44</height>
+              </size>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background: #f1f5f9; border: 1.5px solid #e2e8f0; border-radius: 8px; }
+QPushButton:hover { background: #e2e8f0; }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="../Icon.qrc">
+               <normaloff>:/Icon/Icons/eye.svg</normaloff>:/Icon/Icons/eye.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btn_gen_pwd">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>44</height>
+              </size>
+             </property>
+             <property name="cursor">
+              <cursorShape>PointingHandCursor</cursorShape>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton { background: #e0f2fe; color: #0077B6; border: 1px solid #bae6fd; border-radius: 8px; font-size: 12px; font-weight: 700; padding: 0 16px; }
+QPushButton:hover { background: #bae6fd; }</string>
+             </property>
+             <property name="text">
+              <string>Générer</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="chk_must_change">
+           <property name="styleSheet">
+            <string notr="true">QCheckBox { color: #475569; font-size: 11px; background: transparent; }</string>
+           </property>
+           <property name="text">
+            <string>Forcer le changement à la prochaine connexion</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="section_perms">
+           <property name="cursor">
+            <cursorShape>ArrowCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QToolButton { color: #023E8A; font-size: 12px; font-weight: 800; letter-spacing: 1.2px; background: transparent; border: none; padding: 0; }</string>
+           </property>
+           <property name="text">
+            <string>PERMISSIONS</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../Icon.qrc">
+             <normaloff>:/Icon/Icons/key.svg</normaloff>:/Icon/Icons/key.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+           <property name="toolButtonStyle">
+            <enum>Qt::ToolButtonStyle::ToolButtonTextBesideIcon</enum>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lbl_perm_info">
+           <property name="styleSheet">
+            <string notr="true">color: #64748b; font-size: 11px; padding: 8px 12px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px;</string>
+           </property>
+           <property name="text">
+            <string>Les permissions sont préremplies selon le rôle choisi. Vous pouvez les ajuster individuellement.</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="perms_container" native="true">
+           <property name="styleSheet">
+            <string notr="true">QWidget#perms_container { background: transparent; }</string>
+           </property>
+           <layout class="QVBoxLayout" name="perms_container_layout">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <property name="leftMargin">
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <spacer name="formSpacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QFrame" name="footer">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>72</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>72</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QFrame#footer { background: #ffffff; border-top: 1px solid #e2e8f0; }</string>
+     </property>
+     <layout class="QHBoxLayout" name="footerLayout">
+      <property name="spacing">
+       <number>12</number>
+      </property>
+      <property name="leftMargin">
+       <number>24</number>
+      </property>
+      <property name="rightMargin">
+       <number>24</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="lbl_error">
+        <property name="visible">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #DC2626; font-size: 11px; font-weight: 600; background: transparent;</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="footerSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_cancel">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 12px; font-weight: 700; padding: 0 20px; }
+QPushButton:hover { background: #e2e8f0; }</string>
+        </property>
+        <property name="text">
+         <string>Annuler</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_save">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton { background: #023E8A; color: #ffffff; border: none; border-radius: 10px; font-size: 12px; font-weight: 800; padding: 0 24px; }
+QPushButton:hover { background: #0077B6; }
+QPushButton:disabled { background: #94a3b8; }</string>
+        </property>
+        <property name="text">
+         <string>Créer l'utilisateur</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../Icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>

@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PharmacieServerWidget</class>
+ <widget class="QWidget" name="PharmacieServerWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1102</width>
+    <height>919</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Console Serveur - Gestion Officine</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* Global Reset */
+QWidget#PharmacieServerWidget {
+    background-color: #f8fafc; /* Gris très clair pour le fond */
+}
+
+QLabel {
+    font-family: &quot;Inter&quot;, &quot;Segoe UI&quot;, sans-serif;
+    color: #334155;
+}
+
+/* En-tête */
+QLabel#titleLabel {
+    font-size: 26px;
+    font-weight: 800;
+    color: #0f172a;
+    padding-bottom: 5px;
+}
+
+QLabel#serverStatusBadge {
+    background-color: #dcfce7;
+    color: #15803d;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-weight: bold;
+    border: 1px solid #bbf7d0;
+}
+
+/* Sections / Panels */
+QFrame.ControlPanel {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+QLabel.SectionHeader {
+    font-size: 12px;
+    font-weight: 800;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 5px;
+}
+
+/* Boutons */
+QPushButton {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 600;
+    color: #475569;
+}
+
+QPushButton:hover {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+QPushButton#btnToggleServer {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+
+QPushButton#btnToggleServer:hover {
+    background-color: #1d4ed8;
+}
+
+QPushButton#btnKick {
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+QPushButton#btnKick:hover {
+    background-color: #fef2f2;
+}
+
+/* Inputs (IP Address) */
+QLineEdit {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 4px;
+    background: #ffffff;
+    selection-background-color: #93c5fd;
+}
+
+QLineEdit:focus {
+    border: 2px solid #3b82f6;
+}
+
+/* Moniteur de logs */
+QTextEdit#logMonitor {
+    background-color: #0f172a;
+    color: #38bdf8;
+    font-family: &quot;Consolas&amp;quot&quot;,&quot;Monaco&amp;quot&quot;,&quot;monospace&quot;;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+/* Listes */
+QListWidget#listConnected, QListWidget#listWidget {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #ffffff;
+    outline: none;
+    padding: 5px;
+}
+
+QListWidget::item {
+    padding: 10px;
+    border-bottom: 1px solid #f1f5f9;
+    border-radius: 4px;
+}
+
+QListWidget::item:selected {
+    background-color: #eff6ff;
+    color: #2563eb;
+    font-weight: bold;
+}
+
+/* Footer */
+QLabel#lblFoot {
+    color: #94a3b8;
+    font-style: italic;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <property name="spacing">
+    <number>20</number>
+   </property>
+   <property name="leftMargin">
+    <number>30</number>
+   </property>
+   <property name="topMargin">
+    <number>30</number>
+   </property>
+   <property name="rightMargin">
+    <number>30</number>
+   </property>
+   <property name="bottomMargin">
+    <number>30</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="headerLayout">
+     <item>
+      <widget class="QLabel" name="titleLabel">
+       <property name="text">
+        <string>🖥️ Console Centrale du Serveur</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="serverStatusBadge">
+       <property name="styleSheet">
+        <string notr="true">color: #10b981; font-weight: bold;</string>
+       </property>
+       <property name="text">
+        <string>● Serveur Opérationnel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="topConfigRow" stretch="1,1,1">
+     <property name="spacing">
+      <number>20</number>
+     </property>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1,0">
+       <property name="rightMargin">
+        <number>9</number>
+       </property>
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>PERFORMANCE</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <item>
+           <layout class="QGridLayout" name="gridLayout">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>Cpu</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLabel" name="label_9">
+              <property name="text">
+               <string>15%</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QProgressBar" name="progressBar">
+              <property name="value">
+               <number>24</number>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QProgressBar" name="progressBar_2">
+              <property name="value">
+               <number>24</number>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>Ram</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>12%</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="controlBox">
+         <property name="className" stdset="0">
+          <string>ControlPanel</string>
+         </property>
+         <layout class="QVBoxLayout" name="vControl" stretch="0,0,0,1">
+          <item>
+           <widget class="QLabel" name="lblCtrl">
+            <property name="text">
+             <string>Contrôle Flux</string>
+            </property>
+            <property name="className" stdset="0">
+             <string>SectionHeader</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnToggleServer">
+            <property name="text">
+             <string>DÉMARRER LE SERVEUR</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="lblIp">
+            <property name="text">
+             <string>Adresse IP Locale :</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="horizontalFrame_ip">
+            <property name="styleSheet">
+             <string notr="true">QLineEdit{
+	font-weight: bold; 
+	color: #2563eb;
+}</string>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLineEdit" name="lineEdit">
+               <property name="minimumSize">
+                <size>
+                 <width>50</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="placeholderText">
+                <string>XXX</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label">
+               <property name="text">
+                <string>.</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_2">
+               <property name="minimumSize">
+                <size>
+                 <width>50</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="placeholderText">
+                <string>XXX</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_2">
+               <property name="text">
+                <string>.</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_3">
+               <property name="minimumSize">
+                <size>
+                 <width>50</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="placeholderText">
+                <string>XXX</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="text">
+                <string>.</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_4">
+               <property name="minimumSize">
+                <size>
+                 <width>50</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="placeholderText">
+                <string>XXX</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_4">
+               <property name="text">
+                <string>:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_5">
+               <property name="minimumSize">
+                <size>
+                 <width>50</width>
+                 <height>30</height>
+                </size>
+               </property>
+               <property name="placeholderText">
+                <string>XXXX</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QFrame" name="usersBox">
+       <property name="className" stdset="0">
+        <string>ControlPanel</string>
+       </property>
+       <layout class="QVBoxLayout" name="vUsers">
+        <item>
+         <widget class="QLabel" name="lblUsers">
+          <property name="text">
+           <string>Comptes Connectés (Sessions Actives)</string>
+          </property>
+          <property name="className" stdset="0">
+           <string>SectionHeader</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="userListLayout" stretch="1,0">
+          <item>
+           <widget class="QListWidget" name="listConnected">
+            <item>
+             <property name="text">
+              <string>👤 Pharmacien Titulaire (Poste 01)</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>👤 Préparateur - Sophie (Poste 02)</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>👤 Caisse - Marc (Tablette A)</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="userActions">
+            <item>
+             <widget class="QPushButton" name="btnKick">
+              <property name="text">
+               <string>Déconnecter</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="vsU">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="frame">
+       <property name="frameShape">
+        <enum>QFrame::Shape::NoFrame</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Shadow::Raised</enum>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Demande de connexions</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0">
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QListWidget" name="listWidget"/>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <property name="rightMargin">
+             <number>9</number>
+            </property>
+            <property name="bottomMargin">
+             <number>9</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="pushButton">
+              <property name="text">
+               <string>Accorder</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Orientation::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblLog">
+     <property name="text">
+      <string>Journal des Requêtes Clients (Live)</string>
+     </property>
+     <property name="className" stdset="0">
+      <string>SectionHeader</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTextEdit" name="logMonitor">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+     <property name="html">
+      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;meta charset=&quot;utf-8&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+hr { height: 1px; border-width: 0; }
+li.unchecked::marker { content: &quot;\2610&quot;; }
+li.checked::marker { content: &quot;\2612&quot;; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Consolas&amp;amp;quot','Monaco&amp;amp;quot','monospace'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Consolas','Monaco','monospace';&quot;&gt;[14:20:01] CLIENT 192.168.1.12 : Connecté &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Consolas','Monaco','monospace';&quot;&gt;[14:20:05] GET /api/v1/stocks/amoxicilline - 200 OK &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Consolas','Monaco','monospace';&quot;&gt;[14:20:12] POST /api/v1/ventes/nouvelle - Enregistrement réussi &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Consolas','Monaco','monospace';&quot;&gt;[14:21:45] CLIENT 192.168.1.15 : Demande de synchronisation inventaire &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Consolas','Monaco','monospace'; color:#facc15;&quot;&gt;[14:22:10] WARN : Latence réseau détectée sur Poste 02&lt;/span&gt;&lt;span style=&quot; font-family:'Consolas','Monaco','monospace';&quot;&gt; &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="footer">
+     <item>
+      <widget class="QLabel" name="lblFoot">
+       <property name="styleSheet">
+        <string notr="true">color: #94a3b8; font-size: 10px;</string>
+       </property>
+       <property name="text">
+        <string>Version Serveur 2.4.0-STABLE</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="hsF">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnClearLogs">
+       <property name="text">
+        <string>Effacer les logs</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

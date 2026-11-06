@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PageUsers</class>
+ <widget class="QWidget" name="PageUsers">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget#PageUsers { background: #f0f4f8; }
+QWidget#PageUsers QLabel { background: transparent; }</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <property name="spacing">
+    <number>16</number>
+   </property>
+   <property name="leftMargin">
+    <number>24</number>
+   </property>
+   <property name="topMargin">
+    <number>20</number>
+   </property>
+   <property name="rightMargin">
+    <number>24</number>
+   </property>
+   <property name="bottomMargin">
+    <number>20</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="headerRow">
+     <item>
+      <layout class="QVBoxLayout" name="headerTitleBox">
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="lbl_title">
+         <property name="styleSheet">
+          <string notr="true">color: #023E8A; font-size: 24px; font-weight: 800; background: transparent;</string>
+         </property>
+         <property name="text">
+          <string>Utilisateurs</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbl_subtitle">
+         <property name="styleSheet">
+          <string notr="true">color: #64748b; font-size: 12px; background: transparent;</string>
+         </property>
+         <property name="text">
+          <string>Gérez les comptes et les permissions de votre équipe</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <spacer name="headerSpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="lbl_count_badge">
+       <property name="styleSheet">
+        <string notr="true">background: #dbeafe; color: #1e40af; font-size: 11px; font-weight: 800; padding: 8px 14px; border-radius: 12px; letter-spacing: 1px;</string>
+       </property>
+       <property name="text">
+        <string>0 utilisateur</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_new">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>44</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton { background: #023E8A; color: #ffffff; border: none; border-radius: 10px; font-size: 12px; font-weight: 800; padding: 0 20px; }
+QPushButton:hover { background: #0077B6; }</string>
+       </property>
+       <property name="text">
+        <string>Nouvel utilisateur</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../Icon.qrc">
+         <normaloff>:/Icon/Icons/plus_white.svg</normaloff>:/Icon/Icons/plus_white.svg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QFrame" name="toolbar">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>60</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QFrame#toolbar { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; }</string>
+     </property>
+     <layout class="QHBoxLayout" name="toolbarLayout">
+      <property name="spacing">
+       <number>12</number>
+      </property>
+      <property name="leftMargin">
+       <number>16</number>
+      </property>
+      <property name="rightMargin">
+       <number>16</number>
+      </property>
+      <item>
+       <widget class="QLineEdit" name="inp_search">
+        <property name="minimumSize">
+         <size>
+          <width>320</width>
+          <height>36</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLineEdit { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 6px 12px; font-size: 12px; color: #0f172a; }
+QLineEdit:focus { border-color: #0077B6; background: #ffffff; }</string>
+        </property>
+        <property name="placeholderText">
+         <string>Rechercher par nom, email, téléphone…</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="combo_filter">
+        <property name="minimumSize">
+         <size>
+          <width>180</width>
+          <height>36</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QComboBox { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 6px 12px; font-size: 12px; color: #0f172a; }
+QComboBox::drop-down { border: none; width: 24px; }
+QComboBox QAbstractItemView { background: #ffffff; color: #0f172a; selection-background-color: #e0f2fe; selection-color: #0f172a; }
+
+QComboBox::down-arrow {
+    image: url(:/Icon/Icons/chevron-down.svg);
+    width: 12px; height: 12px;
+}</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Tous les utilisateurs</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Actifs</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Inactifs</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Rôle : ADMIN</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Rôle : UTILISATEUR</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Rôle : CAISSIER</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <spacer name="toolbarSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_refresh">
+        <property name="minimumSize">
+         <size>
+          <width>36</width>
+          <height>36</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>36</width>
+          <height>36</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="toolTip">
+         <string>Rafraîchir</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 8px; }
+QPushButton:hover { background: #e2e8f0; }</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../Icon.qrc">
+          <normaloff>:/Icon/Icons/refresh.svg</normaloff>:/Icon/Icons/refresh.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="users_table">
+     <property name="contextMenuPolicy">
+      <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QTableWidget { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; gridline-color: transparent; color: #0f172a; alternate-background-color: #f8fafc; }
+QTableWidget::item { padding: 8px; border-bottom: 1px solid #f1f5f9; }
+QTableWidget::item:selected { background: #e0f2fe; color: #0f172a; }
+QHeaderView::section { background: #f8fafc; color: #64748b; padding: 10px; border: none; border-bottom: 1px solid #e2e8f0; font-size: 10px; font-weight: 800; letter-spacing: 1px; }</string>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+     </property>
+     <property name="showGrid">
+      <bool>false</bool>
+     </property>
+     <column>
+      <property name="text">
+       <string>UTILISATEUR</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>EMAIL</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>TÉLÉPHONE</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>RÔLE</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>STATUT</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>DERNIÈRE CONNEXION</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="paginationRow">
+     <item>
+      <widget class="QLabel" name="lbl_total_info">
+       <property name="styleSheet">
+        <string notr="true">color: #64748b; font-size: 11px; font-weight: 600; background: transparent;</string>
+       </property>
+       <property name="text">
+        <string>0 utilisateur</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="paginationSpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_prev">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>34</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton { background: #ffffff; color: #475569; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 11px; font-weight: 700; padding: 0 12px; }
+QPushButton:hover { background: #f1f5f9; }
+QPushButton:disabled { color: #cbd5e1; }</string>
+       </property>
+       <property name="text">
+        <string>Précédent</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../Icon.qrc">
+         <normaloff>:/Icon/Icons/chevron-left.svg</normaloff>:/Icon/Icons/chevron-left.svg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>14</width>
+         <height>14</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lbl_page_info">
+       <property name="styleSheet">
+        <string notr="true">color: #0f172a; font-size: 11px; font-weight: 700; padding: 0 12px; background: transparent;</string>
+       </property>
+       <property name="text">
+        <string>Page 1 / 1</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btn_next">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>34</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LayoutDirection::RightToLeft</enum>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton { background: #ffffff; color: #475569; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 11px; font-weight: 700; padding: 0 12px; }
+QPushButton:hover { background: #f1f5f9; }
+QPushButton:disabled { color: #cbd5e1; }</string>
+       </property>
+       <property name="text">
+        <string>Suivant</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../Icon.qrc">
+         <normaloff>:/Icon/Icons/chevron-right.svg</normaloff>:/Icon/Icons/chevron-right.svg</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>14</width>
+         <height>14</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../Icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>

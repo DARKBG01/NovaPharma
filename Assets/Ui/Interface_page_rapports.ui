@@ -1,0 +1,1548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PageRapports</class>
+ <widget class="QWidget" name="PageRapports">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1282</width>
+    <height>970</height>
+   </rect>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget#PageRapports { background: #f0f4f8; }
+QWidget#PageRapports QLabel { background: transparent; }</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="header">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>88</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>88</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QFrame#header { background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #023E8A, stop:1 #0077B6); border: none; }
+QFrame#header QLabel { background: transparent; color: #ffffff; }</string>
+     </property>
+     <layout class="QHBoxLayout" name="headerLayout">
+      <property name="spacing">
+       <number>16</number>
+      </property>
+      <property name="leftMargin">
+       <number>24</number>
+      </property>
+      <property name="rightMargin">
+       <number>24</number>
+      </property>
+      <item>
+       <widget class="QToolButton" name="lbl_header_icon">
+        <property name="minimumSize">
+         <size>
+          <width>44</width>
+          <height>44</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>44</width>
+          <height>44</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QToolButton { background: rgba(255,255,255,0.15); border-radius: 12px; border: none; padding: 11px; }</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../Icon.qrc">
+          <normaloff>:/Icon/Icons/chart-line_white.svg</normaloff>:/Icon/Icons/chart-line_white.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>22</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="headerTitleBox">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="lbl_header_title">
+          <property name="styleSheet">
+           <string notr="true">font-size: 18px; font-weight: 800; color: #ffffff; background: transparent;</string>
+          </property>
+          <property name="text">
+           <string>Rapports</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbl_header_sub">
+          <property name="styleSheet">
+           <string notr="true">font-size: 11px; color: rgba(255,255,255,0.75); background: transparent;</string>
+          </property>
+          <property name="text">
+           <string>Analyse des ventes, de l'équipe et des opérations</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="headerSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_generer">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton { background: #16A34A; color: #ffffff; border: none; border-radius: 10px; font-size: 12px; font-weight: 800; padding: 0 20px; }
+QPushButton:hover { background: #15803d; }</string>
+        </property>
+        <property name="text">
+         <string>Générer</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../Icon.qrc">
+          <normaloff>:/Icon/Icons/refresh_white.svg</normaloff>:/Icon/Icons/refresh_white.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="config_bar">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>72</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>72</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QFrame#config_bar { background: #ffffff; border-bottom: 1px solid #e2e8f0; }</string>
+     </property>
+     <layout class="QHBoxLayout" name="configLayout">
+      <property name="spacing">
+       <number>12</number>
+      </property>
+      <property name="leftMargin">
+       <number>24</number>
+      </property>
+      <property name="rightMargin">
+       <number>24</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="lbl_periode">
+        <property name="styleSheet">
+         <string notr="true">color: #475569; font-size: 11px; font-weight: 700; background: transparent;</string>
+        </property>
+        <property name="text">
+         <string>Période</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="combo_periode">
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>36</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QComboBox { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 6px 12px; font-size: 12px; color: #0f172a; }
+QComboBox::drop-down { border: none; width: 24px; }
+QComboBox QAbstractItemView { background: #ffffff; color: #0f172a; selection-background-color: #e0f2fe; selection-color: #0f172a; }</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>Aujourd'hui</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Cette semaine</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Ce mois</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Cette année</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>30 derniers jours</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>90 derniers jours</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Personnalisé</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDateEdit" name="date_debut">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>36</height>
+         </size>
+        </property>
+        <property name="visible">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QDateEdit { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 6px 12px; font-size: 12px; color: #0f172a; }</string>
+        </property>
+        <property name="displayFormat">
+         <string>dd/MM/yyyy</string>
+        </property>
+        <property name="calendarPopup">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lbl_au">
+        <property name="visible">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: #94a3b8; font-size: 12px; background: transparent;</string>
+        </property>
+        <property name="text">
+         <string>au</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDateEdit" name="date_fin">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>36</height>
+         </size>
+        </property>
+        <property name="visible">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QDateEdit { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 6px 12px; font-size: 12px; color: #0f172a; }</string>
+        </property>
+        <property name="displayFormat">
+         <string>dd/MM/yyyy</string>
+        </property>
+        <property name="calendarPopup">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="lbl_topn">
+        <property name="styleSheet">
+         <string notr="true">color: #475569; font-size: 11px; font-weight: 700; padding-left: 12px; background: transparent;</string>
+        </property>
+        <property name="text">
+         <string>Top N</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="combo_topn">
+        <property name="minimumSize">
+         <size>
+          <width>80</width>
+          <height>36</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QComboBox { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 6px 12px; font-size: 12px; color: #0f172a; }
+QComboBox::drop-down { border: none; width: 24px; }
+QComboBox QAbstractItemView { background: #ffffff; color: #0f172a; selection-background-color: #e0f2fe; selection-color: #0f172a; }</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>5</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>10</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>15</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>20</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>50</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <spacer name="configSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="lbl_periode_active">
+        <property name="styleSheet">
+         <string notr="true">color: #0077B6; font-size: 11px; font-weight: 700; background: transparent;</string>
+        </property>
+        <property name="text">
+         <string>—</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTabWidget" name="tabs">
+     <property name="styleSheet">
+      <string notr="true">QTabWidget::pane { background: #f0f4f8; border: none; }
+QTabBar { background: #ffffff; }
+QTabBar::tab { background: #ffffff; color: #64748b; padding: 12px 24px; font-size: 12px; font-weight: 700; border: none; border-bottom: 3px solid transparent; }
+QTabBar::tab:selected { color: #023E8A; border-bottom: 3px solid #023E8A; }
+QTabBar::tab:hover:!selected { color: #0077B6; }</string>
+     </property>
+     <widget class="QWidget" name="tab_ventes">
+      <property name="styleSheet">
+       <string notr="true">QWidget#tab_ventes { background: #f0f4f8; }</string>
+      </property>
+      <attribute name="title">
+       <string>Ventes</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="tabVentesLayout">
+       <property name="spacing">
+        <number>16</number>
+       </property>
+       <property name="leftMargin">
+        <number>24</number>
+       </property>
+       <property name="topMargin">
+        <number>20</number>
+       </property>
+       <property name="rightMargin">
+        <number>24</number>
+       </property>
+       <property name="bottomMargin">
+        <number>20</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="kpisVentesRow">
+         <property name="spacing">
+          <number>12</number>
+         </property>
+         <item>
+          <widget class="QFrame" name="kpi_ca">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>100</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QFrame#kpi_ca { background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #023E8A; border-radius: 10px; }</string>
+           </property>
+           <layout class="QVBoxLayout" name="kpi_ca_layout">
+            <property name="spacing">
+             <number>4</number>
+            </property>
+            <property name="leftMargin">
+             <number>16</number>
+            </property>
+            <property name="topMargin">
+             <number>12</number>
+            </property>
+            <property name="rightMargin">
+             <number>16</number>
+            </property>
+            <property name="bottomMargin">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="kpi_ca_label">
+              <property name="styleSheet">
+               <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>CA TOTAL</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="kpi_ca_value">
+              <property name="styleSheet">
+               <string notr="true">color: #023E8A; font-size: 20px; font-weight: 800; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>—</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="kpi_ca_var">
+              <property name="styleSheet">
+               <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 700; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="kpi_ventes">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>100</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QFrame#kpi_ventes { background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #0077B6; border-radius: 10px; }</string>
+           </property>
+           <layout class="QVBoxLayout" name="kpi_ventes_layout">
+            <property name="spacing">
+             <number>4</number>
+            </property>
+            <property name="leftMargin">
+             <number>16</number>
+            </property>
+            <property name="topMargin">
+             <number>12</number>
+            </property>
+            <property name="rightMargin">
+             <number>16</number>
+            </property>
+            <property name="bottomMargin">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="kpi_ventes_label">
+              <property name="styleSheet">
+               <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>NOMBRE DE VENTES</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="kpi_ventes_value">
+              <property name="styleSheet">
+               <string notr="true">color: #0077B6; font-size: 20px; font-weight: 800; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>—</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="kpi_ventes_var">
+              <property name="styleSheet">
+               <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 700; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="kpi_panier">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>100</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QFrame#kpi_panier { background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #00B4D8; border-radius: 10px; }</string>
+           </property>
+           <layout class="QVBoxLayout" name="kpi_panier_layout">
+            <property name="spacing">
+             <number>4</number>
+            </property>
+            <property name="leftMargin">
+             <number>16</number>
+            </property>
+            <property name="topMargin">
+             <number>12</number>
+            </property>
+            <property name="rightMargin">
+             <number>16</number>
+            </property>
+            <property name="bottomMargin">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="kpi_panier_label">
+              <property name="styleSheet">
+               <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>PANIER MOYEN</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="kpi_panier_value">
+              <property name="styleSheet">
+               <string notr="true">color: #00B4D8; font-size: 20px; font-weight: 800; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>—</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="kpi_panier_var">
+              <property name="styleSheet">
+               <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 700; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="kpi_clients">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>100</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QFrame#kpi_clients { background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #16A34A; border-radius: 10px; }</string>
+           </property>
+           <layout class="QVBoxLayout" name="kpi_clients_layout">
+            <property name="spacing">
+             <number>4</number>
+            </property>
+            <property name="leftMargin">
+             <number>16</number>
+            </property>
+            <property name="topMargin">
+             <number>12</number>
+            </property>
+            <property name="rightMargin">
+             <number>16</number>
+            </property>
+            <property name="bottomMargin">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="kpi_clients_label">
+              <property name="styleSheet">
+               <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>CLIENTS SERVIS</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="kpi_clients_value">
+              <property name="styleSheet">
+               <string notr="true">color: #16A34A; font-size: 20px; font-weight: 800; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>—</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="kpi_clients_var">
+              <property name="styleSheet">
+               <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 700; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="kpi_articles">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>100</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QFrame#kpi_articles { background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #F4A261; border-radius: 10px; }</string>
+           </property>
+           <layout class="QVBoxLayout" name="kpi_articles_layout">
+            <property name="spacing">
+             <number>4</number>
+            </property>
+            <property name="leftMargin">
+             <number>16</number>
+            </property>
+            <property name="topMargin">
+             <number>12</number>
+            </property>
+            <property name="rightMargin">
+             <number>16</number>
+            </property>
+            <property name="bottomMargin">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="kpi_articles_label">
+              <property name="styleSheet">
+               <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>ARTICLES VENDUS</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="kpi_articles_value">
+              <property name="styleSheet">
+               <string notr="true">color: #F4A261; font-size: 20px; font-weight: 800; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>—</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="kpi_articles_var">
+              <property name="styleSheet">
+               <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 700; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="chartsRow">
+         <property name="spacing">
+          <number>12</number>
+         </property>
+         <item>
+          <widget class="QFrame" name="chart_ca">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>240</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QFrame#chart_ca { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; }</string>
+           </property>
+           <layout class="QVBoxLayout" name="chart_ca_layout">
+            <property name="leftMargin">
+             <number>12</number>
+            </property>
+            <property name="topMargin">
+             <number>12</number>
+            </property>
+            <property name="rightMargin">
+             <number>12</number>
+            </property>
+            <property name="bottomMargin">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="chart_ca_title">
+              <property name="styleSheet">
+               <string notr="true">color: #023E8A; font-size: 11px; font-weight: 800; letter-spacing: 1px; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>ÉVOLUTION DU CHIFFRE D'AFFAIRES</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="chart_cat">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>240</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>400</width>
+             <height>240</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QFrame#chart_cat { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; }</string>
+           </property>
+           <layout class="QVBoxLayout" name="chart_cat_layout">
+            <property name="leftMargin">
+             <number>12</number>
+            </property>
+            <property name="topMargin">
+             <number>12</number>
+            </property>
+            <property name="rightMargin">
+             <number>12</number>
+            </property>
+            <property name="bottomMargin">
+             <number>12</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="chart_cat_title">
+              <property name="styleSheet">
+               <string notr="true">color: #023E8A; font-size: 11px; font-weight: 800; letter-spacing: 1px; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>RÉPARTITION PAR CATÉGORIE</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbl_top_produits">
+         <property name="styleSheet">
+          <string notr="true">color: #023E8A; font-size: 12px; font-weight: 800; letter-spacing: 1.2px; background: transparent;</string>
+         </property>
+         <property name="text">
+          <string>TOP PRODUITS</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="table_top_produits">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>200</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QTableWidget { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; gridline-color: transparent; color: #0f172a; }
+QTableWidget::item { padding: 6px; }
+QHeaderView::section { background: #f8fafc; color: #64748b; padding: 8px; border: none; border-bottom: 1px solid #e2e8f0; font-size: 10px; font-weight: 800; letter-spacing: 1px; }</string>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+         </property>
+         <property name="showGrid">
+          <bool>false</bool>
+         </property>
+         <column>
+          <property name="text">
+           <string>PRODUIT</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>CATÉGORIE</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>QTÉ</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>CA</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>PART</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_equipe">
+      <property name="styleSheet">
+       <string notr="true">QWidget#tab_equipe { background: #f0f4f8; }</string>
+      </property>
+      <attribute name="title">
+       <string>Équipe</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="tabEquipeLayout">
+       <property name="spacing">
+        <number>16</number>
+       </property>
+       <property name="leftMargin">
+        <number>24</number>
+       </property>
+       <property name="topMargin">
+        <number>20</number>
+       </property>
+       <property name="rightMargin">
+        <number>24</number>
+       </property>
+       <property name="bottomMargin">
+        <number>20</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="lbl_vendeurs">
+         <property name="styleSheet">
+          <string notr="true">color: #023E8A; font-size: 12px; font-weight: 800; letter-spacing: 1.2px; background: transparent;</string>
+         </property>
+         <property name="text">
+          <string>PERFORMANCE DES VENDEURS</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="table_vendeurs">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>280</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QTableWidget { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; gridline-color: transparent; color: #0f172a; }
+QTableWidget::item { padding: 6px; }
+QHeaderView::section { background: #f8fafc; color: #64748b; padding: 8px; border: none; border-bottom: 1px solid #e2e8f0; font-size: 10px; font-weight: 800; letter-spacing: 1px; }</string>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+         </property>
+         <property name="showGrid">
+          <bool>false</bool>
+         </property>
+         <column>
+          <property name="text">
+           <string>VENDEUR</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>VENTES</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>CA</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>PANIER MOYEN</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>CLIENTS SERVIS</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>PART</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbl_annulations">
+         <property name="styleSheet">
+          <string notr="true">color: #023E8A; font-size: 12px; font-weight: 800; letter-spacing: 1.2px; background: transparent;</string>
+         </property>
+         <property name="text">
+          <string>TAUX D'ANNULATION PAR CAISSIER</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbl_alerte_info">
+         <property name="styleSheet">
+          <string notr="true">color: #b45309; font-size: 11px; font-weight: 600; background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; padding: 8px 12px;</string>
+         </property>
+         <property name="text">
+          <string>Toute ligne avec un taux supérieur à 5 % est signalée en rouge.</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="table_annulations">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>200</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QTableWidget { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; gridline-color: transparent; color: #0f172a; }
+QTableWidget::item { padding: 6px; }
+QHeaderView::section { background: #f8fafc; color: #64748b; padding: 8px; border: none; border-bottom: 1px solid #e2e8f0; font-size: 10px; font-weight: 800; letter-spacing: 1px; }</string>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+         </property>
+         <property name="showGrid">
+          <bool>false</bool>
+         </property>
+         <column>
+          <property name="text">
+           <string>CAISSIER</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>TRANSACTIONS</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>ANNULATIONS</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>TAUX</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>ALERTE</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_operations">
+      <property name="styleSheet">
+       <string notr="true">QWidget#tab_operations { background: #f0f4f8; }</string>
+      </property>
+      <attribute name="title">
+       <string>Opérations</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="tabOperationsLayout">
+       <property name="spacing">
+        <number>16</number>
+       </property>
+       <property name="leftMargin">
+        <number>24</number>
+       </property>
+       <property name="topMargin">
+        <number>20</number>
+       </property>
+       <property name="rightMargin">
+        <number>24</number>
+       </property>
+       <property name="bottomMargin">
+        <number>20</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="lbl_marges_title">
+         <property name="styleSheet">
+          <string notr="true">color: #023E8A; font-size: 12px; font-weight: 800; letter-spacing: 1.2px; background: transparent;</string>
+         </property>
+         <property name="text">
+          <string>MARGES</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="margeKpiRow">
+         <property name="spacing">
+          <number>12</number>
+         </property>
+         <item>
+          <widget class="QFrame" name="kpi_marge">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>90</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QFrame#kpi_marge { background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #16A34A; border-radius: 10px; }</string>
+           </property>
+           <layout class="QVBoxLayout" name="kpi_marge_layout">
+            <property name="spacing">
+             <number>4</number>
+            </property>
+            <property name="leftMargin">
+             <number>16</number>
+            </property>
+            <property name="topMargin">
+             <number>10</number>
+            </property>
+            <property name="rightMargin">
+             <number>16</number>
+            </property>
+            <property name="bottomMargin">
+             <number>10</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="kpi_marge_label">
+              <property name="styleSheet">
+               <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>MARGE GLOBALE</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="kpi_marge_value">
+              <property name="styleSheet">
+               <string notr="true">color: #16A34A; font-size: 18px; font-weight: 800; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>—</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="kpi_marge_pct">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>90</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QFrame#kpi_marge_pct { background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #0077B6; border-radius: 10px; }</string>
+           </property>
+           <layout class="QVBoxLayout" name="kpi_marge_pct_layout">
+            <property name="spacing">
+             <number>4</number>
+            </property>
+            <property name="leftMargin">
+             <number>16</number>
+            </property>
+            <property name="topMargin">
+             <number>10</number>
+            </property>
+            <property name="rightMargin">
+             <number>16</number>
+            </property>
+            <property name="bottomMargin">
+             <number>10</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="kpi_marge_pct_label">
+              <property name="styleSheet">
+               <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>TAUX DE MARGE MOYEN</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="kpi_marge_pct_value">
+              <property name="styleSheet">
+               <string notr="true">color: #0077B6; font-size: 18px; font-weight: 800; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>—</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="kpi_stock_val">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>90</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QFrame#kpi_stock_val { background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #F4A261; border-radius: 10px; }</string>
+           </property>
+           <layout class="QVBoxLayout" name="kpi_stock_val_layout">
+            <property name="spacing">
+             <number>4</number>
+            </property>
+            <property name="leftMargin">
+             <number>16</number>
+            </property>
+            <property name="topMargin">
+             <number>10</number>
+            </property>
+            <property name="rightMargin">
+             <number>16</number>
+            </property>
+            <property name="bottomMargin">
+             <number>10</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="kpi_stock_val_label">
+              <property name="styleSheet">
+               <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>VALEUR DU STOCK</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="kpi_stock_val_value">
+              <property name="styleSheet">
+               <string notr="true">color: #F4A261; font-size: 18px; font-weight: 800; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>—</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="kpi_rupture">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>90</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QFrame#kpi_rupture { background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #DC2626; border-radius: 10px; }</string>
+           </property>
+           <layout class="QVBoxLayout" name="kpi_rupture_layout">
+            <property name="spacing">
+             <number>4</number>
+            </property>
+            <property name="leftMargin">
+             <number>16</number>
+            </property>
+            <property name="topMargin">
+             <number>10</number>
+            </property>
+            <property name="rightMargin">
+             <number>16</number>
+            </property>
+            <property name="bottomMargin">
+             <number>10</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="kpi_rupture_label">
+              <property name="styleSheet">
+               <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>PRODUITS EN RUPTURE</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="kpi_rupture_value">
+              <property name="styleSheet">
+               <string notr="true">color: #DC2626; font-size: 18px; font-weight: 800; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>—</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbl_top_marge">
+         <property name="styleSheet">
+          <string notr="true">color: #023E8A; font-size: 12px; font-weight: 800; letter-spacing: 1.2px; background: transparent;</string>
+         </property>
+         <property name="text">
+          <string>TOP PRODUITS PAR MARGE</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="table_top_marge">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>180</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QTableWidget { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; gridline-color: transparent; color: #0f172a; }
+QTableWidget::item { padding: 6px; }
+QHeaderView::section { background: #f8fafc; color: #64748b; padding: 8px; border: none; border-bottom: 1px solid #e2e8f0; font-size: 10px; font-weight: 800; letter-spacing: 1px; }</string>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+         </property>
+         <property name="showGrid">
+          <bool>false</bool>
+         </property>
+         <column>
+          <property name="text">
+           <string>PRODUIT</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>QTÉ</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>CA</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>COÛT</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>MARGE</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>TAUX</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbl_rupture_liste">
+         <property name="styleSheet">
+          <string notr="true">color: #023E8A; font-size: 12px; font-weight: 800; letter-spacing: 1.2px; background: transparent;</string>
+         </property>
+         <property name="text">
+          <string>PRODUITS EN STOCK FAIBLE</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="table_rupture">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>160</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QTableWidget { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; gridline-color: transparent; color: #0f172a; }
+QTableWidget::item { padding: 6px; }
+QHeaderView::section { background: #f8fafc; color: #64748b; padding: 8px; border: none; border-bottom: 1px solid #e2e8f0; font-size: 10px; font-weight: 800; letter-spacing: 1px; }</string>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+         </property>
+         <property name="showGrid">
+          <bool>false</bool>
+         </property>
+         <column>
+          <property name="text">
+           <string>CODE</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>PRODUIT</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>STOCK ACTUEL</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbl_ops_resume">
+         <property name="styleSheet">
+          <string notr="true">color: #023E8A; font-size: 12px; font-weight: 800; letter-spacing: 1.2px; background: transparent;</string>
+         </property>
+         <property name="text">
+          <string>ACTIVITÉ OPÉRATIONNELLE</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbl_ops_text">
+         <property name="styleSheet">
+          <string notr="true">color: #0f172a; font-size: 12px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px;</string>
+         </property>
+         <property name="text">
+          <string>—</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="footer">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>72</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>72</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QFrame#footer { background: #ffffff; border-top: 1px solid #e2e8f0; }</string>
+     </property>
+     <layout class="QHBoxLayout" name="footerLayout">
+      <property name="spacing">
+       <number>12</number>
+      </property>
+      <property name="leftMargin">
+       <number>24</number>
+      </property>
+      <property name="rightMargin">
+       <number>24</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="lbl_status">
+        <property name="styleSheet">
+         <string notr="true">color: #94a3b8; font-size: 11px; font-weight: 600; background: transparent;</string>
+        </property>
+        <property name="text">
+         <string>Prêt</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="footerSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_export_csv">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 11px; font-weight: 700; padding: 0 18px; }
+QPushButton:hover { background: #e2e8f0; }</string>
+        </property>
+        <property name="text">
+         <string>CSV</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../Icon.qrc">
+          <normaloff>:/Icon/Icons/download.svg</normaloff>:/Icon/Icons/download.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>14</width>
+          <height>14</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_export_excel">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; border-radius: 10px; font-size: 11px; font-weight: 700; padding: 0 18px; }
+QPushButton:hover { background: #d1fae5; }</string>
+        </property>
+        <property name="text">
+         <string>Excel</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../Icon.qrc">
+          <normaloff>:/Icon/Icons/download.svg</normaloff>:/Icon/Icons/download.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>14</width>
+          <height>14</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_export_pdf">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; border-radius: 10px; font-size: 11px; font-weight: 700; padding: 0 18px; }
+QPushButton:hover { background: #fee2e2; }</string>
+        </property>
+        <property name="text">
+         <string>PDF</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../Icon.qrc">
+          <normaloff>:/Icon/Icons/download.svg</normaloff>:/Icon/Icons/download.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>14</width>
+          <height>14</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../Icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>

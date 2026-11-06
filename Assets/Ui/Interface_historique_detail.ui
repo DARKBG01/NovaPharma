@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>760</width>
+    <height>649</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Détail facture — Nova Pharma</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog#Dialog { background: #f0f4f8; }
+QDialog#Dialog QLabel { background: transparent; }</string>
+  </property>
+  <layout class="QVBoxLayout" name="mainLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="header">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>88</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>88</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QFrame#header { background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #023E8A, stop:1 #0077B6); border: none; }
+QFrame#header QLabel { background: transparent; color: #ffffff; }</string>
+     </property>
+     <layout class="QHBoxLayout" name="headerLayout">
+      <property name="spacing">
+       <number>16</number>
+      </property>
+      <property name="leftMargin">
+       <number>24</number>
+      </property>
+      <property name="rightMargin">
+       <number>24</number>
+      </property>
+      <item>
+       <widget class="QToolButton" name="lbl_header_icon">
+        <property name="minimumSize">
+         <size>
+          <width>44</width>
+          <height>44</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>44</width>
+          <height>44</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QToolButton { background: rgba(255,255,255,0.15); border-radius: 12px; border: none; padding: 11px; }</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../Icon.qrc">
+          <normaloff>:/Icon/Icons/invoice_white.svg</normaloff>:/Icon/Icons/invoice_white.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>22</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="autoRaise">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="headerTitleBox">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="lbl_header_title">
+          <property name="styleSheet">
+           <string notr="true">font-size: 18px; font-weight: 800; color: #ffffff; background: transparent;</string>
+          </property>
+          <property name="text">
+           <string>Facture</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lbl_header_sub">
+          <property name="styleSheet">
+           <string notr="true">font-size: 11px; color: rgba(255,255,255,0.75); background: transparent;</string>
+          </property>
+          <property name="text">
+           <string>—</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="bodyLayout">
+     <property name="spacing">
+      <number>12</number>
+     </property>
+     <property name="leftMargin">
+      <number>24</number>
+     </property>
+     <property name="topMargin">
+      <number>20</number>
+     </property>
+     <property name="rightMargin">
+      <number>24</number>
+     </property>
+     <property name="bottomMargin">
+      <number>20</number>
+     </property>
+     <item>
+      <widget class="QFrame" name="info_card">
+       <property name="styleSheet">
+        <string notr="true">QFrame#info_card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; }
+QFrame#info_card QLabel { background: transparent; }</string>
+       </property>
+       <layout class="QGridLayout" name="infoGrid">
+        <property name="leftMargin">
+         <number>20</number>
+        </property>
+        <property name="topMargin">
+         <number>20</number>
+        </property>
+        <property name="rightMargin">
+         <number>20</number>
+        </property>
+        <property name="bottomMargin">
+         <number>20</number>
+        </property>
+        <property name="horizontalSpacing">
+         <number>24</number>
+        </property>
+        <property name="verticalSpacing">
+         <number>12</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl_k_fact">
+          <property name="styleSheet">
+           <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px;</string>
+          </property>
+          <property name="text">
+           <string>N° FACTURE</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="val_fact">
+          <property name="styleSheet">
+           <string notr="true">color: #023E8A; font-size: 13px; font-weight: 800; font-family: 'Courier New';</string>
+          </property>
+          <property name="text">
+           <string>—</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lbl_k_date">
+          <property name="styleSheet">
+           <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px;</string>
+          </property>
+          <property name="text">
+           <string>DATE</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLabel" name="val_date">
+          <property name="styleSheet">
+           <string notr="true">color: #0f172a; font-size: 13px; font-weight: 600;</string>
+          </property>
+          <property name="text">
+           <string>—</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="lbl_k_client">
+          <property name="styleSheet">
+           <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px;</string>
+          </property>
+          <property name="text">
+           <string>CLIENT</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLabel" name="val_client">
+          <property name="styleSheet">
+           <string notr="true">color: #0f172a; font-size: 13px; font-weight: 600;</string>
+          </property>
+          <property name="text">
+           <string>—</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="lbl_k_caissier">
+          <property name="styleSheet">
+           <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px;</string>
+          </property>
+          <property name="text">
+           <string>CAISSIER</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLabel" name="val_caissier">
+          <property name="styleSheet">
+           <string notr="true">color: #0f172a; font-size: 13px; font-weight: 600;</string>
+          </property>
+          <property name="text">
+           <string>—</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="lbl_k_statut">
+          <property name="styleSheet">
+           <string notr="true">color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: 1px;</string>
+          </property>
+          <property name="text">
+           <string>STATUT</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLabel" name="val_statut">
+          <property name="styleSheet">
+           <string notr="true">color: #0f172a; font-size: 13px; font-weight: 600;</string>
+          </property>
+          <property name="text">
+           <string>—</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lbl_lignes_titre">
+       <property name="styleSheet">
+        <string notr="true">color: #023E8A; font-size: 12px; font-weight: 800; letter-spacing: 1.2px; background: transparent;</string>
+       </property>
+       <property name="text">
+        <string>ARTICLES</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTableWidget" name="table_lignes">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>200</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QTableWidget { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; gridline-color: transparent; color: #0f172a; }
+QTableWidget::item { padding: 6px; }
+QHeaderView::section { background: #f8fafc; color: #64748b; padding: 8px; border: none; border-bottom: 1px solid #e2e8f0; font-size: 10px; font-weight: 800; letter-spacing: 1px; }</string>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+       </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+       </property>
+       <property name="showGrid">
+        <bool>false</bool>
+       </property>
+       <column>
+        <property name="text">
+         <string>ARTICLE</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>QTÉ</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>P.U</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>TOTAL</string>
+        </property>
+       </column>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="totalRow">
+       <item>
+        <spacer name="totalSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbl_total_label">
+         <property name="styleSheet">
+          <string notr="true">color: #475569; font-size: 12px; font-weight: 800; letter-spacing: 1px; background: transparent;</string>
+         </property>
+         <property name="text">
+          <string>TOTAL GÉNÉRAL</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbl_total_value">
+         <property name="styleSheet">
+          <string notr="true">color: #16A34A; font-size: 22px; font-weight: 800; background: transparent;</string>
+         </property>
+         <property name="text">
+          <string>0 FC</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QLabel" name="lbl_motif_annul">
+       <property name="visible">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: #b91c1c; font-size: 11px; font-weight: 600; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 8px 12px;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QFrame" name="footer">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>72</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>72</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QFrame#footer { background: #ffffff; border-top: 1px solid #e2e8f0; }</string>
+     </property>
+     <layout class="QHBoxLayout" name="footerLayout">
+      <property name="spacing">
+       <number>12</number>
+      </property>
+      <property name="leftMargin">
+       <number>24</number>
+      </property>
+      <property name="rightMargin">
+       <number>24</number>
+      </property>
+      <item>
+       <spacer name="footerSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_close">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton { background: #023E8A; color: #ffffff; border: none; border-radius: 10px; font-size: 12px; font-weight: 800; padding: 0 24px; }
+QPushButton:hover { background: #0077B6; }</string>
+        </property>
+        <property name="text">
+         <string>Fermer</string>
+        </property>
+       </widget>
+      </item>
+
+        <item>
+ <widget class="QPushButton" name="btn_reprint">
+  <property name="minimumSize"><size><width>0</width><height>42</height></size></property>
+  <property name="text"><string>  Réimprimer</string></property>
+  <property name="cursor"><cursorShape>PointingHandCursor</cursorShape></property>
+  <property name="icon">
+   <iconset resource="Icon.qrc">
+    <normaloff>:/Icon/Icons/printer.svg</normaloff>:/Icon/Icons/printer.svg</iconset>
+  </property>
+  <property name="iconSize"><size><width>16</width><height>16</height></size></property>
+  <property name="styleSheet"><string notr="true">QPushButton {
+    background: #eff6ff;
+    color: #023E8A;
+    border: 1.5px solid #bfdbfe;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 0 18px;
+}
+QPushButton:hover { background: #dbeafe; }</string></property>
+ </widget>
+</item>
+
+      <item>
+       <widget class="QPushButton" name="btn_cancel_sale">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1.5px solid #fecaca;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 0 20px;
+}
+QPushButton:hover { background: #fee2e2; }</string>
+        </property>
+        <property name="text">
+         <string>Annuler la vente</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../Icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>

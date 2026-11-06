@@ -1,0 +1,3215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PageParametres</class>
+ <widget class="QWidget" name="PageParametres">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1100</width>
+    <height>891</height>
+   </rect>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* ═══════════════ BASE ═══════════════ */ QWidget#PageParametres { background: #f0f4f8; } QWidget#PageParametres QLabel { background: transparent; } /* ═══════════════ CARTE PRINCIPALE ═══════════════ */ QFrame#card { background: #ffffff; border: 1px solid #e6ebf2; border-radius: 20px; } /* ═══════════════ HEADER ═══════════════ */ QFrame#header_frame { background: #ffffff; border-top-left-radius: 20px; border-top-right-radius: 20px; border: none; } QLabel#header_icon { background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0077B6, stop:1 #00B4D8); border-radius: 14px; padding: 12px; } QLabel#page_title { color: #0f172a; font-size: 22px; font-weight: 800; letter-spacing: -0.3px; } QLabel#page_subtitle { color: #64748b; font-size: 12px; } QLabel#version_badge { background: #eff6ff; color: #023E8A; border: 1px solid #bfdbfe; border-radius: 10px; padding: 6px 12px; font-size: 10px; font-weight: 800; letter-spacing: 1px; } /* ═══════════════ TABS (style pill) ═══════════════ */ QTabWidget::pane { background: transparent; border: none; top: 0; } QTabBar { background: transparent; qproperty-drawBase: 0; qproperty-expanding: 1; } QTabBar::tab { background: transparent; color: #64748b; padding: 9px 18px; margin-right: 6px; border-radius: 10px; font-size: 12px; font-weight: 700; border: 1px solid transparent; } QTabBar::tab:selected { background: #023E8A; color: #ffffff; border-color: #023E8A; } QTabBar::tab:hover:!selected { background: #eff6ff; color: #0077B6; border-color: #dbeafe; } /* ═══════════════ SECTIONS (cartes blanches) ═══════════════ */ QFrame#section_card { background: #ffffff; border: 1px solid #e6ebf2; border-radius: 14px; } QFrame#section_sep { background: #eef2f7; border: none; max-height: 1px; min-height: 1px; } QLabel#section_icon { background: #e0f2fe; color: #023E8A; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; } QLabel#section_title { color: #0f172a; font-size: 14px; font-weight: 800; letter-spacing: -0.1px; } QLabel#section_hint { color: #94a3b8; font-size: 11px; font-style: italic; } /* ═══════════════ CHAMPS ═══════════════ */ QLabel[fieldLabel=&quot;true&quot;] { color: #475569; font-size: 11px; font-weight: 700; letter-spacing: 0.2px; } QLabel[fieldHint=&quot;true&quot;] { color: #94a3b8; font-size: 10px; } QLineEdit, QComboBox, QSpinBox, QDoubleSpinBox, QPlainTextEdit { background: #ffffff; border: 1.5px solid #dbe3ec; border-radius: 10px; padding: 10px 14px; color: #0f172a; font-size: 13px; font-weight: 500; min-height: 22px; } QLineEdit:hover, QComboBox:hover, QSpinBox:hover, QDoubleSpinBox:hover, QPlainTextEdit:hover { border-color: #b9c6d8; } QLineEdit:focus, QComboBox:focus, QSpinBox:focus, QDoubleSpinBox:focus, QPlainTextEdit:focus { background: #ffffff; border: 1.5px solid #0077B6; } QComboBox::drop-down { border: none; width: 26px; } QComboBox QAbstractItemView { background: #ffffff; border: 1px solid #e6ebf2; border-radius: 10px; padding: 6px; selection-background-color: #eff6ff; selection-color: #0077B6; outline: none; } /* ═══════════════ CHECKBOX ═══════════════ */ QCheckBox { color: #334155; font-size: 12px; font-weight: 600; spacing: 10px; padding: 6px 0; background: transparent; } QCheckBox::indicator { width: 18px; height: 18px; border: 1.5px solid #cbd5e1; background: #ffffff; border-radius: 5px; } QCheckBox::indicator:hover { border-color: #0077B6; } QCheckBox::indicator:checked { background: #0077B6; border-color: #0077B6; image: url(:/Icon/Icons/check_white.svg); } /* ═══════════════ BOUTONS D'ACTION ═══════════════ */ QPushButton#btn_save { background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #0077B6, stop:1 #00B4D8); color: #ffffff; border: none; border-radius: 11px; padding: 12px 28px; font-size: 13px; font-weight: 800; min-height: 44px; letter-spacing: 0.3px; } QPushButton#btn_save:hover { background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #023E8A, stop:1 #0077B6); } QPushButton#btn_save:pressed { background: #023E8A; } QPushButton#btn_reload { background: #ffffff; color: #475569; border: 1.5px solid #dbe3ec; border-radius: 11px; padding: 12px 22px; font-size: 13px; font-weight: 700; min-height: 44px; } QPushButton#btn_reload:hover { background: #f8fafc; border-color: #c3cedd; color: #0f172a; } QPushButton#btn_upload_logo { background: #eff6ff; color: #023E8A; border: 1.5px solid #bfdbfe; border-radius: 10px; padding: 10px 20px; font-size: 12px; font-weight: 700; min-height: 40px; } QPushButton#btn_upload_logo:hover { background: #dbeafe; border-color: #93c5fd; } QPushButton#btn_remove_logo { background: #ffffff; color: #dc2626; border: 1.5px solid #fecaca; border-radius: 10px; padding: 10px 20px; font-size: 12px; font-weight: 700; min-height: 40px; } QPushButton#btn_remove_logo:hover { background: #fef2f2; } QPushButton#btn_browse_save { background: #eff6ff; color: #023E8A; border: 1.5px solid #bfdbfe; border-radius: 10px; padding: 10px 20px; font-size: 12px; font-weight: 700; min-height: 40px; } QPushButton#btn_browse_save:hover { background: #dbeafe; border-color: #93c5fd; } /* ═══════════════ DANGER ZONE ═══════════════ */ QFrame#danger_card_info { background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; } QFrame#danger_card_warn { background: #ffffff; border: 1px solid #e6ebf2; border-radius: 12px; } QFrame#danger_card_danger { background: #fef2f2; border: 1px solid #fecaca; border-radius: 12px; } QLabel#danger_icon_info { background: #fde68a; color: #92400e; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; } QLabel#danger_icon_warn { background: #dbeafe; color: #023E8A; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; } QLabel#danger_icon_danger { background: #fecaca; color: #b91c1c; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; } QLabel#danger_title { color: #0f172a; font-size: 13px; font-weight: 800; } QLabel#danger_title_red { color: #b91c1c; font-size: 13px; font-weight: 800; } QLabel#danger_desc { color: #64748b; font-size: 11px; } QLabel#danger_desc_red { color: #991b1b; font-size: 11px; } QPushButton#btn_export_db { background: #eff6ff; color: #023E8A; border: 1.5px solid #bfdbfe; border-radius: 10px; padding: 10px 22px; font-size: 12px; font-weight: 700; min-height: 42px; } QPushButton#btn_export_db:hover { background: #dbeafe; } QPushButton#btn_restore_db { background: #fef3c7; color: #92400e; border: 1.5px solid #fcd34d; border-radius: 10px; padding: 10px 22px; font-size: 12px; font-weight: 700; min-height: 42px; } QPushButton#btn_restore_db:hover { background: #fde68a; } QPushButton#btn_reset_all { background: #dc2626; color: #ffffff; border: none; border-radius: 10px; padding: 10px 22px; font-size: 12px; font-weight: 800; min-height: 42px; } QPushButton#btn_reset_all:hover { background: #b91c1c; } QPushButton#btn_reset_all:pressed { background: #991b1b; } /* ═══════════════ FOOTER ═══════════════ */ QFrame#footer_frame { background: #f8fafc; border-top: 1px solid #eef2f7; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; border: none; } QLabel#lbl_status { color: #94a3b8; font-size: 11px; font-weight: 600; } QLabel#lbl_status[status=&quot;ok&quot;] { color: #16A34A; font-weight: 700; } QLabel#lbl_status[status=&quot;warn&quot;] { color: #b45309; font-weight: 700; } /* ═══════════════ SCROLLBARS ═══════════════ */ QScrollArea { background: transparent; border: none; } QScrollArea &gt; QWidget &gt; QWidget { background: transparent; } QScrollBar:vertical { border: none; background: transparent; width: 10px; margin: 2px; } QScrollBar::handle:vertical { background: #cbd5e1; min-height: 32px; border-radius: 5px; } QScrollBar::handle:vertical:hover { background: #94a3b8; } QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; } QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: transparent; } /* ═══════════════ LIGNES DE SÉPARATION ═══════════════ */ QFrame[isSep=&quot;true&quot;] { background: #eef2f7; border: none; max-height: 1px; min-height: 1px; }
+
+QSpinBox::down-arrow {
+    image: url(:/Icon/Icons/chevron-down.svg);
+    width: 12px; height: 12px;
+}
+
+QSpinBox::up-arrow {
+    image: url(:/Icon/Icons/chevron-up.svg);
+    width: 12px; height: 12px;
+}
+
+QSpinBox QAbstractItemView {
+    background-color: #ffffff;
+    border: 1px solid #e6ebf2;
+    border-radius: 10px;
+    padding: 6px;
+    selection-background-color: #eff6ff;
+    selection-color: #0077B6;
+    outline: none;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="root_layout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>20</number>
+   </property>
+   <property name="topMargin">
+    <number>20</number>
+   </property>
+   <property name="rightMargin">
+    <number>20</number>
+   </property>
+   <property name="bottomMargin">
+    <number>20</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="card">
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <layout class="QVBoxLayout" name="card_layout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QFrame" name="header_frame">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>100</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QHBoxLayout" name="header_layout">
+         <property name="spacing">
+          <number>18</number>
+         </property>
+         <property name="leftMargin">
+          <number>28</number>
+         </property>
+         <property name="topMargin">
+          <number>22</number>
+         </property>
+         <property name="rightMargin">
+          <number>28</number>
+         </property>
+         <property name="bottomMargin">
+          <number>22</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="header_icon">
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>48</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>48</width>
+             <height>48</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="headerTitles">
+           <property name="spacing">
+            <number>4</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="page_title">
+             <property name="text">
+              <string>Paramètres</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="page_subtitle">
+             <property name="text">
+              <string>Configurez le comportement de l'application, la facturation et la sécurité.</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="headerSpacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="version_badge">
+           <property name="text">
+            <string>NOVA PHARMA v2.0</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTabWidget" name="tabs">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <property name="usesScrollButtons">
+         <bool>false</bool>
+        </property>
+        <property name="documentMode">
+         <bool>false</bool>
+        </property>
+        <property name="tabBarAutoHide">
+         <bool>false</bool>
+        </property>
+        <widget class="QWidget" name="tab_entreprise">
+         <attribute name="title">
+          <string>Entreprise</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="tabEntrepriseLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>24</number>
+          </property>
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>24</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+          <item>
+           <widget class="QScrollArea" name="scrollEntreprise">
+            <property name="frameShape">
+             <enum>QFrame::Shape::NoFrame</enum>
+            </property>
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="scrollEntrepriseContent">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>1000</width>
+               <height>758</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="scrollEntrepriseLayout">
+              <property name="spacing">
+               <number>16</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QFrame" name="section_card">
+                <layout class="QVBoxLayout" name="sectionIdentityLayout">
+                 <property name="spacing">
+                  <number>14</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>20</number>
+                 </property>
+                 <item>
+                  <layout class="QHBoxLayout" name="secIdHeader">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="secIdIcon">
+                     <property name="minimumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel#section_icon { background: #e0f2fe; color: #023E8A; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; }</string>
+                     </property>
+                     <property name="text">
+                      <string>01</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignmentFlag::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="secIdTitle">
+                     <property name="styleSheet">
+                      <string notr="true">color: #0f172a; font-size: 14px; font-weight: 800;</string>
+                     </property>
+                     <property name="text">
+                      <string>Identité de l'officine</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="secIdSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="secIdHint">
+                     <property name="styleSheet">
+                      <string notr="true">color: #94a3b8; font-size: 11px; font-style: italic;</string>
+                     </property>
+                     <property name="text">
+                      <string>Ces informations apparaissent sur les factures</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="sep1">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>1</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QFrame#sep1 { background: #eef2f7; border: none; max-height: 1px; }</string>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::Shape::HLine</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Shadow::Plain</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QGridLayout" name="identityGrid">
+                   <property name="horizontalSpacing">
+                    <number>16</number>
+                   </property>
+                   <property name="verticalSpacing">
+                    <number>14</number>
+                   </property>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="lbl_nom">
+                     <property name="text">
+                      <string>NOM DE LA PHARMACIE</string>
+                     </property>
+                     <property name="fieldLabel" stdset="0">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QLineEdit" name="edit_nom">
+                     <property name="placeholderText">
+                      <string>Ex : Pharmacie Bonne Santé</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QLabel" name="lbl_type">
+                     <property name="text">
+                      <string>TYPE D'OFFICINE</string>
+                     </property>
+                     <property name="fieldLabel" stdset="0">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QComboBox" name="combo_type">
+                     <property name="styleSheet">
+                      <string notr="true">QComboBox::drop-down { border: none; width: 26px; }
+QComboBox::down-arrow {
+    image: url(:/Icon/Icons/chevron-down.svg);
+    width: 12px; height: 12px;
+}
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    border: 1px solid #e6ebf2;
+    border-radius: 10px;
+    padding: 6px;
+    selection-background-color: #eff6ff;
+    selection-color: #0077B6;
+    outline: none;
+}</string>
+                     </property>
+                     <item>
+                      <property name="text">
+                       <string>PETITE</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>MOYENNE</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>GRANDE</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="section_card">
+                <layout class="QVBoxLayout" name="sectionContactLayout">
+                 <property name="spacing">
+                  <number>14</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>20</number>
+                 </property>
+                 <item>
+                  <layout class="QHBoxLayout" name="secContactHeader">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="secContactIcon">
+                     <property name="minimumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel#section_icon { background: #e0f2fe; color: #023E8A; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; }</string>
+                     </property>
+                     <property name="text">
+                      <string>02</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignmentFlag::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="secContactTitle">
+                     <property name="styleSheet">
+                      <string notr="true">color: #0f172a; font-size: 14px; font-weight: 800;</string>
+                     </property>
+                     <property name="text">
+                      <string>Coordonnées</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="secContactSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="sep2">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>1</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QFrame#sep2 { background: #eef2f7; border: none; max-height: 1px; }</string>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::Shape::HLine</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Shadow::Plain</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QGridLayout" name="contactGrid">
+                   <property name="horizontalSpacing">
+                    <number>16</number>
+                   </property>
+                   <property name="verticalSpacing">
+                    <number>14</number>
+                   </property>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="lbl_tel">
+                     <property name="text">
+                      <string>TÉLÉPHONE</string>
+                     </property>
+                     <property name="fieldLabel" stdset="0">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QLineEdit" name="edit_tel">
+                     <property name="placeholderText">
+                      <string>Ex : +243 800 000 000</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QLabel" name="lbl_email_ent">
+                     <property name="text">
+                      <string>EMAIL</string>
+                     </property>
+                     <property name="fieldLabel" stdset="0">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QLineEdit" name="edit_email_ent">
+                     <property name="placeholderText">
+                      <string>Ex : contact@pharmacie.cd</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="0" colspan="2">
+                    <widget class="QLabel" name="lbl_adresse">
+                     <property name="text">
+                      <string>ADRESSE COMPLÈTE</string>
+                     </property>
+                     <property name="fieldLabel" stdset="0">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="0" colspan="2">
+                    <widget class="QLineEdit" name="edit_adresse">
+                     <property name="placeholderText">
+                      <string>Ex : Avenue Kasa-Vubu, n°123, Kinshasa/Gombe</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="section_card">
+                <layout class="QVBoxLayout" name="sectionLogoLayout">
+                 <property name="spacing">
+                  <number>14</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>20</number>
+                 </property>
+                 <item>
+                  <layout class="QHBoxLayout" name="secLogoHeader">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="secLogoIcon">
+                     <property name="minimumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel#section_icon { background: #e0f2fe; color: #023E8A; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; }</string>
+                     </property>
+                     <property name="text">
+                      <string>03</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignmentFlag::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="secLogoTitle">
+                     <property name="styleSheet">
+                      <string notr="true">color: #0f172a; font-size: 14px; font-weight: 800;</string>
+                     </property>
+                     <property name="text">
+                      <string>Logo de la pharmacie</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="secLogoSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="sep3">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>1</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QFrame#sep3 { background: #eef2f7; border: none; max-height: 1px; }</string>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::Shape::HLine</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Shadow::Plain</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="logoRow">
+                   <property name="spacing">
+                    <number>20</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="logo_preview">
+                     <property name="minimumSize">
+                      <size>
+                       <width>100</width>
+                       <height>100</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>100</width>
+                       <height>100</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel { background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: 12px; color: #94a3b8; font-size: 11px; font-weight: 700; }</string>
+                     </property>
+                     <property name="text">
+                      <string>Logo</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignmentFlag::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <layout class="QVBoxLayout" name="logoRight">
+                     <property name="spacing">
+                      <number>8</number>
+                     </property>
+                     <item>
+                      <widget class="QLabel" name="lbl_logo_title">
+                       <property name="styleSheet">
+                        <string notr="true">color: #475569; font-size: 12px; font-weight: 600;</string>
+                       </property>
+                       <property name="text">
+                        <string>Format recommandé : PNG ou JPG, carré 200×200 px</string>
+                       </property>
+                       <property name="wordWrap">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="lbl_logo_hint">
+                       <property name="styleSheet">
+                        <string notr="true">color: #94a3b8; font-size: 11px;</string>
+                       </property>
+                       <property name="text">
+                        <string>Ce logo apparaîtra en en-tête des factures imprimées et des rapports PDF.</string>
+                       </property>
+                       <property name="wordWrap">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <layout class="QHBoxLayout" name="logoBtns">
+                       <property name="spacing">
+                        <number>10</number>
+                       </property>
+                       <item>
+                        <widget class="QPushButton" name="btn_upload_logo">
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                         <property name="text">
+                          <string>Changer le logo</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="btn_remove_logo">
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                         <property name="text">
+                          <string>Supprimer</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <spacer name="logoBtnSpacer">
+                         <property name="orientation">
+                          <enum>Qt::Orientation::Horizontal</enum>
+                         </property>
+                         <property name="sizeHint" stdset="0">
+                          <size>
+                           <width>40</width>
+                           <height>20</height>
+                          </size>
+                         </property>
+                        </spacer>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <spacer name="spacerEntreprise">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_vente">
+         <attribute name="title">
+          <string>Vente &amp; Devise</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="tabVenteLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>24</number>
+          </property>
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>24</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+          <item>
+           <widget class="QScrollArea" name="scrollVente">
+            <property name="frameShape">
+             <enum>QFrame::Shape::NoFrame</enum>
+            </property>
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="scrollVenteContent">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>1000</width>
+               <height>592</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="scrollVenteLayout">
+              <property name="spacing">
+               <number>16</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QFrame" name="section_card">
+                <layout class="QVBoxLayout" name="secVenteLayout">
+                 <property name="spacing">
+                  <number>14</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>20</number>
+                 </property>
+                 <item>
+                  <layout class="QHBoxLayout" name="secVenteHeader">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="secVenteIcon">
+                     <property name="minimumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel#section_icon { background: #e0f2fe; color: #023E8A; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; }</string>
+                     </property>
+                     <property name="text">
+                      <string>01</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignmentFlag::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="secVenteTitle">
+                     <property name="styleSheet">
+                      <string notr="true">color: #0f172a; font-size: 14px; font-weight: 800;</string>
+                     </property>
+                     <property name="text">
+                      <string>Paramètres de vente</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="secVenteSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="sepV">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>1</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QFrame#sepV { background: #eef2f7; border: none; max-height: 1px; }</string>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::Shape::HLine</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Shadow::Plain</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QGridLayout" name="venteGrid">
+                   <property name="horizontalSpacing">
+                    <number>16</number>
+                   </property>
+                   <property name="verticalSpacing">
+                    <number>14</number>
+                   </property>
+                   <item row="7" column="0">
+                    <widget class="QLabel" name="lbl_seuil_desc">
+                     <property name="styleSheet">
+                      <string notr="true">color: #64748b; font-size: 11px;</string>
+                     </property>
+                     <property name="text">
+                      <string>Quantité minimale avant qu'un produit soit considéré &quot;en rupture&quot;. Utilisé pour les alertes et le filtre sur la page Articles.</string>
+                     </property>
+                     <property name="wordWrap">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QLabel" name="lbl_periode_ca">
+                     <property name="text">
+                      <string>PÉRIODE DU CHIFFRE D'AFFAIRES</string>
+                     </property>
+                     <property name="fieldLabel" stdset="0">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QComboBox" name="combo_devise">
+                     <item>
+                      <property name="text">
+                       <string>FC</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>CDF</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>USD</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>EUR</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                   <item row="5" column="0">
+                    <widget class="QSpinBox" name="spin_max_postes">
+                     <property name="buttonSymbols">
+                      <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+                     </property>
+                     <property name="suffix">
+                      <string>postes</string>
+                     </property>
+                     <property name="minimum">
+                      <number>1</number>
+                     </property>
+                     <property name="maximum">
+                      <number>500</number>
+                     </property>
+                     <property name="value">
+                      <number>100</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="4" column="1">
+                    <widget class="QLabel" name="lbl_taux_change">
+                     <property name="text">
+                      <string>TAUX DE CHANGE (1 USD =)</string>
+                     </property>
+                     <property name="fieldLabel" stdset="0">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="5" column="1">
+                    <widget class="QDoubleSpinBox" name="spin_taux_change">
+                     <property name="toolTip">
+                      <string>Modifiable uniquement par un administrateur</string>
+                     </property>
+                     <property name="suffix">
+                      <string> FC</string>
+                     </property>
+                     <property name="decimals">
+                      <number>2</number>
+                     </property>
+                     <property name="minimum">
+                      <double>1.000000000000000</double>
+                     </property>
+                     <property name="maximum">
+                      <double>999999.989999999990687</double>
+                     </property>
+                     <property name="value">
+                      <double>2250.000000000000000</double>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="1">
+                    <widget class="QLabel" name="lbl_caisse">
+                     <property name="text">
+                      <string>CODE CAISSE PAR DÉFAUT</string>
+                     </property>
+                     <property name="fieldLabel" stdset="0">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="lbl_devise">
+                     <property name="text">
+                      <string>DEVISE AFFICHÉE</string>
+                     </property>
+                     <property name="fieldLabel" stdset="0">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QComboBox" name="combo_periode_ca">
+                     <item>
+                      <property name="text">
+                       <string>Mois</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>Semaine</string>
+                      </property>
+                     </item>
+                    </widget>
+                   </item>
+                   <item row="4" column="0">
+                    <widget class="QLabel" name="lbl_max_postes">
+                     <property name="text">
+                      <string>NOMBRE MAX DE POSTES CONNECTÉS</string>
+                     </property>
+                     <property name="fieldLabel" stdset="0">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="0">
+                    <widget class="QLabel" name="lbl_marge">
+                     <property name="text">
+                      <string>MARGE BÉNÉFICIAIRE PAR DÉFAUT</string>
+                     </property>
+                     <property name="fieldLabel" stdset="0">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="1">
+                    <widget class="QLineEdit" name="edit_caisse">
+                     <property name="maxLength">
+                      <number>2</number>
+                     </property>
+                     <property name="placeholderText">
+                      <string>Ex : 01</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="7" column="1">
+                    <widget class="QSpinBox" name="spin_seuil_stock">
+                     <property name="minimumSize">
+                      <size>
+                       <width>120</width>
+                       <height>46</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true"/>
+                     </property>
+                     <property name="buttonSymbols">
+                      <enum>QAbstractSpinBox::ButtonSymbols::UpDownArrows</enum>
+                     </property>
+                     <property name="suffix">
+                      <string>unités</string>
+                     </property>
+                     <property name="minimum">
+                      <number>0</number>
+                     </property>
+                     <property name="maximum">
+                      <number>1000</number>
+                     </property>
+                     <property name="value">
+                      <number>20</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="3" column="0">
+                    <widget class="QDoubleSpinBox" name="spin_marge">
+                     <property name="buttonSymbols">
+                      <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+                     </property>
+                     <property name="suffix">
+                      <string>%</string>
+                     </property>
+                     <property name="decimals">
+                      <number>1</number>
+                     </property>
+                     <property name="maximum">
+                      <double>200.000000000000000</double>
+                     </property>
+                     <property name="value">
+                      <double>30.000000000000000</double>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="6" column="0">
+                    <widget class="QLabel" name="lbl_seuil_title">
+                     <property name="text">
+                      <string>SEUIL D'ALERTE STOCK</string>
+                     </property>
+                     <property name="fieldLabel" stdset="0">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_info_caisse">
+                   <property name="styleSheet">
+                    <string notr="true">color: #023E8A; font-size: 11px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 14px;</string>
+                   </property>
+                   <property name="text">
+                    <string>Le code caisse est utilisé dans les numéros de facture. Il doit contenir 1 à 2 chiffres. Exemple : F01-2026-000000001 (caisse 01), F02-2026-000000001 (caisse 02).</string>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_info_taux">
+                   <property name="styleSheet">
+                    <string notr="true">color: #b45309; font-size: 11px; background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; padding: 10px 14px;</string>
+                   </property>
+                   <property name="text">
+                    <string>Le taux de change est utilisé pour afficher l'équivalent USD des montants en FC. Modifiable uniquement par un administrateur (ou via Ctrl+Alt+T).</string>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <spacer name="spacerVente">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_facturation">
+         <attribute name="title">
+          <string>Facturation</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="tabFacturationLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>24</number>
+          </property>
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>24</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+          <item>
+           <widget class="QScrollArea" name="scrollFacturation">
+            <property name="frameShape">
+             <enum>QFrame::Shape::NoFrame</enum>
+            </property>
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="scrollFacturationContent">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>1010</width>
+               <height>591</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="scrollFacturationLayout">
+              <property name="spacing">
+               <number>16</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QFrame" name="section_card">
+                <layout class="QVBoxLayout" name="secFactLayout">
+                 <property name="spacing">
+                  <number>14</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>20</number>
+                 </property>
+                 <item>
+                  <layout class="QHBoxLayout" name="secFactHeader">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="secFactIcon">
+                     <property name="minimumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel#section_icon { background: #e0f2fe; color: #023E8A; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; }</string>
+                     </property>
+                     <property name="text">
+                      <string>01</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignmentFlag::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="secFactTitle">
+                     <property name="styleSheet">
+                      <string notr="true">color: #0f172a; font-size: 14px; font-weight: 800;</string>
+                     </property>
+                     <property name="text">
+                      <string>Comportement d'impression</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="secFactSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="sepF">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>1</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QFrame#sepF { background: #eef2f7; border: none; max-height: 1px; }</string>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::Shape::HLine</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Shadow::Plain</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="chk_impression_auto">
+                   <property name="text">
+                    <string>Imprimer automatiquement les factures après validation</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="chk_qrcode">
+                   <property name="text">
+                    <string>Afficher un QR code sur les factures (vérification d'authenticité)</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="section_card">
+                <layout class="QVBoxLayout" name="secMentionsLayout">
+                 <property name="spacing">
+                  <number>14</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>20</number>
+                 </property>
+                 <item>
+                  <layout class="QHBoxLayout" name="secMentionsHeader">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="secMentionsIcon">
+                     <property name="minimumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel#section_icon { background: #e0f2fe; color: #023E8A; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; }</string>
+                     </property>
+                     <property name="text">
+                      <string>02</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignmentFlag::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="secMentionsTitle">
+                     <property name="styleSheet">
+                      <string notr="true">color: #0f172a; font-size: 14px; font-weight: 800;</string>
+                     </property>
+                     <property name="text">
+                      <string>Mentions sur le ticket</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="secMentionsSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="lbl_mentions_hint">
+                     <property name="styleSheet">
+                      <string notr="true">color: #94a3b8; font-size: 11px; font-style: italic;</string>
+                     </property>
+                     <property name="text">
+                      <string>Une mention par ligne</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="sepM">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>1</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QFrame#sepM { background: #eef2f7; border: none; max-height: 1px; }</string>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::Shape::HLine</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Shadow::Plain</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPlainTextEdit" name="edit_mentions">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>46</height>
+                    </size>
+                   </property>
+                   <property name="placeholderText">
+                    <string>Les médicaments vendus ne sont ni repris ni échangés À conserver hors de la portée des enfants Signature ou cachet de la pharmacie</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <spacer name="spacerFact">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_sauvegarde">
+         <attribute name="title">
+          <string>Sauvegarde</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="tabSauvegardeLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>24</number>
+          </property>
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>24</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+          <item>
+           <widget class="QScrollArea" name="scrollSauvegarde">
+            <property name="frameShape">
+             <enum>QFrame::Shape::NoFrame</enum>
+            </property>
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="scrollSauvegardeContent">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>1000</width>
+               <height>742</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="scrollSauvegardeLayout">
+              <property name="spacing">
+               <number>16</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QFrame" name="section_card">
+                <layout class="QVBoxLayout" name="secSaveLayout">
+                 <property name="spacing">
+                  <number>14</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>20</number>
+                 </property>
+                 <item>
+                  <layout class="QHBoxLayout" name="secSaveHeader">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="secSaveIcon">
+                     <property name="minimumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel#section_icon { background: #e0f2fe; color: #023E8A; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; }</string>
+                     </property>
+                     <property name="text">
+                      <string>01</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignmentFlag::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="secSaveTitle">
+                     <property name="styleSheet">
+                      <string notr="true">color: #0f172a; font-size: 14px; font-weight: 800;</string>
+                     </property>
+                     <property name="text">
+                      <string>Sauvegarde automatique</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="secSaveSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="sepS">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>1</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QFrame#sepS { background: #eef2f7; border: none; max-height: 1px; }</string>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::Shape::HLine</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Shadow::Plain</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="chk_sauvegarde_auto">
+                   <property name="text">
+                    <string>Activer la sauvegarde automatique de la base de données</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QGridLayout" name="saveGrid">
+                   <property name="horizontalSpacing">
+                    <number>16</number>
+                   </property>
+                   <property name="verticalSpacing">
+                    <number>14</number>
+                   </property>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="lbl_freq_save">
+                     <property name="text">
+                      <string>FRÉQUENCE (JOURS)</string>
+                     </property>
+                     <property name="fieldLabel" stdset="0">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QSpinBox" name="spin_freq_save">
+                     <property name="minimum">
+                      <number>1</number>
+                     </property>
+                     <property name="maximum">
+                      <number>90</number>
+                     </property>
+                     <property name="value">
+                      <number>7</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QLabel" name="lbl_max_save">
+                     <property name="text">
+                      <string>SAUVEGARDES MAXIMUM CONSERVÉES</string>
+                     </property>
+                     <property name="fieldLabel" stdset="0">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QSpinBox" name="spin_max_save">
+                     <property name="minimum">
+                      <number>1</number>
+                     </property>
+                     <property name="maximum">
+                      <number>100</number>
+                     </property>
+                     <property name="value">
+                      <number>10</number>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_save_info">
+                   <property name="styleSheet">
+                    <string notr="true">color: #023E8A; font-size: 11px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 14px;</string>
+                   </property>
+                   <property name="text">
+                    <string>Les sauvegardes quotidiennes / hebdomadaires / mensuelles / annuelles sont déclenchées au lancement de l'application. Elles sont protégées par un mot de passe dérivé de cette machine.</string>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="section_card">
+                <layout class="QVBoxLayout" name="secBackupLayout">
+                 <property name="spacing">
+                  <number>14</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>20</number>
+                 </property>
+                 <item>
+                  <layout class="QHBoxLayout" name="secBackupHeader">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="secBackupIcon">
+                     <property name="minimumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel#section_icon { background: #e0f2fe; color: #023E8A; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; }</string>
+                     </property>
+                     <property name="text">
+                      <string>02</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignmentFlag::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="secBackupTitle">
+                     <property name="styleSheet">
+                      <string notr="true">color: #0f172a; font-size: 14px; font-weight: 800;</string>
+                     </property>
+                     <property name="text">
+                      <string>Emplacements de sauvegarde</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="secBackupSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="btn_manage_backups">
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton { background: #eff6ff; color: #023E8A; border: 1.5px solid #bfdbfe; border-radius: 10px; padding: 8px 16px; font-size: 12px; font-weight: 700; } QPushButton:hover { background: #dbeafe; border-color: #93c5fd; }</string>
+                     </property>
+                     <property name="text">
+                      <string>Gérer les archives</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="sepBk">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>1</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QFrame#sepBk { background: #eef2f7; border: none; max-height: 1px; }</string>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::Shape::HLine</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Shadow::Plain</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_dossier_save">
+                   <property name="text">
+                    <string>DOSSIER PRINCIPAL DE SAUVEGARDE</string>
+                   </property>
+                   <property name="fieldLabel" stdset="0">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="saveFolderRow">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <item>
+                    <widget class="QLineEdit" name="edit_dossier_save">
+                     <property name="placeholderText">
+                      <string>~/Documents/NovaPharma/Backups</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="btn_browse_save">
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
+                     <property name="text">
+                      <string>Parcourir…</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="chk_backup_secondary">
+                   <property name="text">
+                    <string>Activer la copie de secours hors-site (clé USB / NAS / dossier réseau)</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_backup_secondary">
+                   <property name="text">
+                    <string>DOSSIER SECONDAIRE (HORS-SITE)</string>
+                   </property>
+                   <property name="fieldLabel" stdset="0">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="backupSecRow">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <item>
+                    <widget class="QLineEdit" name="edit_backup_secondary">
+                     <property name="enabled">
+                      <bool>false</bool>
+                     </property>
+                     <property name="placeholderText">
+                      <string>Ex : E:/NovaPharma-Backups ou /mnt/usb/backups</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="btn_browse_backup_secondary">
+                     <property name="enabled">
+                      <bool>false</bool>
+                     </property>
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
+                     <property name="text">
+                      <string>Parcourir…</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_backup_secondary_info">
+                   <property name="styleSheet">
+                    <string notr="true">color: #b45309; font-size: 11px; background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; padding: 10px 14px;</string>
+                   </property>
+                   <property name="text">
+                    <string>Le dossier secondaire doit être sur un support physique différent (clé USB dédiée, NAS réseau). Si la clé est débranchée, la copie est ignorée mais le backup principal reste créé.</string>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <spacer name="spacerSave">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_securite">
+         <attribute name="title">
+          <string>Sécurité</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="tabSecuriteLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>24</number>
+          </property>
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>24</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+          <item>
+           <widget class="QScrollArea" name="scrollSecurite">
+            <property name="frameShape">
+             <enum>QFrame::Shape::NoFrame</enum>
+            </property>
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="scrollSecuriteContent">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>1010</width>
+               <height>591</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="scrollSecuriteLayout">
+              <property name="spacing">
+               <number>16</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QFrame" name="section_card">
+                <layout class="QVBoxLayout" name="secSecuLayout">
+                 <property name="spacing">
+                  <number>14</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>20</number>
+                 </property>
+                 <item>
+                  <layout class="QHBoxLayout" name="secSecuHeader">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="secSecuIcon">
+                     <property name="minimumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel#section_icon { background: #e0f2fe; color: #023E8A; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; }</string>
+                     </property>
+                     <property name="text">
+                      <string>01</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignmentFlag::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="secSecuTitle">
+                     <property name="styleSheet">
+                      <string notr="true">color: #0f172a; font-size: 14px; font-weight: 800;</string>
+                     </property>
+                     <property name="text">
+                      <string>Politique de mot de passe</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="secSecuSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="sepSec">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>1</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QFrame#sepSec { background: #eef2f7; border: none; max-height: 1px; }</string>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::Shape::HLine</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Shadow::Plain</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QGridLayout" name="securiteGrid">
+                   <property name="horizontalSpacing">
+                    <number>16</number>
+                   </property>
+                   <property name="verticalSpacing">
+                    <number>14</number>
+                   </property>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="lbl_pwd_min">
+                     <property name="text">
+                      <string>LONGUEUR MINIMALE (CARACTÈRES)</string>
+                     </property>
+                     <property name="fieldLabel" stdset="0">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QSpinBox" name="spin_pwd_min">
+                     <property name="minimum">
+                      <number>4</number>
+                     </property>
+                     <property name="maximum">
+                      <number>32</number>
+                     </property>
+                     <property name="value">
+                      <number>8</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QLabel" name="lbl_pwd_exp">
+                     <property name="text">
+                      <string>EXPIRATION (JOURS, 0 = JAMAIS)</string>
+                     </property>
+                     <property name="fieldLabel" stdset="0">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QSpinBox" name="spin_pwd_exp">
+                     <property name="maximum">
+                      <number>3650</number>
+                     </property>
+                     <property name="value">
+                      <number>0</number>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_complexite">
+                   <property name="text">
+                    <string>COMPLEXITÉ REQUISE</string>
+                   </property>
+                   <property name="fieldLabel" stdset="0">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="complexityLayout">
+                   <property name="spacing">
+                    <number>4</number>
+                   </property>
+                   <item>
+                    <widget class="QCheckBox" name="chk_require_digit">
+                     <property name="text">
+                      <string>Exiger au moins un chiffre</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="chk_require_upper">
+                     <property name="text">
+                      <string>Exiger au moins une lettre majuscule</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="chk_require_special">
+                     <property name="text">
+                      <string>Exiger au moins un caractère spécial (!@#$…)</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_secu_info">
+                   <property name="styleSheet">
+                    <string notr="true">color: #b45309; font-size: 11px; font-weight: 600; background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; padding: 10px 14px;</string>
+                   </property>
+                   <property name="text">
+                    <string>Ces règles s'appliquent uniquement aux NOUVEAUX mots de passe. Les mots de passe existants ne sont pas affectés.</string>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QFrame" name="sepSec2">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>1</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QFrame#sepSec2 { background: #eef2f7; border: none; max-height: 1px; }</string>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::Shape::HLine</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Shadow::Plain</enum>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="seuilLayout_4">
+                   <property name="spacing">
+                    <number>14</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="lbl_seuil_title_4">
+                     <property name="text">
+                      <string>SÉCURITÉ RENFORCÉE</string>
+                     </property>
+                     <property name="fieldLabel" stdset="0">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout">
+                     <property name="spacing">
+                      <number>16</number>
+                     </property>
+                     <item>
+                      <widget class="QCheckBox" name="chk_backup_urgence">
+                       <property name="text">
+                        <string>Créer une sauvegarde d'urgence automatique avant chaque action critique</string>
+                       </property>
+                       <property name="checked">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QCheckBox" name="chk_allow_admin_client">
+                       <property name="text">
+                        <string>Autoriser les connexions ADMIN/OWNER/DEV depuis un poste client (recommandé : DÉSACTIVÉ en production)</string>
+                       </property>
+                       <property name="checked">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <spacer name="spacerSecu">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_imprimantes">
+         <attribute name="title">
+          <string>  Impression  </string>
+         </attribute>
+         <layout class="QVBoxLayout" name="tabImprimantesLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>24</number>
+          </property>
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>24</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+          <item>
+           <widget class="QScrollArea" name="scrollImprimantes">
+            <property name="frameShape">
+             <enum>QFrame::Shape::NoFrame</enum>
+            </property>
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="scrollImprimantesContent">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>497</width>
+               <height>668</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="scrollImprimantesLayout">
+              <property name="spacing">
+               <number>16</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QFrame" name="section_card">
+                <layout class="QVBoxLayout" name="secPrinterTicketLayout">
+                 <property name="spacing">
+                  <number>14</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>20</number>
+                 </property>
+                 <item>
+                  <layout class="QHBoxLayout" name="secPrinterTicketHeader">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="secPrinterTicketIcon">
+                     <property name="minimumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel#section_icon { background: #e0f2fe; color: #023E8A; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; }</string>
+                     </property>
+                     <property name="text">
+                      <string>01</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignmentFlag::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="secPrinterTicketTitle">
+                     <property name="styleSheet">
+                      <string notr="true">color: #0f172a; font-size: 14px; font-weight: 800;</string>
+                     </property>
+                     <property name="text">
+                      <string>Imprimante TICKET (factures)</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="secPrinterTicketSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_printer_ticket_desc">
+                   <property name="styleSheet">
+                    <string notr="true">color: #64748b; font-size: 11px;</string>
+                   </property>
+                   <property name="text">
+                    <string>Imprimante thermique 80mm utilisée pour les tickets de caisse. Configuration enregistrée sur ce poste uniquement.</string>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="printerTicketRow">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <item>
+                    <widget class="QComboBox" name="combo_printer_ticket">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>46</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="btn_refresh_printers_ticket">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>44</height>
+                      </size>
+                     </property>
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton { background: #ffffff; color: #023E8A; border: 1.5px solid #dbe3ec; border-radius: 10px; padding: 0 20px; font-size: 12px; font-weight: 700; }
+QPushButton:hover { background: #eff6ff; border-color: #bfdbfe; }</string>
+                     </property>
+                     <property name="text">
+                      <string>Actualiser</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="btn_test_print_ticket">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>44</height>
+                      </size>
+                     </property>
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton { background: #eff6ff; color: #023E8A; border: 1.5px solid #bfdbfe; border-radius: 10px; padding: 0 20px; font-size: 12px; font-weight: 700; }
+QPushButton:hover { background: #dbeafe; }</string>
+                     </property>
+                     <property name="text">
+                      <string>Test ticket</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="section_card">
+                <layout class="QVBoxLayout" name="secPrinterReportLayout">
+                 <property name="spacing">
+                  <number>14</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>20</number>
+                 </property>
+                 <item>
+                  <layout class="QHBoxLayout" name="secPrinterReportHeader">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="secPrinterReportIcon">
+                     <property name="minimumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel#section_icon { background: #e0f2fe; color: #023E8A; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; }</string>
+                     </property>
+                     <property name="text">
+                      <string>02</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignmentFlag::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="secPrinterReportTitle">
+                     <property name="styleSheet">
+                      <string notr="true">color: #0f172a; font-size: 14px; font-weight: 800;</string>
+                     </property>
+                     <property name="text">
+                      <string>Imprimante RAPPORT (A4)</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="secPrinterReportSpacer">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_printer_report_desc">
+                   <property name="styleSheet">
+                    <string notr="true">color: #64748b; font-size: 11px;</string>
+                   </property>
+                   <property name="text">
+                    <string>Imprimante A4 utilisée pour les rapports, Rapports Z (format A4) et exports PDF. Configuration enregistrée sur ce poste uniquement.</string>
+                   </property>
+                   <property name="wordWrap">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="printerReportRow">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <item>
+                    <widget class="QComboBox" name="combo_printer_report">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>46</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="btn_test_print_report">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>44</height>
+                      </size>
+                     </property>
+                     <property name="cursor">
+                      <cursorShape>PointingHandCursor</cursorShape>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton { background: #eff6ff; color: #023E8A; border: 1.5px solid #bfdbfe; border-radius: 10px; padding: 0 20px; font-size: 12px; font-weight: 700; }
+QPushButton:hover { background: #dbeafe; }</string>
+                     </property>
+                     <property name="text">
+                      <string>Test rapport</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="section_card">
+                <layout class="QVBoxLayout" name="secPrintAutoLayout">
+                 <property name="spacing">
+                  <number>14</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>22</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>20</number>
+                 </property>
+                 <item>
+                  <layout class="QHBoxLayout" name="secPrintAutoHeader">
+                   <property name="spacing">
+                    <number>10</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="secPrintAutoIcon">
+                     <property name="minimumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>32</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel#section_icon { background: #e0f2fe; color: #023E8A; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; }</string>
+                     </property>
+                     <property name="text">
+                      <string>03</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignmentFlag::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="secPrintAutoTitle">
+                     <property name="styleSheet">
+                      <string notr="true">color: #0f172a; font-size: 14px; font-weight: 800;</string>
+                     </property>
+                     <property name="text">
+                      <string>Impression automatique</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="chk_auto_print">
+                   <property name="text">
+                    <string>Imprimer automatiquement les TICKETS après chaque vente (sans dialogue)</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="chk_auto_print_report">
+                   <property name="text">
+                    <string>Imprimer automatiquement les RAPPORTS (PDF) après génération</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QCheckBox" name="chk_auto_open_pdf">
+                   <property name="text">
+                    <string>Ouvrir automatiquement le PDF après génération</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <spacer name="spacerPrinters">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="tab_danger">
+         <attribute name="title">
+          <string>Danger Zone</string>
+         </attribute>
+         <layout class="QVBoxLayout" name="tabDangerLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>24</number>
+          </property>
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>24</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+          <item>
+           <widget class="QScrollArea" name="scrollDanger">
+            <property name="frameShape">
+             <enum>QFrame::Shape::NoFrame</enum>
+            </property>
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="scrollDangerContent">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>409</width>
+               <height>495</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="scrollDangerLayout">
+              <property name="spacing">
+               <number>14</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QFrame" name="danger_card_info">
+                <layout class="QHBoxLayout" name="dangerInfoLayout">
+                 <property name="spacing">
+                  <number>12</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>18</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>16</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>18</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>16</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="dangerInfoIcon">
+                   <property name="minimumSize">
+                    <size>
+                     <width>32</width>
+                     <height>32</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>32</width>
+                     <height>32</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">background: #fde68a; color: #92400e; border-radius: 8px; font-size: 16px; font-weight: 800;</string>
+                   </property>
+                   <property name="text">
+                    <string>!</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignmentFlag::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="dangerInfoText">
+                   <property name="spacing">
+                    <number>2</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="dangerInfoTitle">
+                     <property name="styleSheet">
+                      <string notr="true">color: #92400e; font-size: 13px; font-weight: 800;</string>
+                     </property>
+                     <property name="text">
+                      <string>Zone réservée aux administrateurs</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="dangerInfoDesc">
+                     <property name="styleSheet">
+                      <string notr="true">color: #a16207; font-size: 11px;</string>
+                     </property>
+                     <property name="text">
+                      <string>Ces actions sont irréversibles. Elles nécessitent une confirmation à plusieurs étapes.</string>
+                     </property>
+                     <property name="wordWrap">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="danger_card_warn">
+                <layout class="QHBoxLayout" name="dangerExportLayout">
+                 <property name="spacing">
+                  <number>16</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>18</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>18</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="dangerExportIcon">
+                   <property name="minimumSize">
+                    <size>
+                     <width>36</width>
+                     <height>36</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>36</width>
+                     <height>36</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">background: #dbeafe; color: #023E8A; border-radius: 10px; font-size: 18px; font-weight: 800;</string>
+                   </property>
+                   <property name="text">
+                    <string>↓</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignmentFlag::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="dangerExportText">
+                   <property name="spacing">
+                    <number>3</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="dangerExportTitle">
+                     <property name="styleSheet">
+                      <string notr="true">color: #0f172a; font-size: 13px; font-weight: 800;</string>
+                     </property>
+                     <property name="text">
+                      <string>Exporter la base de données</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="dangerExportDesc">
+                     <property name="styleSheet">
+                      <string notr="true">color: #64748b; font-size: 11px;</string>
+                     </property>
+                     <property name="text">
+                      <string>Crée une copie de la base complète pour archivage ou migration.</string>
+                     </property>
+                     <property name="wordWrap">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="btn_export_db">
+                   <property name="cursor">
+                    <cursorShape>PointingHandCursor</cursorShape>
+                   </property>
+                   <property name="text">
+                    <string>Exporter…</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="danger_card_warn">
+                <layout class="QHBoxLayout" name="dangerRestoreLayout">
+                 <property name="spacing">
+                  <number>16</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>18</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>18</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="dangerRestoreIcon">
+                   <property name="minimumSize">
+                    <size>
+                     <width>36</width>
+                     <height>36</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>36</width>
+                     <height>36</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">background: #fde68a; color: #92400e; border-radius: 10px; font-size: 18px; font-weight: 800;</string>
+                   </property>
+                   <property name="text">
+                    <string>↑</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignmentFlag::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="dangerRestoreText">
+                   <property name="spacing">
+                    <number>3</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="dangerRestoreTitle">
+                     <property name="styleSheet">
+                      <string notr="true">color: #0f172a; font-size: 13px; font-weight: 800;</string>
+                     </property>
+                     <property name="text">
+                      <string>Restaurer une sauvegarde</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="dangerRestoreDesc">
+                     <property name="styleSheet">
+                      <string notr="true">color: #64748b; font-size: 11px;</string>
+                     </property>
+                     <property name="text">
+                      <string>Remplace la base actuelle par une sauvegarde. Une sauvegarde de sécurité est créée avant l'opération.</string>
+                     </property>
+                     <property name="wordWrap">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="btn_restore_db">
+                   <property name="cursor">
+                    <cursorShape>PointingHandCursor</cursorShape>
+                   </property>
+                   <property name="text">
+                    <string>Restaurer…</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="danger_card_danger">
+                <layout class="QHBoxLayout" name="dangerResetLayout">
+                 <property name="spacing">
+                  <number>16</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>18</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>18</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="dangerResetIcon">
+                   <property name="minimumSize">
+                    <size>
+                     <width>36</width>
+                     <height>36</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>36</width>
+                     <height>36</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">background: #fecaca; color: #b91c1c; border-radius: 10px; font-size: 20px; font-weight: 800;</string>
+                   </property>
+                   <property name="text">
+                    <string>×</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignmentFlag::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="dangerResetText">
+                   <property name="spacing">
+                    <number>3</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="dangerResetTitle">
+                     <property name="styleSheet">
+                      <string notr="true">color: #b91c1c; font-size: 13px; font-weight: 800;</string>
+                     </property>
+                     <property name="text">
+                      <string>Réinitialisation complète</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="dangerResetDesc">
+                     <property name="styleSheet">
+                      <string notr="true">color: #991b1b; font-size: 11px;</string>
+                     </property>
+                     <property name="text">
+                      <string>Supprime TOUTES les données : produits, clients, ventes, utilisateurs, historique. L'application revient à son état initial.</string>
+                     </property>
+                     <property name="wordWrap">
+                      <bool>true</bool>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="btn_reset_all">
+                   <property name="cursor">
+                    <cursorShape>PointingHandCursor</cursorShape>
+                   </property>
+                   <property name="text">
+                    <string>Tout réinitialiser</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <spacer name="spacerDanger">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="footer_frame">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>80</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>80</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QHBoxLayout" name="footerLayout">
+         <property name="spacing">
+          <number>12</number>
+         </property>
+         <property name="leftMargin">
+          <number>28</number>
+         </property>
+         <property name="topMargin">
+          <number>18</number>
+         </property>
+         <property name="rightMargin">
+          <number>28</number>
+         </property>
+         <property name="bottomMargin">
+          <number>18</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="lbl_status">
+           <property name="styleSheet">
+            <string notr="true">color: #94a3b8; font-size: 11px; font-weight: 600;</string>
+           </property>
+           <property name="text">
+            <string>Modifiez un paramètre puis cliquez sur Enregistrer.</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="footerSpacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_reload">
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="text">
+            <string>Recharger</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_save">
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="text">
+            <string>Enregistrer les modifications</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../Icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>

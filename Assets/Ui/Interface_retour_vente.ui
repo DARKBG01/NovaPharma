@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DialogRetourVente</class>
+ <widget class="QDialog" name="DialogRetourVente">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>900</width>
+    <height>907</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>900</width>
+    <height>720</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Retour de vente</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+    QDialog { background: #f0f4f8; }
+    QFrame#header { background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
+        stop:0 #991b1b, stop:1 #dc2626); border-top-left-radius:14px;
+        border-top-right-radius:14px; }
+    QLabel#header_title { color: white; font-size: 18px; font-weight: 800; }
+    QLabel#header_sub { color: #fecaca; font-size: 11px; }
+    QFrame#card { background: white; border: 1px solid #e2e8f0;
+        border-radius: 12px; }
+    QLabel { color: #334155; font-size: 13px; background: transparent; }
+    QLabel#section_title { color: #991b1b; font-size: 13px;
+        font-weight: 800; }
+    QTableWidget { background: white; border: 1px solid #e2e8f0;
+        border-radius: 10px; gridline-color: #f1f5f9; }
+    QHeaderView::section { background: #f8fafc; color: #64748b;
+        font-weight: 700; padding: 10px; border: none;
+        border-bottom: 1px solid #e2e8f0; }
+    QComboBox, QLineEdit, QPlainTextEdit { background: #f8fafc;
+        border: 1.5px solid #e2e8f0; border-radius: 10px;
+        padding: 8px 12px; font-size: 13px; color: #0f172a; }
+    QComboBox:focus, QLineEdit:focus, QPlainTextEdit:focus {
+        background: white; border-color: #dc2626; }
+    QPushButton#btn_primary { background: qlineargradient(x1:0,y1:0,x2:0,y2:1,
+        stop:0 #dc2626, stop:1 #991b1b); color: white; border: none;
+        border-radius: 10px; padding: 10px 24px; font-weight: 800;
+        font-size: 13px; min-width: 150px; }
+    QPushButton#btn_primary:hover { background: #991b1b; }
+    QPushButton#btn_secondary { background: transparent;
+        color: #64748b; border: 1.5px solid #e2e8f0;
+        border-radius: 10px; padding: 10px 24px; font-weight: 700; }
+  </string>
+  </property>
+  <layout class="QVBoxLayout" name="root">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="header">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>80</height>
+      </size>
+     </property>
+     <layout class="QHBoxLayout">
+      <property name="leftMargin">
+       <number>24</number>
+      </property>
+      <property name="topMargin">
+       <number>16</number>
+      </property>
+      <property name="rightMargin">
+       <number>24</number>
+      </property>
+      <property name="bottomMargin">
+       <number>16</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="header_icon">
+        <property name="minimumSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="pixmap">
+         <pixmap resource="../Icon.qrc">:/Icon/Icons/arrow-left_white.svg</pixmap>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="header_title">
+          <property name="text">
+           <string>Retour de vente / Avoir</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="header_sub">
+          <property name="text">
+           <string>Facture d'origine : —</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scroll_content">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>900</width>
+        <height>757</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string>background: transparent;</string>
+      </property>
+      <layout class="QVBoxLayout" name="content_layout">
+       <property name="spacing">
+        <number>14</number>
+       </property>
+       <property name="leftMargin">
+        <number>20</number>
+       </property>
+       <property name="topMargin">
+        <number>20</number>
+       </property>
+       <property name="rightMargin">
+        <number>20</number>
+       </property>
+       <property name="bottomMargin">
+        <number>20</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="card">
+         <layout class="QVBoxLayout">
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>16</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>16</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="section_title">
+            <property name="text">
+             <string>Informations</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QFormLayout">
+            <property name="horizontalSpacing">
+             <number>10</number>
+            </property>
+            <property name="verticalSpacing">
+             <number>10</number>
+            </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Numéro facture</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLabel" name="lbl_num_fact">
+              <property name="styleSheet">
+               <string>font-weight: 800; color: #023E8A;</string>
+              </property>
+              <property name="text">
+               <string>—</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Date</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLabel" name="lbl_date">
+              <property name="text">
+               <string>—</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Client</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLabel" name="lbl_client">
+              <property name="text">
+               <string>—</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Montant initial</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QLabel" name="lbl_montant_initial">
+              <property name="styleSheet">
+               <string>font-weight: 800; color: #16A34A;</string>
+              </property>
+              <property name="text">
+               <string>—</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="card">
+         <layout class="QVBoxLayout">
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>16</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>16</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="section_title">
+            <property name="text">
+             <string>Articles à retourner</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="table_lignes">
+            <property name="columnCount">
+             <number>6</number>
+            </property>
+            <column>
+             <property name="text">
+              <string>Retour ?</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Article</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Qté facturée</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Qté retour</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>P.U.</string>
+             </property>
+            </column>
+            <column>
+             <property name="text">
+              <string>Total</string>
+             </property>
+            </column>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="card">
+         <layout class="QVBoxLayout">
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>16</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>16</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="section_title">
+            <property name="text">
+             <string>Motif du retour</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QFormLayout">
+            <property name="horizontalSpacing">
+             <number>10</number>
+            </property>
+            <property name="verticalSpacing">
+             <number>10</number>
+            </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Motif</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="combo_motif">
+              <item>
+               <property name="text">
+                <string>Erreur de saisie</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Client s'est ravisé</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Produit défectueux</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Doublon</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Prix incorrect</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Autre</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Notes</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QPlainTextEdit" name="txt_notes"/>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="card">
+         <layout class="QHBoxLayout">
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>16</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>16</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="styleSheet">
+             <string>font-size: 14px; font-weight: 700;</string>
+            </property>
+            <property name="text">
+             <string>Montant à rembourser :</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="lbl_total">
+            <property name="styleSheet">
+             <string>font-size: 22px; font-weight: 800; color: #dc2626;</string>
+            </property>
+            <property name="text">
+             <string>0 FC</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>70</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string>QFrame { background: white; border-top: 1px solid #e2e8f0; }</string>
+     </property>
+     <layout class="QHBoxLayout">
+      <property name="leftMargin">
+       <number>20</number>
+      </property>
+      <property name="rightMargin">
+       <number>20</number>
+      </property>
+      <item>
+       <spacer>
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_secondary">
+        <property name="text">
+         <string>Annuler</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_primary">
+        <property name="text">
+         <string>Valider le retour</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../Icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>

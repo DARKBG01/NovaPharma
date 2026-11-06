@@ -1,0 +1,1589 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>987</width>
+    <height>797</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>820</width>
+    <height>620</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Client — Nova Pharma</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* ============================================================
+   NOVA PHARMA — DIALOG CLIENT (ajout / modification)
+   ============================================================ */
+
+QDialog { background-color: #f0f4f8; }
+
+QWidget {
+    font-family: &quot;Segoe UI&quot;, &quot;Inter&quot;, &quot;Roboto&quot;, sans-serif;
+    font-size: 13px;
+    color: #0f172a;
+    outline: none;
+}
+
+/* ══════════════ SIDEBAR ══════════════ */
+QFrame#sidebar {
+    background: qlineargradient(x1:0, y1:0, x2:0.7, y2:1,
+        stop:0 #023E8A, stop:0.5 #0077B6, stop:1 #00B4D8);
+    border: none;
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+}
+
+QFrame#brand_badge {
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.28);
+    border-radius: 14px;
+}
+QLabel#brand_badge_text {
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    background: transparent;
+}
+
+QLabel#sidebar_title {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: transparent;
+}
+
+QLabel#sidebar_lead {
+    color: #CAF0F8;
+    font-size: 12px;
+    background: transparent;
+}
+
+QFrame#check_row {
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+}
+QFrame#check_row[done=&quot;true&quot;] {
+    background: rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.40);
+}
+QLabel#check_text {
+    color: #e0e7ff;
+    font-size: 12px;
+    font-weight: 600;
+    background: transparent;
+}
+QFrame#check_row[done=&quot;true&quot;] QLabel#check_text { color: #ffffff; }
+
+QLabel#progress_label {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 800;
+    background: transparent;
+    min-width: 45px;
+    qproperty-alignment: 'AlignRight | AlignVCenter';
+}
+QProgressBar#progress_bar {
+    background-color: rgba(255,255,255,0.18);
+    border: none;
+    border-radius: 5px;
+    height: 10px;
+    max-height: 10px;
+}
+QProgressBar#progress_bar::chunk {
+    background-color: #90E0EF;
+    border-radius: 5px;
+}
+
+QLabel#sidebar_footer {
+    color: rgba(255,255,255,0.65);
+    font-size: 11px;
+    background: transparent;
+}
+
+/* ══════════════ PANEL ══════════════ */
+QFrame#panel {
+    background-color: #ffffff;
+    border: 1px solid #e6ebf2;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+}
+
+QLabel#panel_title {
+    color: #0f172a;
+    font-size: 20px;
+    font-weight: 800;
+    background: transparent;
+}
+QLabel#panel_subtitle {
+    color: #64748b;
+    font-size: 12px;
+    background: transparent;
+}
+
+QLabel#section_num {
+    background-color: #e0f7fa;
+    color: #0077B6;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    min-width: 26px;
+    max-width: 26px;
+    min-height: 26px;
+    max-height: 26px;
+    qproperty-alignment: 'AlignCenter';
+}
+QLabel#section_title {
+    color: #334155;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    background: transparent;
+}
+
+QLabel#field_label {
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
+    background: transparent;
+}
+QLabel#field_required {
+    color: #dc2626;
+    font-size: 13px;
+    font-weight: 800;
+    background: transparent;
+}
+QLabel#field_opt {
+    color: #0077B6;
+    font-size: 10px;
+    font-weight: 700;
+    background-color: #e0f7fa;
+    border-radius: 8px;
+    padding: 2px 8px;
+}
+
+QLineEdit, QTextEdit,QComboBox {
+    background-color: #f8fafc;
+    border: 1.5px solid #dbe3ec;
+    border-radius: 11px;
+    padding: 10px 14px;
+    color: #0f172a;
+    font-size: 13px;
+    font-weight: 500;
+    selection-background-color: #bfdbfe;
+}
+QLineEdit:hover, QTextEdit:hover, QComboBox:hover { border-color: #b9c6d8; }
+QLineEdit:focus, QTextEdit:focus, QComboBox:focus {
+    background-color: #ffffff;
+    border: 1.5px solid #0077B6;
+}
+
+QComboBox::drop-down { border: none; width: 26px; }
+QComboBox::down-arrow {
+    image: url(:/Icon/Icons/chevron-down.svg);
+    width: 12px; height: 12px;
+}
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    border: 1px solid #e6ebf2;
+    border-radius: 10px;
+    padding: 6px;
+    selection-background-color: #eff6ff;
+    selection-color: #0077B6;
+    outline: none;
+}
+
+QLineEdit:disabled {
+    background-color: #f1f5f9;
+    color: #94a3b8;
+    border-color: #e6ebf2;
+}
+
+/* Toggle anonymat */
+QFrame#anon_box {
+    background-color: #f0f9ff;
+    border: 1.5px solid #bae6fd;
+    border-radius: 12px;
+}
+QFrame#anon_box[on=&quot;true&quot;] {
+    background-color: #fef3c7;
+    border: 1.5px solid #fcd34d;
+}
+QCheckBox#anon_check {
+    color: #0369a1;
+    font-size: 13px;
+    font-weight: 700;
+    spacing: 10px;
+    background: transparent;
+}
+QCheckBox#anon_check::indicator {
+    width: 22px; height: 22px;
+    border: 2px solid #bae6fd;
+    border-radius: 6px;
+    background-color: #ffffff;
+}
+QCheckBox#anon_check::indicator:checked {
+    background-color: #d97706;
+    border: 2px solid #d97706;
+    image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEwIDgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEgNEwzLjUgNi41TDkgMSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4=);
+}
+QLabel#anon_hint {
+    color: #0284c7;
+    font-size: 11px;
+    font-weight: 600;
+    background: transparent;
+}
+
+/* Bandeau info anonyme */
+QFrame#anon_banner {
+    background-color: #fef3c7;
+    border: 1px solid #fcd34d;
+    border-left: 4px solid #d97706;
+    border-radius: 10px;
+}
+QLabel#anon_banner_text {
+    color: #92400e;
+    font-size: 12px;
+    font-weight: 500;
+    background: transparent;
+}
+
+/* Erreur */
+QFrame#error_box {
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-left: 4px solid #dc2626;
+    border-radius: 10px;
+}
+QLabel#label_error {
+    color: #991b1b;
+    font-size: 12px;
+    font-weight: 600;
+    background: transparent;
+}
+
+/* Footer */
+QFrame#panel_footer {
+    background-color: #f8fafc;
+    border-top: 1px solid #eef2f7;
+    border-bottom-right-radius: 16px;
+}
+
+QPushButton#btn_cancel {
+    background-color: #ffffff;
+    color: #64748b;
+    border: 1.5px solid #dbe3ec;
+    border-radius: 11px;
+    padding: 12px 26px;
+    font-size: 13px;
+    font-weight: 600;
+    min-width: 120px;
+    min-height: 44px;
+}
+QPushButton#btn_cancel:hover {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border-color: #fecaca;
+}
+
+QPushButton#btn_save {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #0077B6, stop:1 #00B4D8);
+    color: #ffffff;
+    border: none;
+    border-radius: 11px;
+    padding: 12px 30px;
+    font-size: 13px;
+    font-weight: 800;
+    min-width: 190px;
+    min-height: 44px;
+}
+QPushButton#btn_save:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #023E8A, stop:1 #0077B6);
+}
+QPushButton#btn_save:pressed { background: #023E8A; }
+
+/* Scroll */
+QScrollArea { background-color: transparent; border: none; }
+QScrollArea &gt; QWidget &gt; QWidget { background-color: #ffffff; }
+QScrollBar:vertical { border: none; background: transparent; width: 10px; margin: 2px; }
+QScrollBar::handle:vertical { background: #cbd5e1; min-height: 32px; border-radius: 5px; }
+QScrollBar::handle:vertical:hover { background: #94a3b8; }
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0px; }
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: transparent; }
+</string>
+  </property>
+  <layout class="QHBoxLayout" name="root_layout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>20</number>
+   </property>
+   <property name="topMargin">
+    <number>20</number>
+   </property>
+   <property name="rightMargin">
+    <number>20</number>
+   </property>
+   <property name="bottomMargin">
+    <number>20</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="sidebar">
+     <property name="minimumSize">
+      <size>
+       <width>280</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>280</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <layout class="QVBoxLayout" name="sidebar_layout">
+      <property name="spacing">
+       <number>14</number>
+      </property>
+      <property name="leftMargin">
+       <number>28</number>
+      </property>
+      <property name="topMargin">
+       <number>32</number>
+      </property>
+      <property name="rightMargin">
+       <number>28</number>
+      </property>
+      <property name="bottomMargin">
+       <number>24</number>
+      </property>
+      <item>
+       <widget class="QFrame" name="brand_badge">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>32</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QHBoxLayout" name="brand_badge_layout">
+         <property name="spacing">
+          <number>8</number>
+         </property>
+         <property name="leftMargin">
+          <number>14</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>14</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="brand_badge_icon">
+           <property name="minimumSize">
+            <size>
+             <width>14</width>
+             <height>14</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>14</width>
+             <height>14</height>
+            </size>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../Icon.qrc">:/Icon/Icons/users_white.svg</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="brand_badge_text">
+           <property name="text">
+            <string>NOUVEAU CLIENT</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="brand_spacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <spacer name="side_spacer_1">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Policy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>8</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="sidebar_title">
+        <property name="text">
+         <string>Ajouter un client</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="sidebar_lead">
+        <property name="text">
+         <string>Enregistrez un nouveau client pour suivre ses achats et son historique.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="side_spacer_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Policy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>16</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QFrame" name="check_row_name">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QHBoxLayout" name="check_name_layout">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <property name="leftMargin">
+          <number>12</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>12</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="check_name_icon">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../Icon.qrc">:/Icon/Icons/circle_white.svg</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_name_text">
+           <property name="styleSheet">
+            <string notr="true">color: #e0e7ff; font-size: 12px; font-weight: 600; background: transparent;</string>
+           </property>
+           <property name="text">
+            <string>Nom renseigné</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="name_spacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="check_row_phone">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QHBoxLayout" name="check_phone_layout">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <property name="leftMargin">
+          <number>12</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>12</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="check_phone_icon">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../Icon.qrc">:/Icon/Icons/circle_white.svg</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_phone_text">
+           <property name="styleSheet">
+            <string notr="true">color: #e0e7ff; font-size: 12px; font-weight: 600; background: transparent;</string>
+           </property>
+           <property name="text">
+            <string>Numéro valide</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="phone_spacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <spacer name="side_spacer_3">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="progress_layout">
+        <property name="spacing">
+         <number>12</number>
+        </property>
+        <item>
+         <widget class="QProgressBar" name="progress_bar">
+          <property name="minimum">
+           <number>0</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>0</number>
+          </property>
+          <property name="textVisible">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="progress_label">
+          <property name="text">
+           <string>0 %</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="sidebar_footer">
+        <property name="text">
+         <string>Nova Pharma — Gestion clients</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="panel">
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <layout class="QVBoxLayout" name="panel_layout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QFrame" name="panel_header">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>70</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>70</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: #ffffff; border-bottom: 1px solid #eef2f7; border-top-right-radius: 16px;</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QHBoxLayout" name="panel_header_layout">
+         <property name="spacing">
+          <number>14</number>
+         </property>
+         <property name="leftMargin">
+          <number>28</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>28</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="panel_header_icon">
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: #0077B6; border-radius: 12px; padding: 10px;</string>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../Icon.qrc">:/Icon/Icons/user-plus_white.svg</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="panel_header_text">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="panel_title">
+             <property name="text">
+              <string>Fiche client</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="panel_subtitle">
+             <property name="text">
+              <string>Les champs marqués d'une * sont obligatoires.</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="header_panel_spacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QScrollArea" name="scroll_area">
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scroll_content">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>-23</y>
+           <width>655</width>
+           <height>628</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #ffffff;</string>
+         </property>
+         <layout class="QVBoxLayout" name="content_layout">
+          <property name="spacing">
+           <number>18</number>
+          </property>
+          <property name="leftMargin">
+           <number>28</number>
+          </property>
+          <property name="topMargin">
+           <number>22</number>
+          </property>
+          <property name="rightMargin">
+           <number>28</number>
+          </property>
+          <property name="bottomMargin">
+           <number>22</number>
+          </property>
+          <item>
+           <widget class="QFrame" name="anon_box">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>60</height>
+             </size>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Shape::NoFrame</enum>
+            </property>
+            <layout class="QHBoxLayout" name="anon_layout">
+             <property name="spacing">
+              <number>12</number>
+             </property>
+             <property name="leftMargin">
+              <number>16</number>
+             </property>
+             <property name="topMargin">
+              <number>10</number>
+             </property>
+             <property name="rightMargin">
+              <number>16</number>
+             </property>
+             <property name="bottomMargin">
+              <number>10</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="anon_icon">
+               <property name="minimumSize">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>20</width>
+                 <height>20</height>
+                </size>
+               </property>
+               <property name="pixmap">
+                <pixmap resource="../Icon.qrc">:/Icon/Icons/lock.svg</pixmap>
+               </property>
+               <property name="scaledContents">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="anon_check">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>Respecter l'anonymat du client</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="anon_spacer">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="anon_hint">
+               <property name="text">
+                <string>Aucune donnée personnelle ne sera conservée</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="anon_banner">
+            <property name="visible">
+             <bool>false</bool>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Shape::NoFrame</enum>
+            </property>
+            <layout class="QHBoxLayout" name="anon_banner_layout">
+             <property name="spacing">
+              <number>10</number>
+             </property>
+             <property name="leftMargin">
+              <number>14</number>
+             </property>
+             <property name="topMargin">
+              <number>10</number>
+             </property>
+             <property name="rightMargin">
+              <number>14</number>
+             </property>
+             <property name="bottomMargin">
+              <number>10</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="anon_banner_icon">
+               <property name="minimumSize">
+                <size>
+                 <width>18</width>
+                 <height>18</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>18</width>
+                 <height>18</height>
+                </size>
+               </property>
+               <property name="pixmap">
+                <pixmap resource="../Icon.qrc">:/Icon/Icons/info.svg</pixmap>
+               </property>
+               <property name="scaledContents">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="anon_banner_text">
+               <property name="text">
+                <string>Un identifiant anonyme sera généré automatiquement (ex : ANON-20261007-A3F2). Aucune information personnelle ne sera demandée ni stockée.</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="sec1_header">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="sec1_num">
+              <property name="styleSheet">
+               <string notr="true">QLabel { background-color: #e0f7fa; color: #0077B6; border-radius: 8px; font-size: 12px; font-weight: 800; min-width: 26px; max-width: 26px; min-height: 26px; max-height: 26px; qproperty-alignment: 'AlignCenter'; }</string>
+              </property>
+              <property name="text">
+               <string>1</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="sec1_title">
+              <property name="styleSheet">
+               <string notr="true">color: #334155; font-size: 12px; font-weight: 800; letter-spacing: 1px; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>COORDONNÉES DU CLIENT</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QFrame" name="sec1_line">
+              <property name="styleSheet">
+               <string notr="true">background-color: #eef2f7; border: none; max-height: 1px; min-height: 1px;</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::Shape::HLine</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="layout_nom">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" name="nom_label_layout">
+              <property name="spacing">
+               <number>4</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="lbl_nom">
+                <property name="styleSheet">
+                 <string notr="true">color: #334155; font-size: 12px; font-weight: 700;</string>
+                </property>
+                <property name="text">
+                 <string>Nom complet</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="req_nom">
+                <property name="styleSheet">
+                 <string notr="true">color: #dc2626; font-size: 13px; font-weight: 800;</string>
+                </property>
+                <property name="text">
+                 <string>*</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="nom_label_spacer">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="input_nom">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>44</height>
+               </size>
+              </property>
+              <property name="maxLength">
+               <number>120</number>
+              </property>
+              <property name="placeholderText">
+               <string>Ex : Jean</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="layout_nom_2">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" name="nom_label_layout_2">
+              <property name="spacing">
+               <number>4</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="lbl_sexe">
+                <property name="styleSheet">
+                 <string notr="true">color: #334155; font-size: 12px; font-weight: 700;</string>
+                </property>
+                <property name="text">
+                 <string>Sexe</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="req_nom_2">
+                <property name="styleSheet">
+                 <string notr="true">color: #dc2626; font-size: 13px; font-weight: 800;</string>
+                </property>
+                <property name="text">
+                 <string>*</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="nom_label_spacer_2">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QComboBox" name="input_sexe">
+              <item>
+               <property name="text">
+                <string>Masculin</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Féminin</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="row_contact">
+            <property name="spacing">
+             <number>14</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="layout_numero">
+              <property name="spacing">
+               <number>6</number>
+              </property>
+              <item>
+               <layout class="QHBoxLayout" name="numero_label_layout">
+                <property name="spacing">
+                 <number>4</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="lbl_numero">
+                  <property name="styleSheet">
+                   <string notr="true">color: #334155; font-size: 12px; font-weight: 700;</string>
+                  </property>
+                  <property name="text">
+                   <string>Numéro de téléphone</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="req_numero">
+                  <property name="styleSheet">
+                   <string notr="true">color: #dc2626; font-size: 13px; font-weight: 800;</string>
+                  </property>
+                  <property name="text">
+                   <string>*</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="numero_label_spacer">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="input_numero">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>44</height>
+                 </size>
+                </property>
+                <property name="placeholderText">
+                 <string>Ex : +243 800 000 000</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="layout_email">
+              <property name="spacing">
+               <number>6</number>
+              </property>
+              <item>
+               <layout class="QHBoxLayout" name="email_label_layout">
+                <property name="spacing">
+                 <number>4</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="lbl_email">
+                  <property name="styleSheet">
+                   <string notr="true">color: #334155; font-size: 12px; font-weight: 700;</string>
+                  </property>
+                  <property name="text">
+                   <string>Email</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="email_opt">
+                  <property name="styleSheet">
+                   <string notr="true">color: #0077B6; font-size: 10px; font-weight: 700; background: #e0f7fa; border-radius: 8px; padding: 2px 8px;</string>
+                  </property>
+                  <property name="text">
+                   <string>Optionnel</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="email_label_spacer">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="input_email">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>44</height>
+                 </size>
+                </property>
+                <property name="placeholderText">
+                 <string>exemple@email.com</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="layout_adresse">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" name="adresse_label_layout">
+              <property name="spacing">
+               <number>4</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="lbl_adresse">
+                <property name="styleSheet">
+                 <string notr="true">color: #334155; font-size: 12px; font-weight: 700;</string>
+                </property>
+                <property name="text">
+                 <string>Adresse</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="adresse_opt">
+                <property name="styleSheet">
+                 <string notr="true">color: #0077B6; font-size: 10px; font-weight: 700; background: #e0f7fa; border-radius: 8px; padding: 2px 8px;</string>
+                </property>
+                <property name="text">
+                 <string>Optionnel</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="adresse_label_spacer">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="input_adresse">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>44</height>
+               </size>
+              </property>
+              <property name="placeholderText">
+               <string>Ex : Avenue Lumumba, n°45, Kinshasa/Gombe</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="layout_notes">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" name="notes_label_layout">
+              <property name="spacing">
+               <number>4</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="lbl_notes">
+                <property name="styleSheet">
+                 <string notr="true">color: #334155; font-size: 12px; font-weight: 700;</string>
+                </property>
+                <property name="text">
+                 <string>Notes internes</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="notes_opt">
+                <property name="styleSheet">
+                 <string notr="true">color: #0077B6; font-size: 10px; font-weight: 700; background: #e0f7fa; border-radius: 8px; padding: 2px 8px;</string>
+                </property>
+                <property name="text">
+                 <string>Optionnel</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="notes_label_spacer">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QTextEdit" name="input_notes">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>70</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>100</height>
+               </size>
+              </property>
+              <property name="placeholderText">
+               <string>Allergies, préférences, remarques…</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QFrame" name="error_box">
+            <property name="visible">
+             <bool>false</bool>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Shape::NoFrame</enum>
+            </property>
+            <layout class="QHBoxLayout" name="error_layout">
+             <property name="spacing">
+              <number>10</number>
+             </property>
+             <property name="leftMargin">
+              <number>12</number>
+             </property>
+             <property name="topMargin">
+              <number>10</number>
+             </property>
+             <property name="rightMargin">
+              <number>12</number>
+             </property>
+             <property name="bottomMargin">
+              <number>10</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="error_icon">
+               <property name="minimumSize">
+                <size>
+                 <width>18</width>
+                 <height>18</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>18</width>
+                 <height>18</height>
+                </size>
+               </property>
+               <property name="pixmap">
+                <pixmap resource="../Icon.qrc">:/Icon/Icons/alert-circle.svg</pixmap>
+               </property>
+               <property name="scaledContents">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_error">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="panel_footer">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>80</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>80</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QHBoxLayout" name="panel_footer_layout">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <property name="leftMargin">
+          <number>28</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>28</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <spacer name="footer_spacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_cancel">
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="text">
+            <string>Annuler</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_save">
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="text">
+            <string>Enregistrer le client</string>
+           </property>
+           <property name="icon">
+            <iconset resource="../Icon.qrc">
+             <normaloff>:/Icon/Icons/check-circle_white.svg</normaloff>:/Icon/Icons/check-circle_white.svg</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>16</width>
+             <height>16</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../Icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>

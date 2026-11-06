@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect><x>0</x><y>0</y><width>1200</width><height>780</height></rect>
+  </property>
+  <property name="windowTitle"><string>Nouveau Bon de Livraison — Nova Pharma</string></property>
+  <property name="minimumSize"><size><width>1100</width><height>700</height></size></property>
+  <property name="styleSheet">
+   <string notr="true">/* ============================================================
+   NOVA PHARMA — DIALOG BLF
+   ============================================================ */
+
+QDialog { background-color: #f0f4f8; }
+
+QWidget {
+    font-family: "Segoe UI", "Inter", "Roboto", sans-serif;
+    font-size: 13px;
+    color: #0f172a;
+    outline: none;
+}
+
+/* ══════════ PANNEAU CATALOGUE (gauche) ══════════ */
+QFrame#panel_catalogue {
+    background-color: #ffffff;
+    border: 1px solid #e6ebf2;
+    border-radius: 18px;
+}
+QLabel#catalogue_title {
+    color: #0f172a;
+    font-size: 16px;
+    font-weight: 800;
+    background: transparent;
+}
+QLabel#catalogue_subtitle {
+    color: #94a3b8;
+    font-size: 11px;
+    background: transparent;
+}
+QLineEdit#search_produit {
+    background-color: #f8fafc;
+    border: 1.5px solid #dbe3ec;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #0f172a;
+}
+QLineEdit#search_produit:focus {
+    background-color: #ffffff;
+    border-color: #0077B6;
+}
+QTableWidget#table_produits {
+    background-color: #ffffff;
+    alternate-background-color: #fbfcfe;
+    border: 1px solid #e6ebf2;
+    border-radius: 10px;
+    gridline-color: transparent;
+    outline: none;
+    color: #334155;
+}
+QTableWidget#table_produits::item {
+    padding: 8px 6px;
+    border-bottom: 1px solid #f1f5f9;
+}
+QTableWidget#table_produits::item:selected {
+    background-color: #eff6ff;
+    color: #0077B6;
+}
+QHeaderView::section {
+    background-color: #f8fafc;
+    color: #94a3b8;
+    padding: 10px 8px;
+    border: none;
+    border-bottom: 2px solid #e6ebf2;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+/* ══════════ PANNEAU BLF (droite) ══════════ */
+QFrame#panel_blf {
+    background-color: #ffffff;
+    border: 1px solid #e6ebf2;
+    border-radius: 18px;
+}
+
+QFrame#blf_header {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #023E8A, stop:0.4 #0077B6, stop:1 #00B4D8);
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border: none;
+}
+QLabel#blf_header_title {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 800;
+    background: transparent;
+}
+QLabel#blf_header_subtitle {
+    color: #CAF0F8;
+    font-size: 12px;
+    background: transparent;
+}
+QLabel#blf_header_icon {
+    background-color: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 14px;
+    padding: 10px;
+}
+
+/* Champs */
+QLabel#field_label {
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    background: transparent;
+}
+QComboBox#combo_fournisseur,
+QLineEdit#edit_ref_externe,
+QLineEdit#edit_notes {
+    background-color: #f8fafc;
+    border: 1.5px solid #dbe3ec;
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: #0f172a;
+    font-size: 13px;
+    font-weight: 500;
+}
+QComboBox#combo_fournisseur:focus,
+QLineEdit#edit_ref_externe:focus,
+QLineEdit#edit_notes:focus {
+    background-color: #ffffff;
+    border-color: #0077B6;
+}
+QComboBox#combo_fournisseur::drop-down { border: none; width: 26px; }
+QComboBox#combo_fournisseur::down-arrow {
+    image: url(:/Icon/Icons/chevron-down.svg);
+    width: 12px; height: 12px;
+}
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    border: 1px solid #e6ebf2;
+    border-radius: 10px;
+    padding: 6px;
+    selection-background-color: #eff6ff;
+    selection-color: #0077B6;
+}
+
+/* Zone scrollable lignes */
+QScrollArea#scroll_lignes {
+    background-color: transparent;
+    border: none;
+}
+QWidget#scroll_content {
+    background-color: transparent;
+}
+QLabel#label_empty {
+    color: #94a3b8;
+    font-size: 12px;
+    font-style: italic;
+    background-color: #fbfcfe;
+    border: 1px dashed #dbe3ec;
+    border-radius: 12px;
+    padding: 30px;
+    qproperty-alignment: 'AlignCenter';
+}
+
+/* Totaux */
+QFrame#total_box {
+    background-color: #eff6ff;
+    border: 1.5px solid #dbeafe;
+    border-left: 4px solid #0077B6;
+    border-radius: 12px;
+}
+QLabel#label_nb_articles {
+    color: #1e40af;
+    font-size: 12px;
+    font-weight: 700;
+    background: transparent;
+}
+QLabel#label_total_caption {
+    color: #1e40af;
+    font-size: 13px;
+    font-weight: 800;
+    background: transparent;
+}
+QLabel#label_total_value {
+    color: #023E8A;
+    font-size: 18px;
+    font-weight: 800;
+    background: transparent;
+}
+
+/* Footer */
+QFrame#blf_footer {
+    background-color: #f8fafc;
+    border-top: 1px solid #eef2f7;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+}
+
+QPushButton#btn_cancel {
+    background-color: #ffffff;
+    color: #64748b;
+    border: 1.5px solid #dbe3ec;
+    border-radius: 10px;
+    padding: 10px 24px;
+    font-size: 13px;
+    font-weight: 600;
+    min-width: 110px;
+    min-height: 42px;
+}
+QPushButton#btn_cancel:hover {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border-color: #fecaca;
+}
+
+QPushButton#btn_draft {
+    background-color: #ffffff;
+    color: #0077B6;
+    border: 1.5px solid #bae6fd;
+    border-radius: 10px;
+    padding: 10px 22px;
+    font-size: 13px;
+    font-weight: 700;
+    min-height: 42px;
+}
+QPushButton#btn_draft:hover { background-color: #eff6ff; }
+
+QPushButton#btn_validate {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #0077B6, stop:1 #00B4D8);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 28px;
+    font-size: 13px;
+    font-weight: 800;
+    min-width: 220px;
+    min-height: 42px;
+}
+QPushButton#btn_validate:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #023E8A, stop:1 #0077B6);
+}
+
+/* Scrollbar */
+QScrollBar:vertical {
+    border: none; background: transparent;
+    width: 10px; margin: 2px;
+}
+QScrollBar::handle:vertical {
+    background: #cbd5e1; min-height: 32px; border-radius: 5px;
+}
+QScrollBar::handle:vertical:hover { background: #94a3b8; }
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0px; }
+</string>
+  </property>
+
+  <layout class="QHBoxLayout" name="root_layout">
+   <property name="spacing"><number>20</number></property>
+   <property name="leftMargin"><number>20</number></property>
+   <property name="topMargin"><number>20</number></property>
+   <property name="rightMargin"><number>20</number></property>
+   <property name="bottomMargin"><number>20</number></property>
+
+   <!-- ══════════════ CATALOGUE PRODUITS ══════════════ -->
+   <item>
+    <widget class="QFrame" name="panel_catalogue">
+     <property name="minimumSize"><size><width>420</width><height>0</height></size></property>
+     <property name="maximumSize"><size><width>460</width><height>16777215</height></size></property>
+     <property name="frameShape"><enum>QFrame::Shape::NoFrame</enum></property>
+     <layout class="QVBoxLayout" name="catalogue_layout">
+      <property name="spacing"><number>12</number></property>
+      <property name="leftMargin"><number>20</number></property>
+      <property name="topMargin"><number>20</number></property>
+      <property name="rightMargin"><number>20</number></property>
+      <property name="bottomMargin"><number>20</number></property>
+
+      <item>
+       <widget class="QLabel" name="catalogue_title">
+        <property name="text"><string>Catalogue produits</string></property>
+       </widget>
+      </item>
+
+      <item>
+       <widget class="QLabel" name="catalogue_subtitle">
+        <property name="text"><string>Double-cliquez pour ajouter au BLF</string></property>
+       </widget>
+      </item>
+
+      <item>
+       <widget class="QLineEdit" name="search_produit">
+        <property name="placeholderText"><string>Rechercher un produit…</string></property>
+        <property name="clearButtonEnabled"><bool>true</bool></property>
+       </widget>
+      </item>
+
+      <item>
+       <widget class="QTableWidget" name="table_produits">
+        <property name="editTriggers"><set>QAbstractItemView::EditTrigger::NoEditTriggers</set></property>
+        <property name="selectionBehavior"><enum>QAbstractItemView::SelectionBehavior::SelectRows</enum></property>
+        <property name="selectionMode"><enum>QAbstractItemView::SelectionMode::SingleSelection</enum></property>
+        <property name="alternatingRowColors"><bool>true</bool></property>
+        <property name="showGrid"><bool>false</bool></property>
+        <property name="verticalScrollMode"><enum>QAbstractItemView::ScrollMode::ScrollPerPixel</enum></property>
+        <attribute name="verticalHeaderVisible"><bool>false</bool></attribute>
+        <attribute name="verticalHeaderDefaultSectionSize"><number>40</number></attribute>
+        <column><property name="text"><string>Code</string></property></column>
+        <column><property name="text"><string>Produit</string></property></column>
+        <column><property name="text"><string>Stock</string></property></column>
+        <column><property name="text"><string>Prix</string></property></column>
+       </widget>
+      </item>
+
+     </layout>
+    </widget>
+   </item>
+
+   <!-- ══════════════ BLF ══════════════ -->
+   <item>
+    <widget class="QFrame" name="panel_blf">
+     <property name="frameShape"><enum>QFrame::Shape::NoFrame</enum></property>
+     <layout class="QVBoxLayout" name="blf_layout">
+      <property name="spacing"><number>0</number></property>
+      <property name="leftMargin"><number>0</number></property>
+      <property name="topMargin"><number>0</number></property>
+      <property name="rightMargin"><number>0</number></property>
+      <property name="bottomMargin"><number>0</number></property>
+
+      <!-- Header gradient -->
+      <item>
+       <widget class="QFrame" name="blf_header">
+        <property name="minimumSize"><size><width>0</width><height>90</height></size></property>
+        <property name="maximumSize"><size><width>16777215</width><height>90</height></size></property>
+        <property name="frameShape"><enum>QFrame::Shape::NoFrame</enum></property>
+        <layout class="QHBoxLayout" name="blf_header_layout">
+         <property name="leftMargin"><number>28</number></property>
+         <property name="topMargin"><number>16</number></property>
+         <property name="rightMargin"><number>28</number></property>
+         <property name="bottomMargin"><number>16</number></property>
+         <property name="spacing"><number>16</number></property>
+
+         <item>
+          <widget class="QLabel" name="blf_header_icon">
+           <property name="minimumSize"><size><width>48</width><height>48</height></size></property>
+           <property name="maximumSize"><size><width>48</width><height>48</height></size></property>
+           <property name="pixmap"><pixmap resource="../Icon.qrc">:/Icon/Icons/package_white.svg</pixmap></property>
+           <property name="scaledContents"><bool>true</bool></property>
+          </widget>
+         </item>
+
+         <item>
+          <layout class="QVBoxLayout" name="blf_header_text">
+           <property name="spacing"><number>4</number></property>
+           <item>
+            <widget class="QLabel" name="blf_header_title">
+             <property name="text"><string>Nouveau Bon de Livraison</string></property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="blf_header_subtitle">
+             <property name="text"><string>Créé par Utilisateur — Date</string></property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+
+         <item>
+          <spacer name="blf_header_spacer">
+           <property name="orientation"><enum>Qt::Orientation::Horizontal</enum></property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+
+      <!-- Contenu -->
+      <item>
+       <widget class="QWidget" name="blf_content">
+        <property name="styleSheet"><string notr="true">background-color: #ffffff;</string></property>
+        <layout class="QVBoxLayout" name="blf_content_layout">
+         <property name="spacing"><number>14</number></property>
+         <property name="leftMargin"><number>24</number></property>
+         <property name="topMargin"><number>20</number></property>
+         <property name="rightMargin"><number>24</number></property>
+         <property name="bottomMargin"><number>20</number></property>
+
+         <!-- Fournisseur + Ref externe -->
+         <item>
+          <layout class="QHBoxLayout" name="fournisseur_row">
+           <property name="spacing"><number>12</number></property>
+
+           <item>
+            <layout class="QVBoxLayout" name="fournisseur_layout">
+             <property name="spacing"><number>4</number></property>
+             <item>
+              <widget class="QLabel" name="label_fournisseur">
+               <property name="text"><string>Fournisseur</string></property>
+               <property name="styleSheet"><string notr="true">color: #64748b; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; background: transparent;</string></property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="combo_fournisseur">
+               <property name="minimumSize"><size><width>0</width><height>42</height></size></property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+
+           <item>
+            <layout class="QVBoxLayout" name="ref_layout">
+             <property name="spacing"><number>4</number></property>
+             <item>
+              <widget class="QLabel" name="label_ref">
+               <property name="text"><string>Référence facture (optionnel)</string></property>
+               <property name="styleSheet"><string notr="true">color: #64748b; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; background: transparent;</string></property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLineEdit" name="edit_ref_externe">
+               <property name="minimumSize"><size><width>0</width><height>42</height></size></property>
+               <property name="placeholderText"><string>Ex : FAC-F-2026-1234</string></property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+
+          </layout>
+         </item>
+
+         <!-- Label section produits -->
+         <item>
+          <widget class="QLabel" name="label_section_produits">
+           <property name="text"><string>Produits du BLF</string></property>
+           <property name="styleSheet"><string notr="true">color: #0f172a; font-size: 13px; font-weight: 800; background: transparent;</string></property>
+          </widget>
+         </item>
+
+         <!-- Zone scrollable -->
+         <item>
+          <widget class="QScrollArea" name="scroll_lignes">
+           <property name="widgetResizable"><bool>true</bool></property>
+           <property name="frameShape"><enum>QFrame::Shape::NoFrame</enum></property>
+           <property name="horizontalScrollBarPolicy"><enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum></property>
+           <widget class="QWidget" name="scroll_content">
+            <property name="styleSheet"><string notr="true">background-color: transparent;</string></property>
+            <layout class="QVBoxLayout" name="verticalLayout_lignes">
+             <property name="spacing"><number>8</number></property>
+             <property name="leftMargin"><number>0</number></property>
+             <property name="topMargin"><number>0</number></property>
+             <property name="rightMargin"><number>0</number></property>
+             <property name="bottomMargin"><number>0</number></property>
+             <item>
+              <spacer name="lignes_spacer">
+               <property name="orientation"><enum>Qt::Orientation::Vertical</enum></property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+
+         <!-- Message vide -->
+         <item>
+          <widget class="QLabel" name="label_empty">
+           <property name="text"><string>Aucun produit dans le BLF.
+Double-cliquez sur un produit à gauche pour l'ajouter.</string></property>
+           <property name="alignment"><set>Qt::AlignmentFlag::AlignCenter</set></property>
+          </widget>
+         </item>
+
+         <!-- Notes -->
+         <item>
+          <layout class="QVBoxLayout" name="notes_layout">
+           <property name="spacing"><number>4</number></property>
+           <item>
+            <widget class="QLabel" name="label_notes">
+             <property name="text"><string>Notes internes (optionnel)</string></property>
+             <property name="styleSheet"><string notr="true">color: #64748b; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; background: transparent;</string></property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="edit_notes">
+             <property name="minimumSize"><size><width>0</width><height>42</height></size></property>
+             <property name="placeholderText"><string>Remarques, état des colis…</string></property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+
+         <!-- Totaux -->
+         <item>
+          <widget class="QFrame" name="total_box">
+           <property name="minimumSize"><size><width>0</width><height>56</height></size></property>
+           <property name="frameShape"><enum>QFrame::Shape::NoFrame</enum></property>
+           <layout class="QHBoxLayout" name="total_layout">
+            <property name="leftMargin"><number>18</number></property>
+            <property name="topMargin"><number>12</number></property>
+            <property name="rightMargin"><number>18</number></property>
+            <property name="bottomMargin"><number>12</number></property>
+            <property name="spacing"><number>12</number></property>
+
+            <item>
+             <widget class="QLabel" name="label_nb_articles">
+              <property name="text"><string>0 article(s)</string></property>
+             </widget>
+            </item>
+
+            <item>
+             <spacer name="total_spacer">
+              <property name="orientation"><enum>Qt::Orientation::Horizontal</enum></property>
+             </spacer>
+            </item>
+
+            <item>
+             <widget class="QLabel" name="label_total_caption">
+              <property name="text"><string>TOTAL :</string></property>
+             </widget>
+            </item>
+
+            <item>
+             <widget class="QLabel" name="label_total_value">
+              <property name="text"><string>0 FC</string></property>
+             </widget>
+            </item>
+
+           </layout>
+          </widget>
+         </item>
+
+        </layout>
+       </widget>
+      </item>
+
+      <!-- Footer -->
+      <item>
+       <widget class="QFrame" name="blf_footer">
+        <property name="minimumSize"><size><width>0</width><height>80</height></size></property>
+        <property name="maximumSize"><size><width>16777215</width><height>80</height></size></property>
+        <property name="frameShape"><enum>QFrame::Shape::NoFrame</enum></property>
+        <layout class="QHBoxLayout" name="blf_footer_layout">
+         <property name="leftMargin"><number>24</number></property>
+         <property name="topMargin"><number>0</number></property>
+         <property name="rightMargin"><number>24</number></property>
+         <property name="bottomMargin"><number>0</number></property>
+         <property name="spacing"><number>10</number></property>
+
+         <item>
+          <spacer name="footer_spacer">
+           <property name="orientation"><enum>Qt::Orientation::Horizontal</enum></property>
+          </spacer>
+         </item>
+
+         <item>
+          <widget class="QPushButton" name="btn_cancel">
+           <property name="text"><string>Annuler</string></property>
+           <property name="cursor"><cursorShape>Qt::CursorShape::PointingHandCursor</cursorShape></property>
+          </widget>
+         </item>
+
+         <item>
+          <widget class="QPushButton" name="btn_draft">
+           <property name="text"><string>Enregistrer en brouillon</string></property>
+           <property name="cursor"><cursorShape>Qt::CursorShape::PointingHandCursor</cursorShape></property>
+          </widget>
+         </item>
+
+         <item>
+          <widget class="QPushButton" name="btn_validate">
+           <property name="text"><string>Valider et mettre à jour le stock</string></property>
+           <property name="cursor"><cursorShape>Qt::CursorShape::PointingHandCursor</cursorShape></property>
+           <property name="icon">
+            <iconset resource="../Icon.qrc">
+             <normaloff>:/Icon/Icons/check-circle_white.svg</normaloff>:/Icon/Icons/check-circle_white.svg</iconset>
+           </property>
+           <property name="iconSize"><size><width>16</width><height>16</height></size></property>
+          </widget>
+         </item>
+
+        </layout>
+       </widget>
+      </item>
+
+     </layout>
+    </widget>
+   </item>
+
+  </layout>
+ </widget>
+ <resources>
+  <include location="../Icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>

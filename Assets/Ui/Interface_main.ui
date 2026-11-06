@@ -1,0 +1,3001 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <author>ISCLEF</author>
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="windowModality">
+   <enum>Qt::WindowModality::WindowModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1240</width>
+    <height>926</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1100</width>
+    <height>700</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Nova Pharma</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>:/Icon/Icons/1758107223736.jpg</normaloff>:/Icon/Icons/1758107223736.jpg</iconset>
+  </property>
+  <property name="layoutDirection">
+   <enum>Qt::LayoutDirection::LeftToRight</enum>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/*
+                ==================================================================
+                NOVA PHARMA — DESIGN SYSTEM v2
+                ------------------------------------------------------------------
+                Palette
+                Fond app : #eef2f7 -&gt; #f7f9fc (dégradé très léger)
+                Cartes : #ffffff / bordure #e6ebf2
+                Primaire : #2563eb (hover #1d4ed8, pressed #1e40af)
+                Sidebar : #0b1220 -&gt; #111c33 (navy profond)
+                Texte : #0f172a / #475569 / #94a3b8
+                Succès #16a34a · Danger #dc2626 · Warning #d97706
+                Rayons : cartes 18px · contrôles 10-12px · boutons nav 12px
+                ================================================================== */
+
+                /* ---------------------------- BASE ---------------------------- */
+                QMainWindow {
+                background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.35, y2:1,
+                stop:0 #eef2f7, stop:1 #f8fafc);
+                }
+
+                QWidget {
+                background-color: #f8fafc;
+                color: #0f172a;
+                font-family: &quot;Segoe UI&quot;, &quot;Inter&quot;, &quot;Roboto&quot;,
+                &quot;Helvetica Neue&quot;, sans-serif;
+                font-size: 13px;
+                outline: none;
+                selection-background-color: #bfdbfe;
+                selection-color: #0f172a;
+                }
+
+                #centralwidget { background-color: transparent; }
+
+                QToolTip {
+                background-color: #0f172a;
+                color: #f8fafc;
+                border: 1px solid #334155;
+                border-radius: 6px;
+                padding: 6px 10px;
+                font-size: 12px;
+                }
+
+                QLabel { background-color: transparent; border: none; }
+
+                /* Séparateurs (QLine) */
+                QFrame[frameShape=&quot;4&quot;], QFrame[frameShape=&quot;5&quot;] {
+                color: #e2e8f0;
+                background-color: #e2e8f0;
+                max-width: 1px;
+                max-height: 1px;
+                }
+
+                /* ------------------------- BARRE LATÉRALE ------------------------- */
+                #frm_nav {
+                background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.6, y2:1,
+                stop:0 #0b1220, stop:1 #16233d);
+                border: none;
+                border-right: 1px solid rgba(255, 255, 255, 18);
+                }
+                #frm_nav &gt; QWidget { background-color: transparent; }
+                #frm_nav QLabel { background-color: transparent; color: #e2e8f0; }
+                #frm_nav QFrame { background-color: transparent; border: none; }
+
+                /* Logo */
+                #frame_2 { background-color: transparent; border: none; }
+
+                #label {
+                background-color: transparent;
+                color: #f8fafc;
+                font-size: 15px;
+                font-weight: 700;
+                }
+
+                /* Caption de section */
+                #lbl_nav_section {
+                background-color: transparent;
+                color: #64748b;
+                font-size: 10px;
+                font-weight: 700;
+                letter-spacing: 2px;
+                padding-left: 14px;
+                padding-bottom: 2px;
+                }
+
+                /* Boutons de navigation */
+                #frm_nav QPushButton {
+                background-color: transparent;
+                border: none;
+                border-radius: 12px;
+                min-height: 22px;
+                padding: 11px 14px;
+                margin: 2px 0px;
+                color: #cbd5e1;
+                font-size: 13px;
+                font-weight: 600;
+                text-align: left;
+                }
+                #frm_nav QPushButton:hover {
+                background-color: rgba(255, 255, 255, 20);
+                color: #ffffff;
+                }
+                #frm_nav QPushButton:pressed { background-color: rgba(255, 255, 255, 32); }
+                #frm_nav QPushButton:checked {
+                background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,
+                stop:0 #2563eb, stop:1 #3b82f6);
+                color: #ffffff;
+                border-left: 4px solid #bfdbfe;
+                padding-left: 10px;
+                }
+                #frm_nav QPushButton:checked:hover {
+                background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,
+                stop:0 #1d4ed8, stop:1 #2f74e8);
+                }
+                #frm_nav QPushButton:disabled { color: #475569; }
+
+                /* Carte profil utilisateur */
+                #frame_3 {
+                background-color: rgba(255, 255, 255, 14);
+                border: 1px solid rgba(255, 255, 255, 22);
+                border-radius: 16px;
+                margin: 6px 0px;
+                padding: 4px;
+                }
+                #label_26 { background-color: transparent; color: #f1f5f9; }
+
+                /* ---------------------------- HEADER ---------------------------- */
+                #frame_4 {
+                background-color: rgba(255, 255, 255, 245);
+                border: none;
+                border-bottom: 1px solid #e6ebf2;
+                border-radius: 0px;
+                padding: 4px;
+                }
+
+                #lbl_titre_change {
+                background-color: transparent;
+                font-size: 21px;
+                font-weight: 800;
+                color: #0f172a;
+                letter-spacing: -0.2px;
+                }
+
+                #lbl_temps { background-color: transparent; color: #64748b; }
+
+                #edit_recheche_rapide {
+                background-color: #f1f5f9;
+                border: 1px solid transparent;
+                border-radius: 999px;
+                padding: 9px 18px;
+                min-height: 20px;
+                color: #0f172a;
+                font-size: 13px;
+                selection-background-color: #bfdbfe;
+                }
+                #edit_recheche_rapide:hover { background-color: #e8eef6; }
+                #edit_recheche_rapide:focus {
+                background-color: #ffffff;
+                border: 1px solid #2563eb;
+                }
+
+                /* ---------------------- CONTENUS / SCROLL ---------------------- */
+                QStackedWidget, QStackedWidget &gt; QWidget, QScrollArea,
+                QScrollArea &gt; QWidget &gt; QWidget, #scrollAreaWidgetContents {
+                background-color: transparent;
+                border: none;
+                }
+                #page, #page_2, #page_3, #page_4, #page_5, #page_6,
+                #page_7, #page_8, #page_9, #page_10, #page_11, #page_12 {
+                background-color: transparent;
+                }
+
+                /* --------------------------- BOUTONS --------------------------- */
+                QPushButton {
+                background-color: #ffffff;
+                color: #334155;
+                border: 1px solid #dbe3ec;
+                border-radius: 12px;
+                padding: 10px 18px;
+                min-height: 20px;
+                font-size: 13px;
+                font-weight: 600;
+                }
+                QPushButton:hover { background-color: #f8fafc; border-color: #c3cedd; color:
+                #0f172a; }
+                QPushButton:pressed { background-color: #eef2f7; }
+                QPushButton:disabled { background-color: #f1f5f9; color: #a3aec0; border-color:
+                #e6ebf2; }
+                QPushButton:checked { background-color: #eff6ff; border-color: #93c5fd; color:
+                #1d4ed8; }
+
+                /* Primaire (bleu) */
+                #btn_nouvelle_vente, #btn_ajouter_produit, #btn_ajouter_caissier,
+                #btn_add_produit_for_facture, #btn_recheche_person_facture,
+                #btn_blf_new_order, #switch_btn, #btn_generer_pdf, #btn_sauvegarder_imprimer {
+                background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                stop:0 #3b82f6, stop:1 #2563eb);
+                color: #ffffff;
+                border: 1px solid #1d4ed8;
+                border-radius: 12px;
+                padding: 11px 20px;
+                font-weight: 700;
+                }
+                #btn_nouvelle_vente:hover, #btn_ajouter_produit:hover, #btn_ajouter_caissier:hover,
+                #btn_add_produit_for_facture:hover, #btn_recheche_person_facture:hover,
+                #btn_blf_new_order:hover, #switch_btn:hover, #btn_generer_pdf:hover,
+                #btn_sauvegarder_imprimer:hover {
+                background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                stop:0 #2f74e8, stop:1 #1d4ed8);
+                border-color: #1e40af;
+                color: #ffffff;
+                }
+                #btn_nouvelle_vente:pressed, #btn_ajouter_produit:pressed,
+                #btn_ajouter_caissier:pressed,
+                #btn_add_produit_for_facture:pressed, #btn_recheche_person_facture:pressed,
+                #btn_blf_new_order:pressed, #switch_btn:pressed, #btn_generer_pdf:pressed,
+                #btn_sauvegarder_imprimer:pressed {
+                background-color: #1e40af;
+                border-color: #1e3a8a;
+                padding-top: 12px;
+                }
+
+                /* Bouton blanc sur le hero (gradient) */
+                #frame_5 #btn_nouvelle_vente {
+                background-color: #ffffff;
+                color: #1d4ed8;
+                border: 1px solid #ffffff;
+                font-weight: 800;
+                }
+                #frame_5 #btn_nouvelle_vente:hover { background-color: #eff6ff; border-color:
+                #eff6ff; }
+                #frame_5 #btn_nouvelle_vente:pressed { background-color: #dbeafe; padding-top: 11px;
+                }
+
+                #frame_5 #btn_voir_inventaire {
+                background-color: rgba(255, 255, 255, 38);
+                color: #ffffff;
+                border: 1px solid rgba(255, 255, 255, 120);
+                font-weight: 700;
+                }
+                #frame_5 #btn_voir_inventaire:hover {
+                background-color: rgba(255, 255, 255, 66);
+                border-color: rgba(255, 255, 255, 180);
+                color: #ffffff;
+                }
+                #frame_5 #btn_voir_inventaire:pressed { background-color: rgba(255, 255, 255, 90); }
+                /* Succès (vert) */
+                #btn_register_new_client {
+                background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                stop:0 #22c55e, stop:1 #16a34a);
+                color: #ffffff;
+                border: 1px solid #15803d;
+                border-radius: 12px;
+                padding: 11px 20px;
+                font-weight: 700;
+                }
+                #btn_register_new_client:hover {
+                background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                stop:0 #16a34a, stop:1 #15803d);
+                color: #ffffff;
+                }
+                #btn_register_new_client:pressed { background-color: #166534; padding-top: 12px; }
+
+                /* Avertissement (jaune) */
+                #btn_modifier_stock {
+                background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                stop:0 #facc15, stop:1 #eab308);
+                color: #422006;
+                border: 1px solid #ca8a04;
+                }
+                #btn_modifier_stock:hover {
+                background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                stop:0 #eab308, stop:1 #ca8a04);
+                color: #422006;
+                }
+                #btn_modifier_stock:pressed { background-color: #ca8a04; }
+
+                /* Danger (rouge doux) */
+                #btn_voir_rupture_produit {
+                background-color: #ffffff;
+                color: #dc2626;
+                border: 1px solid #fecaca;
+                }
+                #btn_voir_rupture_produit:hover { background-color: #fef2f2; border-color: #fca5a5;
+                color: #b91c1c; }
+                #btn_voir_rupture_produit:pressed { background-color: #fee2e2; }
+
+                /* Secondaire / ghost */
+                #btn_voir_inventaire, #btn_voir_tout_produit, #btn_generer_csv,
+                #btn_blf_new_supplier {
+                background-color: #ffffff;
+                color: #475569;
+                border: 1px solid #dbe3ec;
+                }
+                #btn_voir_tout_produit:hover, #btn_generer_csv:hover, #btn_blf_new_supplier:hover {
+                background-color: #f8fafc;
+                border-color: #c3cedd;
+                color: #0f172a;
+                }
+
+                /* Lien texte (Annuler la saisie) */
+                #btn_clear_table_facture {
+                background-color: transparent;
+                border: none;
+                color: #94a3b8;
+                font-weight: 600;
+                padding: 6px;
+                }
+                #btn_clear_table_facture:hover { color: #2563eb; background-color: transparent;
+                border: none; }
+
+                /* Impression (sombre) */
+                #btn_print_facture {
+                background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                stop:0 #1e293b, stop:1 #0f172a);
+                color: #ffffff;
+                border: 1px solid #0b1220;
+                border-radius: 12px;
+                padding: 12px 18px;
+                font-weight: 700;
+                }
+                #btn_print_facture:hover {
+                background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                stop:0 #334155, stop:1 #1e293b);
+                color: #ffffff;
+                }
+                #btn_print_facture:pressed { background-color: #0b1220; }
+
+                /* --------------------------- CHAMPS --------------------------- */
+                QLineEdit, QSpinBox, QDoubleSpinBox, QComboBox, QDateEdit, QDateTimeEdit, QTextEdit,
+                QPlainTextEdit {
+                background-color: #ffffff;
+                border: 1px solid #dbe3ec;
+                border-radius: 11px;
+                padding: 8px 12px;
+                min-height: 20px;
+                color: #0f172a;
+                selection-background-color: #bfdbfe;
+                selection-color: #0f172a;
+                }
+                QLineEdit:hover, QSpinBox:hover, QDoubleSpinBox:hover, QComboBox:hover,
+                QDateEdit:hover, QDateTimeEdit:hover { border-color: #b9c6d8; }
+                QLineEdit:focus, QSpinBox:focus, QDoubleSpinBox:focus, QComboBox:focus,
+                QDateEdit:focus, QDateTimeEdit:focus, QTextEdit:focus, QPlainTextEdit:focus {
+                border: 1px solid #2563eb;
+                background-color: #ffffff;
+                }
+                QLineEdit:disabled, QSpinBox:disabled, QDoubleSpinBox:disabled, QComboBox:disabled {
+                background-color: #f1f5f9;
+                color: #94a3b8;
+                border-color: #e6ebf2;
+                }
+                QLineEdit:read-only, QSpinBox:read-only { background-color: #f8fafc; color: #475569;
+                }
+                QLineEdit[readOnly=&quot;true&quot;] { background-color: #f8fafc; color: #475569; }
+                QComboBox::drop-down { border: none; width: 26px; }
+                QComboBox QAbstractItemView {
+                background-color: #ffffff;
+                border: 1px solid #e6ebf2;
+                border-radius: 10px;
+                padding: 6px;
+                selection-background-color: #eff6ff;
+                selection-color: #1d4ed8;
+                outline: none;
+                }
+
+                QCheckBox, QRadioButton { background-color: transparent; color: #334155; spacing:
+                8px; }
+                QCheckBox::indicator, QRadioButton::indicator {
+                width: 18px; height: 18px;
+                border: 1px solid #cbd5e1;
+                background-color: #ffffff;
+                border-radius: 5px;
+                }
+                QRadioButton::indicator { border-radius: 9px; }
+                QCheckBox::indicator:hover, QRadioButton::indicator:hover { border-color: #2563eb; }
+                QCheckBox::indicator:checked, QRadioButton::indicator:checked {
+                background-color: #2563eb;
+                border-color: #2563eb;
+                }
+
+                QProgressBar {
+                background-color: #eef2f7;
+                border: 1px solid #e6ebf2;
+                border-radius: 8px;
+                height: 14px;
+                text-align: center;
+                color: #475569;
+                font-size: 10px;
+                font-weight: 700;
+                }
+                QProgressBar::chunk {
+                background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0,
+                stop:0 #3b82f6, stop:1 #2563eb);
+                border-radius: 7px;
+                }
+
+                QGroupBox {
+                background-color: #ffffff;
+                border: 1px solid #e6ebf2;
+                border-radius: 14px;
+                margin-top: 14px;
+                padding-top: 8px;
+                font-weight: 700;
+                color: #0f172a;
+                }
+                QGroupBox::title { subcontrol-origin: margin; left: 14px; padding: 0px 6px; }
+                QTabWidget::pane { background-color: #ffffff; border: 1px solid #e6ebf2;
+                border-radius: 14px; top: -1px; }
+                QTabBar::tab {
+                background-color: transparent;
+                color: #64748b;
+                padding: 9px 18px;
+                border: none;
+                border-bottom: 2px solid transparent;
+                font-weight: 700;
+                }
+                QTabBar::tab:hover { color: #2563eb; }
+                QTabBar::tab:selected { color: #2563eb; border-bottom: 2px solid #2563eb; }
+
+                /* --------------------------- CARTES --------------------------- */
+                #frame, #frame_6, #frame_12, #frame_13, #frame_14, #frame_15, #frame_16,
+                #frame_17, #frame_18, #frame_20, #frame_21, #frame_22, #frame_11,
+                #frame_blf_header, #frame_blf_table,
+                #frame_blf_stat1, #frame_blf_stat2, #frame_blf_stat3,
+                #frame_7, #frame_8, #frame_9, #frame_10 {
+                background-color: #ffffff;
+                border: 1px solid #e6ebf2;
+                border-radius: 18px;
+                }
+
+                /* Conteneurs transparents (ne pas cartonner) */
+                #frame_17, #frame_14, #frame_6, #frame_blf_stats {
+                background-color: transparent;
+                border: none;
+                }
+
+                /* Cartes de statistiques — effet de survol */
+                #frame_7, #frame_8, #frame_9, #frame_10 { border-radius: 20px; }
+                #frame_7:hover, #frame_8:hover, #frame_9:hover, #frame_10:hover {
+                border: 1px solid #bfdbfe;
+                background-color: #fdfeff;
+                }
+
+                /* Pastilles d'icônes des cartes */
+                #label_9, #label_12, #label_15, #label_18 {
+                background-color: #eff6ff;
+                border: 1px solid #dbeafe;
+                border-radius: 16px;
+                padding: 10px;
+                }
+                #frame_9 #label_15 { background-color: #fef2f2; border: 1px solid #fee2e2; }
+
+                /* Libellés des cartes */
+                #label_10, #label_13, #label_16, #label_19 {
+                background-color: transparent;
+                color: #94a3b8;
+                font-size: 10px;
+                font-weight: 800;
+                letter-spacing: 1.2px;
+                }
+                #label_11, #label_14, #label_17, #label_20 {
+                background-color: transparent;
+                color: #0f172a;
+                font-size: 27px;
+                font-weight: 800;
+                letter-spacing: -0.5px;
+                }
+                #frame_9 #label_17 { color: #dc2626; }
+
+                /* Hero d'accueil */
+                #frame_5 {
+                background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
+                stop:0 #1d4ed8, stop:0.5 #2563eb, stop:1 #4f46e5);
+                border: 1px solid #1e40af;
+                border-radius: 24px;
+                }
+                #frame_5 QLabel { background-color: transparent; color: #ffffff; }
+                #label_5 { background-color: transparent; color: #ffffff; }
+
+                /* Titres de sections / cartes */
+                #label_4, #label_8, #label_24, #label_37, #label_6, #label_33, #label_34, #label_40
+                {
+                background-color: transparent;
+                color: #0f172a;
+                font-size: 17px;
+                font-weight: 800;
+                letter-spacing: -0.2px;
+                }
+                #label_6 { font-size: 12px; letter-spacing: 1.6px; color: #475569; }
+                #lbl_blf_table_title {
+                background-color: transparent;
+                color: #0f172a;
+                font-size: 12px;
+                font-weight: 800;
+                letter-spacing: 1.4px;
+                }
+
+                /* Champs de formulaire : libellés */
+                #label_7, #label_21, #label_22, #label_27, #label_31, #label_38, #label_39 {
+                background-color: transparent;
+                color: #64748b;
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 0.4px;
+                padding-bottom: 2px;
+                }
+
+                /* Totaux de la facture */
+                #label_25, #label_28 { background-color: transparent; color: #0f172a; font-weight:
+                800; }
+                #lbl_totale_calc, #lbl_total_nbr_produit {
+                background-color: transparent;
+                color: #16a34a;
+                font-size: 19px;
+                font-weight: 800;
+                }
+
+                /* Numéro de facture */
+                #label_23 { background-color: transparent; color: #0f172a; }
+
+                /* --------------------------- TABLEAUX --------------------------- */
+                QTableWidget, QTableView, QTreeWidget, QTreeView, QListWidget, QListView {
+                background-color: #ffffff;
+                alternate-background-color: #fbfcfe;
+                border: 1px solid #e6ebf2;
+                border-radius: 14px;
+                gridline-color: #f1f5f9;
+                outline: none;
+                color: #334155;
+                }
+                #frame_17 QTableWidget, #frame_14 QTableWidget,
+                #frame_blf_table QTableWidget, #frame_20 QTableWidget {
+                border: none;
+                border-radius: 0px;
+                background-color: transparent;
+                }
+
+                QTableWidget::item, QTableView::item, QTreeWidget::item, QListWidget::item {
+                padding: 10px 8px;
+                border: none;
+                border-bottom: 1px solid #f1f5f9;
+                color: #334155;
+                }
+                QTableWidget::item:hover, QTableView::item:hover,
+                QTreeWidget::item:hover, QListWidget::item:hover { background-color: #f8fafc; }
+                QTableWidget::item:selected, QTableView::item:selected,
+                QTreeWidget::item:selected, QListWidget::item:selected {
+                background-color: #eff6ff;
+                color: #1d4ed8;
+                }
+
+                QHeaderView { background-color: transparent; border: none; }
+                QHeaderView::section {
+                background-color: #f8fafc;
+                color: #94a3b8;
+                padding: 12px 10px;
+                border: none;
+                border-bottom: 1px solid #e6ebf2;
+                font-size: 10px;
+                font-weight: 800;
+                letter-spacing: 1px;
+                }
+                QHeaderView::section:first { border-top-left-radius: 14px; }
+                QHeaderView::section:last { border-top-right-radius: 14px; }
+                QTableCornerButton::section { background-color: #f8fafc; border: none; }
+
+                /* Liste « Top Médicaments » */
+                #listWidget { background-color: transparent; border: none; }
+                #listWidget::item {
+                background-color: #f8fafc;
+                border: 1px solid #eef2f7;
+                border-radius: 12px;
+                padding: 12px;
+                margin: 3px 0px;
+                color: #334155;
+                }
+                #listWidget::item:hover { background-color: #eff6ff; border-color: #dbeafe; color:
+                #1d4ed8; }
+                #listWidget::item:selected { background-color: #dbeafe; border-color: #93c5fd;
+                color: #1e40af; }
+
+                /* ------------------------- GRAPHIQUES ------------------------- */
+                #graphicsView {
+                background-color: transparent;
+                border: none;
+                border-radius: 12px;
+                }
+
+                /* ------------------------- SCROLLBARS ------------------------- */
+                QScrollBar:vertical { border: none; background: transparent; width: 10px; margin:
+                2px; }
+                QScrollBar::handle:vertical { background: #cbd5e1; min-height: 32px; border-radius:
+                5px; }
+                QScrollBar::handle:vertical:hover { background: #94a3b8; }
+                QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0px;
+                background: transparent; border: none; }
+                QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background:
+                transparent; }
+                QScrollBar:horizontal { border: none; background: transparent; height: 10px; margin:
+                2px; }
+                QScrollBar::handle:horizontal { background: #cbd5e1; min-width: 32px; border-radius:
+                5px; }
+                QScrollBar::handle:horizontal:hover { background: #94a3b8; }
+                QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal { width: 0px;
+                background: transparent; border: none; }
+                QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal { background:
+                transparent; }
+
+                /* ------------------------ MENUS / STATUS ------------------------ */
+                QMenuBar {
+                background-color: #ffffff;
+                color: #475569;
+                border: none;
+                border-bottom: 1px solid #e6ebf2;
+                padding: 2px 8px;
+                font-weight: 600;
+                }
+                QMenuBar::item { background-color: transparent; padding: 6px 12px; border-radius:
+                8px; }
+                QMenuBar::item:selected { background-color: #eff6ff; color: #1d4ed8; }
+                QMenu {
+                background-color: #ffffff;
+                border: 1px solid #e6ebf2;
+                border-radius: 12px;
+                padding: 6px;
+                }
+                QMenu::item { padding: 8px 22px; border-radius: 8px; color: #334155; }
+                QMenu::item:selected { background-color: #eff6ff; color: #1d4ed8; }
+                QMenu::separator { height: 1px; background-color: #eef2f7; margin: 5px 8px; }
+                QStatusBar {
+                background-color: #ffffff;
+                color: #64748b;
+                border-top: 1px solid #e6ebf2;
+                font-size: 11px;
+                }
+                QStatusBar::item { border: none; }
+
+                /* --------------------- PAGE BLF / FOURNISSEURS --------------------- */
+                #lbl_blf_title { background-color: transparent; color: #0f172a; font-size: 19px;
+                font-weight: 800; letter-spacing: -0.2px; }
+                #lbl_blf_subtitle {
+                background-color: transparent;
+                color: #2563eb;
+                font-size: 9px;
+                font-weight: 800;
+                letter-spacing: 2.4px;
+                }
+                #lbl_blf_stat1_label, #lbl_blf_stat2_label, #lbl_blf_stat3_label {
+                background-color: transparent;
+                color: #64748b;
+                font-size: 10px;
+                font-weight: 700;
+                letter-spacing: 0.4px;
+                }
+                #lbl_blf_stat1_value, #lbl_blf_stat2_value, #lbl_blf_stat3_value {
+                background-color: transparent;
+                color: #0f172a;
+                font-size: 22px;
+                font-weight: 800;
+                }
+                #lbl_blf_stat1_icon { background-color: #dbeafe; color: #1d4ed8; border: 1px solid
+                #bfdbfe; border-radius: 16px; }
+                #lbl_blf_stat2_icon { background-color: #dcfce7; color: #15803d; border: 1px solid
+                #bbf7d0; border-radius: 16px; }
+                #lbl_blf_stat3_icon { background-color: #fee2e2; color: #b91c1c; border: 1px solid
+                #fecaca; border-radius: 16px; }
+
+                /* Icône de la page courante (header) */
+                #lbl_ico_change {
+                background-color: #eff6ff;
+                image: url(:/Icon/Icons/home-svgrepo-com3.svg);
+                border: 1px solid #dbeafe;
+                border-radius: 13px;
+                padding: 8px;
+                }
+
+                /* ══════════════════════════════════════════════════════════════
+                SIDEBAR — Icônes alternées selon l'état
+                (normal = icône bleue · coché/hover = icône blanche)
+                ══════════════════════════════════════════════════════════════ */
+
+                /* ── Accueil ── */
+                QPushButton#btn_onglet_accueil {
+                icon: url(:/Icon/Icons/home.svg);
+                }
+                QPushButton#btn_onglet_accueil:hover,
+                QPushButton#btn_onglet_accueil:checked {
+                icon: url(:/Icon/Icons/home_white.svg);
+                }
+
+                /* ── Tableau de bord ── */
+                QPushButton#btn_onglet_tableau_bord {
+                icon: url(:/Icon/Icons/activity.svg);
+                }
+                QPushButton#btn_onglet_tableau_bord:hover,
+                QPushButton#btn_onglet_tableau_bord:checked {
+                icon: url(:/Icon/Icons/activity_white.svg);
+                }
+
+                /* ── Articles ── */
+                QPushButton#btn_onglet_article {
+                icon: url(:/Icon/Icons/pill.svg);
+                }
+                QPushButton#btn_onglet_article:hover,
+                QPushButton#btn_onglet_article:checked {
+                icon: url(:/Icon/Icons/pill_white.svg);
+                }
+
+                /* ── Clients ── */
+                QPushButton#btn_onglet_client {
+                icon: url(:/Icon/Icons/users.svg);
+                }
+                QPushButton#btn_onglet_client:hover,
+                QPushButton#btn_onglet_client:checked {
+                icon: url(:/Icon/Icons/users_white.svg);
+                }
+
+                /* ── Facturation ── */
+                QPushButton#btn_onglet_facturation {
+                icon: url(:/Icon/Icons/receipt.svg);
+                }
+                QPushButton#btn_onglet_facturation:hover,
+                QPushButton#btn_onglet_facturation:checked {
+                icon: url(:/Icon/Icons/receipt_white.svg);
+                }
+
+                /* ── BLF ── */
+                QPushButton#btn_onglet_blf {
+                icon: url(:/Icon/Icons/truck.svg);
+                }
+                QPushButton#btn_onglet_blf:hover,
+                QPushButton#btn_onglet_blf:checked {
+                icon: url(:/Icon/Icons/truck_white.svg);
+                }
+
+                /* ── Historique ── */
+                QPushButton#btn_onglet_historique {
+                icon: url(:/Icon/Icons/history.svg);
+                }
+                QPushButton#btn_onglet_historique:hover,
+                QPushButton#btn_onglet_historique:checked {
+                icon: url(:/Icon/Icons/history_white.svg);
+                }
+
+                /* ── Alerte ── */
+                QPushButton#btn_onglet_alertes {
+                icon : url(:/Icon/Icons/alert-triangle.svg);
+                }
+                QPushButton#btn_onglet_alertes:hover,
+                QPushButton#btn_onglet_alertes:checked {
+                icon : url(:/Icon/Icons/alert-triangle_white.svg);
+                }
+
+                /* ── Rapports ── */
+                QPushButton#btn_onglet_rapport {
+                icon: url(:/Icon/Icons/file-text.svg);
+                }
+                QPushButton#btn_onglet_rapport:hover,
+                QPushButton#btn_onglet_rapport:checked {
+                icon: url(:/Icon/Icons/file-text_white.svg);
+                }
+
+                /* ── Audit ── */
+                QPushButton#btn_onglet_audit {
+                icon: url(:/Icon/Icons/shield-check.svg);
+                }
+                QPushButton#btn_onglet_audit:hover,
+                QPushButton#btn_onglet_audit:checked {
+                icon: url(:/Icon/Icons/shield-check_white.svg);
+                }
+
+                /* ── Surveillance ── */
+                QPushButton#btn_onglet_surveillance {
+                icon: url(:/Icon/Icons/shield-alert.svg);
+                }
+                QPushButton#btn_onglet_surveillance:hover,
+                QPushButton#btn_onglet_surveillance:checked {
+                icon: url(:/Icon/Icons/shield-alert_white.svg);
+                }
+
+                /* ── Utilisateurs ── */
+                QPushButton#btn_onglet_utilisateur {
+                icon: url(:/Icon/Icons/user-check.svg);
+                }
+                QPushButton#btn_onglet_utilisateur:hover,
+                QPushButton#btn_onglet_utilisateur:checked {
+                icon: url(:/Icon/Icons/user-check_white.svg);
+                }
+
+                /* ── Paramètres ── */
+                QPushButton#btn_onglet_parametre {
+                icon: url(:/Icon/Icons/settings.svg);
+                }
+                QPushButton#btn_onglet_parametre:hover,
+                QPushButton#btn_onglet_parametre:checked {
+                icon: url(:/Icon/Icons/settings_white.svg);
+                }</string>
+  </property>
+  <property name="dockOptions">
+   <set>QMainWindow::DockOption::AllowTabbedDocks|QMainWindow::DockOption::AnimatedDocks</set>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QFrame" name="frm_nav">
+      <property name="minimumSize">
+       <size>
+        <width>238</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>238</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Shadow::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+       <property name="spacing">
+        <number>4</number>
+       </property>
+       <property name="leftMargin">
+        <number>14</number>
+       </property>
+       <property name="topMargin">
+        <number>16</number>
+       </property>
+       <property name="rightMargin">
+        <number>14</number>
+       </property>
+       <property name="bottomMargin">
+        <number>14</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="frame_2">
+         <property name="styleSheet">
+          <string notr="true">#frame_2{
+                                            background-color : transparent;
+                                            border : none;
+                                            }</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Shape::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <property name="spacing">
+           <number>12</number>
+          </property>
+          <property name="leftMargin">
+           <number>2</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>6</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="minimumSize">
+             <size>
+              <width>42</width>
+              <height>42</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>42</width>
+              <height>42</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+                                                        image: url(:/Icon/Icons/1758107223736.png);
+                                                        background-color:
+                                                        qlineargradient(spread:pad, x1:0, y1:0,
+                                                        x2:1, y2:1, stop:0 #3b82f6, stop:1 #2563eb);
+                                                        border : 1px solid rgba(255,255,255,40);
+                                                        border-radius : 14px;
+                                                        padding : 6px;
+                                                        }</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+                                                        background-color : transparent;
+                                                        }</string>
+            </property>
+            <property name="text">
+             <string>
+                                                        &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span
+                                                        style=&quot; font-size:14pt;
+                                                        font-weight:700;
+                                                        color:#ffffff;&quot;&gt;Nova
+                                                        Pharma&lt;br/&gt;&lt;/span&gt;&lt;span
+                                                        style=&quot; font-size:7pt; font-weight:700;
+                                                        color:#60a5fa;
+                                                        letter-spacing:2px;&quot;&gt;LOGICIEL DE
+                                                        GESTION&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_7">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Policy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>18</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="lbl_nav_section">
+         <property name="text">
+          <string>MENU</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_onglet_accueil">
+         <property name="text">
+          <string>Accueil</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../Icon.qrc">
+           <normaloff>:/Icon/Icons/home.svg</normaloff>:/Icon/Icons/home.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_onglet_tableau_bord">
+         <property name="text">
+          <string>Tableau de bord</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../Icon.qrc">
+           <normaloff>:/Icon/Icons/activity.svg</normaloff>:/Icon/Icons/activity.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_onglet_article">
+         <property name="text">
+          <string>Articles</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../Icon.qrc">
+           <normaloff>:/Icon/Icons/pill.svg</normaloff>:/Icon/Icons/pill.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_onglet_client">
+         <property name="text">
+          <string>Clients</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../Icon.qrc">
+           <normaloff>:/Icon/Icons/users.svg</normaloff>:/Icon/Icons/users.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_onglet_facturation">
+         <property name="text">
+          <string>Facturation</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../Icon.qrc">
+           <normaloff>:/Icon/Icons/receipt.svg</normaloff>:/Icon/Icons/receipt.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_onglet_blf">
+         <property name="text">
+          <string>BLF &amp; Fournisseurs</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../Icon.qrc">
+           <normaloff>:/Icon/Icons/truck.svg</normaloff>:/Icon/Icons/truck.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_onglet_historique">
+         <property name="text">
+          <string>Historique</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../Icon.qrc">
+           <normaloff>:/Icon/Icons/history.svg</normaloff>:/Icon/Icons/history.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_onglet_alertes">
+         <property name="text">
+          <string>Alertes</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../Icon.qrc">
+           <normaloff>:/Icon/Icons/alert-triangle.svg</normaloff>:/Icon/Icons/alert-triangle.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_onglet_rapport">
+         <property name="text">
+          <string>Rapports</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../Icon.qrc">
+           <normaloff>:/Icon/Icons/file-text.svg</normaloff>:/Icon/Icons/file-text.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_onglet_audit">
+         <property name="text">
+          <string>Audit &amp; Sécurité</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../Icon.qrc">
+           <normaloff>:/Icon/Icons/shield-check.svg</normaloff>:/Icon/Icons/shield-check.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_onglet_surveillance">
+         <property name="text">
+          <string>Surveillance</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../Icon.qrc">
+           <normaloff>:/Icon/Icons/shield-alert.svg</normaloff>:/Icon/Icons/shield-alert.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_onglet_utilisateur">
+         <property name="text">
+          <string>Utilisateurs</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../Icon.qrc">
+           <normaloff>:/Icon/Icons/user-check.svg</normaloff>:/Icon/Icons/user-check.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_onglet_parametre">
+         <property name="text">
+          <string>Paramètres</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../Icon.qrc">
+           <normaloff>:/Icon/Icons/settings.svg</normaloff>:/Icon/Icons/settings.svg</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>20</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_6">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="Line" name="line">
+         <property name="styleSheet">
+          <string notr="true">QFrame{
+                                            background-color: rgba(255,255,255,25);
+                                            border : none;
+                                            max-height : 1px;
+                                            }</string>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="frame_3">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="spacing">
+           <number>10</number>
+          </property>
+          <property name="leftMargin">
+           <number>10</number>
+          </property>
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="rightMargin">
+           <number>10</number>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="minimumSize">
+             <size>
+              <width>42</width>
+              <height>42</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>42</width>
+              <height>42</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+                                                        background-color:
+                                                        qlineargradient(spread:pad, x1:0, y1:0,
+                                                        x2:1, y2:1, stop:0 #60a5fa, stop:1 #2563eb);
+                                                        color : #ffffff;
+                                                        border : 1px solid rgba(255,255,255,60);
+                                                        border-radius : 14px;
+                                                        font-weight : bold;
+                                                        font-size : 13px;
+                                                        }</string>
+            </property>
+            <property name="text">
+             <string>DK</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignmentFlag::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_26">
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+                                                        background-color : transparent;
+                                                        }
+                                                    </string>
+            </property>
+            <property name="text">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:9pt; font-weight:700; color:#f8fafc;&quot;&gt;Mr. XXXXX&lt;/span&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;&lt;br/&gt;&lt;/span&gt;&lt;span style=&quot; font-size:7pt; font-weight:700; color:#60a5fa;&quot;&gt;ADMINISTRATEUR&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="btn_logout">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="toolTip">
+             <string>Se déconnecter</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QToolButton {
+                                                        background: transparent;
+                                                        border: none;
+                                                        border-radius: 8px;
+                                                        padding: 6px;
+                                                        }
+                                                        QToolButton:hover {
+                                                        background: rgba(255,255,255,0.15);
+                                                        }</string>
+            </property>
+            <property name="icon">
+             <iconset resource="../Icon.qrc">
+              <normaloff>:/Icon/Icons/log-out_white.svg</normaloff>:/Icon/Icons/log-out_white.svg</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>18</width>
+              <height>18</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QFrame" name="frame_4">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>72</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Shadow::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="0,0,1,0,0,0">
+         <property name="spacing">
+          <number>14</number>
+         </property>
+         <property name="leftMargin">
+          <number>22</number>
+         </property>
+         <property name="topMargin">
+          <number>12</number>
+         </property>
+         <property name="rightMargin">
+          <number>22</number>
+         </property>
+         <property name="bottomMargin">
+          <number>12</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="lbl_ico_change">
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>44</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>44</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">#lbl_ico_change{
+                                                    background-color: rgb(239, 246, 255);
+                                                    image: url(:/Icon/Icons/home-svgrepo-com3.svg);
+                                                    border : 1px solid rgb(219, 234, 254);
+                                                    border-radius : 13px;
+                                                    padding : 8px;
+
+                                                    }</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lbl_titre_change">
+           <property name="styleSheet">
+            <string notr="true">QLabel{
+                                                    background-color : transparent;
+                                                    font-size : 21px;
+                                                    font-weight : 800;
+                                                    color : #0f172a;
+                                                    }
+                                                </string>
+           </property>
+           <property name="text">
+            <string>Accueil</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="edit_recheche_rapide">
+           <property name="minimumSize">
+            <size>
+             <width>240</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="placeholderText">
+            <string>Recherche rapide…</string>
+           </property>
+           <property name="clearButtonEnabled">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="Line" name="line_4">
+           <property name="styleSheet">
+            <string notr="true">QFrame{
+                                                    background-color: #e6ebf2;
+                                                    border : none;
+                                                    max-width : 1px;
+                                                    }</string>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Orientation::Vertical</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="lbl_temps">
+           <property name="styleSheet">
+            <string notr="true">QLabel{
+                                                    background-color : transparent;
+                                                    }</string>
+           </property>
+           <property name="text">
+            <string>
+                                                    &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p
+                                                    align=&quot;right&quot;&gt;&lt;span style=&quot;
+                                                    font-size:11pt; font-weight:700;
+                                                    color:#0f172a;&quot;&gt;18:47:22&lt;br/&gt;&lt;/span&gt;&lt;span
+                                                    style=&quot; font-size:7pt; font-weight:600;
+                                                    color:#94a3b8;
+                                                    letter-spacing:1px;&quot;&gt;DIMANCHE 18
+                                                    JANVIER&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="AnimatedStackedWidget" name="stackedWidget">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="page">
+         <layout class="QVBoxLayout" name="verticalLayout_4">
+          <property name="leftMargin">
+           <number>9</number>
+          </property>
+          <property name="rightMargin">
+           <number>9</number>
+          </property>
+          <item>
+           <widget class="QScrollArea" name="scrollArea">
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="scrollAreaWidgetContents">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>982</width>
+               <height>773</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_5" stretch="7">
+              <property name="leftMargin">
+               <number>50</number>
+              </property>
+              <property name="rightMargin">
+               <number>50</number>
+              </property>
+              <item>
+               <widget class="QFrame" name="frame_6">
+                <property name="styleSheet">
+                 <string notr="true">#frame_6{
+                                                                        background-color:
+                                                                        transparent;
+                                                                        border : none;
+                                                                        }</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::Shape::NoFrame</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Shadow::Raised</enum>
+                </property>
+                <layout class="QGridLayout" name="gridLayout">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="spacing">
+                  <number>20</number>
+                 </property>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_2">
+         <property name="styleSheet">
+          <string notr="true">
+
+                                            #frame_15{
+                                            background-color: #ffffff;
+                                            border: 1px solid #e6ebf2;
+                                            border-radius: 18px;
+                                            }
+
+                                            #frame_16{
+                                            background-color: #ffffff;
+                                            border: 1px solid #e6ebf2;
+                                            border-radius: 18px;
+                                            }
+
+                                            QLabel{
+                                            background-color : transparent;
+                                            }</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <property name="spacing">
+           <number>20</number>
+          </property>
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_3">
+         <layout class="QVBoxLayout" name="verticalLayout_17">
+          <property name="spacing">
+           <number>20</number>
+          </property>
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="btn_voir_tout_produit">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>42</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Toutes les catégories</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_voir_rupture_produit">
+              <property name="minimumSize">
+               <size>
+                <width>140</width>
+                <height>42</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton{
+                                                                icon :
+                                                                url(:/Icon/Icons/exclamation-mark-triangle-f-svgrepo-com.svg);
+                                                                padding-left : 6px;
+                                                                text-align : left;
+                                                                icon-size : 18px 18px;
+                                                                }</string>
+              </property>
+              <property name="text">
+               <string>En rupture</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_ajouter_produit">
+              <property name="minimumSize">
+               <size>
+                <width>180</width>
+                <height>44</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton{
+                                                                icon :
+                                                                url(:/Icon/Icons/add-svgrepo-com.svg);
+                                                                padding-left : 6px;
+                                                                text-align : left;
+                                                                icon-size : 18px 18px;
+                                                                }
+
+                                                                QPushButton:pressed{
+                                                                background-color: rgb(30, 64, 175);
+                                                                }</string>
+              </property>
+              <property name="text">
+               <string>Ajouter un article</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_modifier_stock">
+              <property name="minimumSize">
+               <size>
+                <width>140</width>
+                <height>42</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton{
+                                                                icon :
+                                                                url(:/Icon/Icons/edit.svg);
+                                                                padding-left : 6px;
+                                                                text-align : left;
+                                                                icon-size : 18px 18px;
+                                                                background-color:
+                                                                qlineargradient(spread:pad, x1:0,
+                                                                y1:0, x2:0, y2:1, stop:0 #facc15,
+                                                                stop:1 #eab308);
+                                                                color: #422006;
+                                                                border-radius: 12px;
+                                                                padding: 10px 24px;
+                                                                font-weight: bold;
+                                                                border: 1px solid #ca8a04;
+                                                                }
+
+                                                                QPushButton:hover{
+                                                                background-color :
+                                                                qlineargradient(spread:pad, x1:0,
+                                                                y1:0, x2:0, y2:1, stop:0 #eab308,
+                                                                stop:1 #ca8a04);
+                                                                }
+
+                                                                QPushButton:pressed{
+                                                                background-color : rgb(161, 98, 7);
+                                                                }</string>
+              </property>
+              <property name="text">
+               <string>Modifier</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_supprimer_produit">
+              <property name="minimumSize">
+               <size>
+                <width>140</width>
+                <height>42</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton{
+                                                                icon : url(:/Icon/Icons/trash.svg);
+                                                                padding-left : 6px;
+                                                                text-align : left;
+                                                                icon-size : 18px 18px;
+                                                                background-color : #ffffff;
+                                                                color : #dc2626;
+                                                                border : 1px solid #fecaca;
+                                                                border-radius : 12px;
+                                                                padding : 10px 24px;
+                                                                font-weight : bold;
+                                                                }
+
+                                                                QPushButton:hover{
+                                                                background-color : #fef2f2;
+                                                                border-color : #fca5a5;
+                                                                color : #b91c1c;
+                                                                }
+
+                                                                QPushButton:pressed{
+                                                                background-color : #fee2e2;
+                                                                }</string>
+              </property>
+              <property name="text">
+               <string>Supprimer</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_17">
+            <property name="styleSheet">
+             <string notr="true">#frame_17{
+                                                        background-color: #ffffff;
+                                                        border : 1px solid #e6ebf2;
+                                                        border-radius : 18px;
+                                                        }
+
+                                                        #frame_17 QTableWidget{
+                                                        background-color : transparent;
+                                                        border : none;
+                                                        border-radius : 0px;
+                                                        }</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Shape::NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Shadow::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_16">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QTableWidget" name="tbw_voir_produit">
+               <property name="styleSheet">
+                <string notr="true">QTableWidget{
+                                                                    background-color : transparent;
+                                                                    border : none;
+                                                                    }
+
+                                                                    QHeaderView::section {
+                                                                    font-size : 8px;
+                                                                    }</string>
+               </property>
+               <property name="editTriggers">
+                <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+               </property>
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+               </property>
+               <property name="showGrid">
+                <bool>false</bool>
+               </property>
+               <property name="rowCount">
+                <number>0</number>
+               </property>
+               <property name="columnCount">
+                <number>9</number>
+               </property>
+               <attribute name="horizontalHeaderVisible">
+                <bool>true</bool>
+               </attribute>
+               <attribute name="verticalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+               <attribute name="verticalHeaderMinimumSectionSize">
+                <number>60</number>
+               </attribute>
+               <attribute name="verticalHeaderDefaultSectionSize">
+                <number>60</number>
+               </attribute>
+               <column>
+                <property name="text">
+                 <string>CODE REF</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>PRODUIT</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>CATEGORIE</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>QUANTITE</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>PRIX D'ACHAT</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>PRIX DE VENTE</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>PRIX UNITAIRE</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>EXP</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>DATE D'AJOUT</string>
+                </property>
+               </column>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_4">
+         <layout class="QVBoxLayout" name="verticalLayout_27">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_5">
+         <layout class="QHBoxLayout" name="horizontalLayout_10">
+          <property name="spacing">
+           <number>20</number>
+          </property>
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_9">
+         <property name="styleSheet">
+          <string notr="true">/* ===========================
+                                            PAGE 9 - BLF / FOURNISSEURS
+                                            =========================== */
+
+                                            QWidget#page_9 {
+                                            background-color: transparent;
+                                            }
+
+                                            QLabel{
+                                            background-color : transparent;
+                                            }
+
+                                            /* Cartes principales */
+                                            #frame_blf_header,
+                                            #frame_blf_table {
+                                            background-color: #ffffff;
+                                            border: 1px solid #e6ebf2;
+                                            border-radius: 18px;
+                                            }
+
+                                            /* Bande des stats : fond transparent, cartes internes
+                                            arrondies */
+                                            #frame_blf_stats {
+                                            background-color: transparent;
+                                            border: none;
+                                            }
+
+                                            #frame_blf_stat1,
+                                            #frame_blf_stat2,
+                                            #frame_blf_stat3 {
+                                            background-color: #ffffff;
+                                            border: 1px solid #e6ebf2;
+                                            border-radius: 18px;
+                                            }
+
+                                            #frame_blf_stat1:hover,
+                                            #frame_blf_stat2:hover,
+                                            #frame_blf_stat3:hover {
+                                            border: 1px solid #bfdbfe;
+                                            }
+
+                                            /* Titres du header */
+                                            #lbl_blf_title {
+                                            font-size: 19px;
+                                            font-weight: 800;
+                                            color: #0f172a;
+                                            }
+
+                                            #lbl_blf_subtitle {
+                                            font-size: 9px;
+                                            font-weight: 800;
+                                            text-transform: uppercase;
+                                            letter-spacing: 0.22em;
+                                            color: #2563eb;
+                                            }
+
+                                            /* Champ de recherche */
+                                            QLineEdit#edit_blf_search {
+                                            background-color: #f1f5f9;
+                                            border-radius: 999px;
+                                            border: 1px solid transparent;
+                                            padding: 8px 16px;
+                                            font-size: 12px;
+                                            font-weight: 600;
+                                            color: #334155;
+                                            }
+
+                                            QLineEdit#edit_blf_search:hover {
+                                            background-color: #e8eef6;
+                                            }
+
+                                            QLineEdit#edit_blf_search:focus {
+                                            border: 1px solid #2563eb;
+                                            background-color: #ffffff;
+                                            }
+
+                                            /* Bouton : nouveau partenaire */
+                                            QPushButton#btn_blf_new_supplier {
+                                            background-color: #ffffff;
+                                            border: 1px solid #dbe3ec;
+                                            border-radius: 999px;
+                                            padding: 8px 18px;
+                                            font-size: 11px;
+                                            font-weight: 700;
+                                            color: #334155;
+                                            }
+
+                                            QPushButton#btn_blf_new_supplier:hover {
+                                            background-color: #f8fafc;
+                                            border-color: #c3cedd;
+                                            color: #0f172a;
+                                            }
+
+                                            /* Bouton : passer une commande */
+                                            QPushButton#btn_blf_new_order {
+                                            background-color: qlineargradient(spread:pad, x1:0,
+                                            y1:0, x2:0, y2:1, stop:0 #3b82f6, stop:1 #2563eb);
+                                            border-radius: 999px;
+                                            padding: 8px 18px;
+                                            font-size: 11px;
+                                            font-weight: 800;
+                                            color: #ffffff;
+                                            border: 1px solid #1d4ed8;
+                                            }
+
+                                            QPushButton#btn_blf_new_order:hover {
+                                            background-color: qlineargradient(spread:pad, x1:0,
+                                            y1:0, x2:0, y2:1, stop:0 #2f74e8, stop:1 #1d4ed8);
+                                            }
+
+                                            /* Icônes des stats */
+                                            #lbl_blf_stat1_icon,
+                                            #lbl_blf_stat2_icon,
+                                            #lbl_blf_stat3_icon {
+                                            font-size: 12px;
+                                            font-weight: 800;
+                                            }
+
+                                            /* Texte des stats */
+                                            #lbl_blf_stat1_label,
+                                            #lbl_blf_stat2_label,
+                                            #lbl_blf_stat3_label {
+                                            font-size: 10px;
+                                            font-weight: 700;
+                                            color: #64748b;
+                                            }
+
+                                            /* Valeurs des stats */
+                                            #lbl_blf_stat1_value,
+                                            #lbl_blf_stat2_value,
+                                            #lbl_blf_stat3_value {
+                                            font-size: 22px;
+                                            font-weight: 800;
+                                            color: #0f172a;
+                                            }
+
+                                            /* Titre de la table principale */
+                                            #lbl_blf_table_title {
+                                            font-size: 12px;
+                                            font-weight: 800;
+                                            text-transform: uppercase;
+                                            letter-spacing: 0.14em;
+                                            color: #0f172a;
+                                            }
+
+                                            /* TABLE BLF */
+                                            QTableWidget#tbw_blf_lignes {
+                                            background-color: transparent;
+                                            border: none;
+                                            gridline-color: #f1f5f9;
+                                            outline: none;
+                                            }
+
+                                            QTableWidget#tbw_blf_lignes::item {
+                                            padding: 10px;
+                                            border-bottom: 1px solid #f1f5f9;
+                                            color: #334155;
+                                            font-size: 12px;
+                                            font-weight: 500;
+                                            }
+
+                                            QTableWidget#tbw_blf_lignes::item:hover {
+                                            background-color: #f8fafc;
+                                            }
+
+                                            QTableWidget#tbw_blf_lignes::item:selected {
+                                            background-color: #eff6ff;
+                                            color: #1d4ed8;
+                                            }
+
+                                            /* En-tête du tableau */
+                                            QHeaderView::section {
+                                            background-color: rgba(248, 250, 252, 0.9);
+                                            color: #94a3b8;
+                                            padding: 12px;
+                                            border: 0px solid transparent;
+                                            border-bottom: 1px solid #e6ebf2;
+                                            font-weight: 800;
+                                            text-transform: uppercase;
+                                            font-size: 10px;
+                                            letter-spacing: 0.16em;
+                                            }
+
+                                            QTableWidget#tbw_blf_lignes::corner {
+                                            background-color: #f8fafc;
+                                            border: none;
+                                            }
+
+                                            /* Scrollbars */
+                                            QScrollBar:vertical {
+                                            border: none;
+                                            background: transparent;
+                                            width: 10px;
+                                            margin: 2px;
+                                            }
+
+                                            QScrollBar::handle:vertical {
+                                            background: #cbd5e1;
+                                            min-height: 32px;
+                                            border-radius: 5px;
+                                            }
+
+                                            QScrollBar::handle:vertical:hover {
+                                            background: #94a3b8;
+                                            }
+
+                                            QScrollBar::add-line:vertical,
+                                            QScrollBar::sub-line:vertical {
+                                            height: 0px;
+                                            }
+
+                                            QScrollBar:horizontal {
+                                            border: none;
+                                            background: transparent;
+                                            height: 10px;
+                                            }
+
+                                            QScrollBar::handle:horizontal {
+                                            background: #cbd5e1;
+                                            min-width: 32px;
+                                            border-radius: 5px;
+                                            }</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_blf">
+          <property name="spacing">
+           <number>18</number>
+          </property>
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+          <item>
+           <widget class="QFrame" name="frame_blf_stats">
+            <property name="styleSheet">
+             <string notr="true">#frame_blf_stats{
+                                                        background-color : transparent;
+                                                        border : none;
+                                                        }</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Shape::NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Shadow::Raised</enum>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_blf_stats">
+             <property name="spacing">
+              <number>20</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QFrame" name="frame_blf_table">
+            <property name="frameShape">
+             <enum>QFrame::Shape::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Shadow::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_blf_table">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_6">
+         <property name="styleSheet">
+          <string notr="true">#frame_20{
+                                            background-color: #ffffff;
+                                            border: 1px solid #e6ebf2;
+                                            border-radius: 18px;
+                                            }
+
+                                            #frame_20 QTableWidget{
+                                            background-color : transparent;
+                                            border : none;
+                                            border-top : 1px solid #eef2f7;
+                                            border-radius : 0px;
+                                            }
+
+                                            QLabel{
+                                            background-color : transparent;
+                                            }</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_22">
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_7">
+         <layout class="QHBoxLayout" name="horizontalLayout_11">
+          <property name="spacing">
+           <number>20</number>
+          </property>
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_13">
+         <layout class="QVBoxLayout" name="verticalLayout_20"/>
+        </widget>
+        <widget class="QWidget" name="page_alertes">
+         <layout class="QVBoxLayout" name="verticalLayout_page_alertes">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_8">
+         <layout class="QVBoxLayout" name="verticalLayout_26">
+          <property name="leftMargin">
+           <number>20</number>
+          </property>
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <property name="rightMargin">
+           <number>20</number>
+          </property>
+          <property name="bottomMargin">
+           <number>20</number>
+          </property>
+          <item>
+           <widget class="QFrame" name="frame_22">
+            <property name="styleSheet">
+             <string notr="true">#frame_22{
+                                                        background-color: #ffffff;
+                                                        border: 1px solid #e6ebf2;
+                                                        border-radius: 18px;
+                                                        }
+
+                                                        #frame_22 QFrame{
+                                                        background-color : transparent;
+                                                        border : none;
+                                                        }
+
+                                                        QLabel{
+                                                        background-color : transparent;
+                                                        }</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::Shape::NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Shadow::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_25" stretch="0,0,0,1">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_12">
+               <property name="spacing">
+                <number>14</number>
+               </property>
+               <property name="leftMargin">
+                <number>24</number>
+               </property>
+               <property name="topMargin">
+                <number>22</number>
+               </property>
+               <property name="rightMargin">
+                <number>24</number>
+               </property>
+               <property name="bottomMargin">
+                <number>20</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="label_30">
+                 <property name="styleSheet">
+                  <string notr="true">QLabel{
+                                                                            background-color:
+                                                                            transparent;
+                                                                            }</string>
+                 </property>
+                 <property name="text">
+                  <string>
+                                                                            &lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span
+                                                                            style=&quot;
+                                                                            font-size:18pt;
+                                                                            font-weight:700;
+                                                                            color:#0f172a;&quot;&gt;GESTION
+                                                                            D'EQUIPE&lt;br/&gt;&lt;/span&gt;&lt;span
+                                                                            style=&quot;
+                                                                            font-size:10pt;
+                                                                            color:#94a3b8;&quot;&gt;Contrôlez
+                                                                            les accès et les
+                                                                            permissions du
+                                                                            personnel&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                </widget>
+               </item>
+               <item alignment="Qt::AlignmentFlag::AlignRight">
+                <widget class="QPushButton" name="btn_ajouter_caissier">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>44</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>+ Nouvel Utilisateur</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="Line" name="line_3">
+               <property name="styleSheet">
+                <string notr="true">QFrame{
+                                                                    background-color : #eef2f7;
+                                                                    border : none;
+                                                                    max-height : 1px;
+                                                                    }</string>
+               </property>
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <layout class="QGridLayout" name="gridLayout_2">
+               <property name="leftMargin">
+                <number>24</number>
+               </property>
+               <property name="topMargin">
+                <number>20</number>
+               </property>
+               <property name="rightMargin">
+                <number>24</number>
+               </property>
+               <property name="bottomMargin">
+                <number>20</number>
+               </property>
+               <property name="spacing">
+                <number>18</number>
+               </property>
+              </layout>
+             </item>
+             <item>
+              <spacer name="verticalSpacer_9">
+               <property name="orientation">
+                <enum>Qt::Orientation::Vertical</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>20</width>
+                 <height>40</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="page_12">
+         <layout class="QVBoxLayout" name="verticalLayout_38"/>
+        </widget>
+        <widget class="QWidget" name="page_surveillance">
+         <layout class="QVBoxLayout" name="verticalLayout_3"/>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1240</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_fichier">
+    <property name="title">
+     <string>Fichier</string>
+    </property>
+    <addaction name="action_new_facture"/>
+    <addaction name="separator"/>
+    <addaction name="action_new_client"/>
+    <addaction name="action_new_produit"/>
+    <addaction name="separator"/>
+    <addaction name="action_export_db"/>
+    <addaction name="action_restore_db"/>
+    <addaction name="action_logout"/>
+    <addaction name="separator"/>
+    <addaction name="action_quit"/>
+   </widget>
+   <widget class="QMenu" name="menu_edition">
+    <property name="title">
+     <string>Édition</string>
+    </property>
+    <addaction name="action_actualiser"/>
+    <addaction name="action_search"/>
+    <addaction name="separator"/>
+    <addaction name="action_clear_panier"/>
+   </widget>
+   <widget class="QMenu" name="menu_ventes">
+    <property name="title">
+     <string>Ventes</string>
+    </property>
+    <addaction name="action_demarrer_vente"/>
+    <addaction name="action_ventes_jour"/>
+    <addaction name="separator"/>
+    <addaction name="action_derniere_facture"/>
+   </widget>
+   <widget class="QMenu" name="menu_stock">
+    <property name="title">
+     <string>Stock</string>
+    </property>
+    <addaction name="action_voir_produits"/>
+    <addaction name="action_ruptures"/>
+    <addaction name="separator"/>
+    <addaction name="action_new_blf"/>
+    <addaction name="action_new_fournisseur"/>
+    <addaction name="action_voir_blf"/>
+   </widget>
+   <widget class="QMenu" name="menu_rapports">
+    <property name="title">
+     <string>Rapports</string>
+    </property>
+    <addaction name="action_rapport_ventes"/>
+    <addaction name="action_rapport_equipe"/>
+    <addaction name="action_rapport_operations"/>
+    <addaction name="separator"/>
+    <addaction name="action_export_pdf"/>
+    <addaction name="action_export_excel"/>
+    <addaction name="action_export_csv"/>
+   </widget>
+   <widget class="QMenu" name="menu_admin">
+    <property name="title">
+     <string>Administration</string>
+    </property>
+    <addaction name="action_users"/>
+    <addaction name="action_new_user"/>
+    <addaction name="separator"/>
+    <addaction name="action_audit"/>
+    <addaction name="separator"/>
+    <addaction name="action_backup_now"/>
+    <addaction name="action_manage_backups"/>
+    <addaction name="separator"/>
+    <addaction name="action_parametres"/>
+    <addaction name="separator"/>
+   </widget>
+   <widget class="QMenu" name="menu_aide">
+    <property name="title">
+     <string>?</string>
+    </property>
+    <addaction name="action_guide"/>
+    <addaction name="action_shortcuts"/>
+    <addaction name="separator"/>
+    <addaction name="action_about"/>
+   </widget>
+   <addaction name="menu_fichier"/>
+   <addaction name="menu_edition"/>
+   <addaction name="menu_ventes"/>
+   <addaction name="menu_stock"/>
+   <addaction name="menu_rapports"/>
+   <addaction name="menu_admin"/>
+   <addaction name="menu_aide"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_new_facture">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/invoice.svg</normaloff>:/Icon/Icons/invoice.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Nouvelle facture</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="action_new_client">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/user-plus.svg</normaloff>:/Icon/Icons/user-plus.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Nouveau client</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+C</string>
+   </property>
+  </action>
+  <action name="action_new_produit">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/plus.svg</normaloff>:/Icon/Icons/plus.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Nouveau produit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+P</string>
+   </property>
+  </action>
+  <action name="action_export_db">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/download.svg</normaloff>:/Icon/Icons/download.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Exporter la base…</string>
+   </property>
+  </action>
+  <action name="action_restore_db">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/upload.svg</normaloff>:/Icon/Icons/upload.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Restaurer une sauvegarde…</string>
+   </property>
+  </action>
+  <action name="action_logout">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/log-out.svg</normaloff>:/Icon/Icons/log-out.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Se déconnecter</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+Q</string>
+   </property>
+  </action>
+  <action name="action_quit">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/log-out.svg</normaloff>:/Icon/Icons/log-out.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Quitter</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="action_actualiser">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/refresh.svg</normaloff>:/Icon/Icons/refresh.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Actualiser</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
+  <action name="action_search">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/search.svg</normaloff>:/Icon/Icons/search.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Recherche globale…</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="action_clear_panier">
+   <property name="text">
+    <string>Annuler la saisie</string>
+   </property>
+   <property name="shortcut">
+    <string>Esc</string>
+   </property>
+  </action>
+  <action name="action_demarrer_vente">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/shopping-cart.svg</normaloff>:/Icon/Icons/shopping-cart.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Démarrer une vente</string>
+   </property>
+   <property name="shortcut">
+    <string>F2</string>
+   </property>
+  </action>
+  <action name="action_ventes_jour">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/calendar-check.svg</normaloff>:/Icon/Icons/calendar-check.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Ventes du jour</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+J</string>
+   </property>
+  </action>
+  <action name="action_derniere_facture">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/receipt.svg</normaloff>:/Icon/Icons/receipt.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Voir la dernière facture</string>
+   </property>
+  </action>
+  <action name="action_voir_produits">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/pill.svg</normaloff>:/Icon/Icons/pill.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Voir tous les produits</string>
+   </property>
+   <property name="shortcut">
+    <string>F3</string>
+   </property>
+  </action>
+  <action name="action_ruptures">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/alert-triangle.svg</normaloff>:/Icon/Icons/alert-triangle.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Produits en rupture</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="action_new_blf">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/package.svg</normaloff>:/Icon/Icons/package.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Nouveau BLF</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
+  </action>
+  <action name="action_new_fournisseur">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/truck.svg</normaloff>:/Icon/Icons/truck.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Nouveau fournisseur</string>
+   </property>
+  </action>
+  <action name="action_voir_blf">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/list.svg</normaloff>:/Icon/Icons/list.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Voir les BLF</string>
+   </property>
+  </action>
+  <action name="action_rapport_ventes">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/chart-line.svg</normaloff>:/Icon/Icons/chart-line.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Rapport Ventes</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+1</string>
+   </property>
+  </action>
+  <action name="action_rapport_equipe">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/users.svg</normaloff>:/Icon/Icons/users.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Rapport Équipe</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+2</string>
+   </property>
+  </action>
+  <action name="action_rapport_operations">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/activity.svg</normaloff>:/Icon/Icons/activity.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Rapport Opérations</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+3</string>
+   </property>
+  </action>
+  <action name="action_export_pdf">
+   <property name="text">
+    <string>Export PDF</string>
+   </property>
+  </action>
+  <action name="action_export_excel">
+   <property name="text">
+    <string>Export Excel</string>
+   </property>
+  </action>
+  <action name="action_export_csv">
+   <property name="text">
+    <string>Export CSV</string>
+   </property>
+  </action>
+  <action name="action_users">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/users.svg</normaloff>:/Icon/Icons/users.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Utilisateurs</string>
+   </property>
+  </action>
+  <action name="action_new_user">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/user-plus.svg</normaloff>:/Icon/Icons/user-plus.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Nouvel utilisateur</string>
+   </property>
+  </action>
+  <action name="action_audit">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/history.svg</normaloff>:/Icon/Icons/history.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Journal d'audit</string>
+   </property>
+  </action>
+  <action name="action_backup_now">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/save.svg</normaloff>:/Icon/Icons/save.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Sauvegarder maintenant</string>
+   </property>
+  </action>
+  <action name="action_manage_backups">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/folder.svg</normaloff>:/Icon/Icons/folder.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Gérer les archives…</string>
+   </property>
+  </action>
+  <action name="action_parametres">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/settings.svg</normaloff>:/Icon/Icons/settings.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Paramètres</string>
+   </property>
+  </action>
+  <action name="action_guide">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/book-open.svg</normaloff>:/Icon/Icons/book-open.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Guide utilisateur</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="action_shortcuts">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/key.svg</normaloff>:/Icon/Icons/key.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Raccourcis clavier</string>
+   </property>
+  </action>
+  <action name="action_about">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/info.svg</normaloff>:/Icon/Icons/info.svg</iconset>
+   </property>
+   <property name="text">
+    <string>À propos de Nova Pharma</string>
+   </property>
+  </action>
+  <action name="icon_search">
+   <property name="icon">
+    <iconset resource="../Icon.qrc">
+     <normaloff>:/Icon/Icons/search-alt-2-svgrepo-com.svg</normaloff>:/Icon/Icons/search-alt-2-svgrepo-com.svg</iconset>
+   </property>
+   <property name="text">
+    <string>icon_search</string>
+   </property>
+   <property name="toolTip">
+    <string>Lancer une recherche</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::MenuRole::NoRole</enum>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>AnimatedStackedWidget</class>
+   <extends>QStackedWidget</extends>
+   <header>widget_animation</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../Icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>

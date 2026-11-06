@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DialogRapportZ</class>
+ <widget class="QDialog" name="DialogRapportZ">
+  <property name="geometry">
+   <rect><x>0</x><y>0</y><width>720</width><height>780</height></rect>
+  </property>
+  <property name="windowTitle">
+   <string>Clôture de caisse — Rapport Z</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+QDialog { background: #f0f4f8; }
+QFrame#header_z {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #023E8A, stop:0.5 #0077B6, stop:1 #00B4D8);
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+}
+QFrame#card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+QLabel { color: #334155; font-size: 13px; background: transparent; }
+QLabel#header_title { color: white; font-size: 18px; font-weight: 800; }
+QLabel#header_sub   { color: #CAF0F8; font-size: 11px; }
+QLabel#section_title {
+    color: #023E8A; font-size: 13px; font-weight: 800;
+    background: transparent;
+}
+QLabel#value_big {
+    color: #0f172a; font-size: 22px; font-weight: 800;
+    background: transparent;
+}
+QLabel#value_money {
+    color: #023E8A; font-size: 14px; font-weight: 800;
+    background: transparent;
+}
+QLabel#ecart_ok    { color: #16A34A; font-size: 16px; font-weight: 800; }
+QLabel#ecart_warn  { color: #F4A261; font-size: 16px; font-weight: 800; }
+QLabel#ecart_danger{ color: #DC2626; font-size: 16px; font-weight: 800; }
+QLineEdit, QComboBox, QDateEdit, QDoubleSpinBox {
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 8px 12px;
+    color: #0f172a;
+    font-size: 13px;
+    min-height: 22px;
+}
+QLineEdit:focus, QComboBox:focus, QDateEdit:focus, QDoubleSpinBox:focus {
+    background: #ffffff;
+    border-color: #00B4D8;
+}
+QPushButton {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #0077B6, stop:1 #00B4D8);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 22px;
+    font-size: 13px;
+    font-weight: 700;
+    min-width: 120px;
+}
+QPushButton:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #023E8A, stop:1 #0077B6);
+}
+QPushButton#btn_secondary {
+    background: transparent;
+    color: #64748b;
+    border: 1.5px solid #e2e8f0;
+}
+QPushButton#btn_secondary:hover {
+    background: #fef2f2;
+    color: #dc2626;
+    border-color: #fecaca;
+}
+   </string>
+  </property>
+  <layout class="QVBoxLayout" name="root">
+   <property name="spacing"><number>0</number></property>
+   <property name="leftMargin"><number>0</number></property>
+   <property name="topMargin"><number>0</number></property>
+   <property name="rightMargin"><number>0</number></property>
+   <property name="bottomMargin"><number>0</number></property>
+
+   <!-- HEADER -->
+   <item>
+    <widget class="QFrame" name="header_z">
+     <property name="minimumSize"><size><width>0</width><height>80</height></size></property>
+     <layout class="QHBoxLayout">
+      <property name="leftMargin"><number>24</number></property>
+      <property name="topMargin"><number>16</number></property>
+      <property name="rightMargin"><number>24</number></property>
+      <property name="bottomMargin"><number>16</number></property>
+      <item>
+       <widget class="QLabel" name="header_icon">
+        <property name="minimumSize"><size><width>40</width><height>40</height></size></property>
+        <property name="maximumSize"><size><width>40</width><height>40</height></size></property>
+        <property name="pixmap">
+         <pixmap resource="../Icon.qrc">:/Icon/Icons/receipt_white.svg</pixmap>
+        </property>
+        <property name="scaledContents"><bool>true</bool></property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout">
+        <property name="spacing"><number>2</number></property>
+        <item>
+         <widget class="QLabel" name="header_title">
+          <property name="text"><string>Clôture de caisse — Rapport Z</string></property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="header_sub">
+          <property name="text"><string>Vérifiez votre caisse et imprimez le rapport de fin de période</string></property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+   <!-- SCROLL -->
+   <item>
+    <widget class="QScrollArea">
+     <property name="widgetResizable"><bool>true</bool></property>
+     <property name="frameShape"><enum>QFrame::NoFrame</enum></property>
+     <property name="styleSheet"><string>background: transparent;</string></property>
+     <widget class="QWidget" name="scroll_content">
+      <property name="styleSheet"><string>background: transparent;</string></property>
+      <layout class="QVBoxLayout" name="content_layout">
+       <property name="spacing"><number>14</number></property>
+       <property name="leftMargin"><number>20</number></property>
+       <property name="topMargin"><number>20</number></property>
+       <property name="rightMargin"><number>20</number></property>
+       <property name="bottomMargin"><number>20</number></property>
+
+       <!-- CARTE PARAMÈTRES -->
+       <item>
+        <widget class="QFrame" name="card">
+         <layout class="QVBoxLayout">
+          <property name="leftMargin"><number>20</number></property>
+          <property name="topMargin"><number>16</number></property>
+          <property name="rightMargin"><number>20</number></property>
+          <property name="bottomMargin"><number>16</number></property>
+          <property name="spacing"><number>10</number></property>
+          <item>
+           <widget class="QLabel" name="lbl_param">
+            <property name="text"><string>Paramètres</string></property>
+            <property name="objectName"><string>section_title</string></property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QFormLayout">
+            <property name="spacing"><number>12</number></property>
+            <item row="0" column="0">
+             <widget class="QLabel"><property name="text"><string>Période</string></property></widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="combo_periode">
+              <item><property name="text"><string>Aujourd'hui</string></property></item>
+              <item><property name="text"><string>Hier</string></property></item>
+              <item><property name="text"><string>Shift en cours</string></property></item>
+              <item><property name="text"><string>7 derniers jours</string></property></item>
+              <item><property name="text"><string>Personnalisé</string></property></item>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel"><property name="text"><string>Du</string></property></widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QDateEdit" name="date_debut">
+              <property name="calendarPopup"><bool>true</bool></property>
+              <property name="displayFormat"><string>dd/MM/yyyy</string></property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel"><property name="text"><string>Au</string></property></widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QDateEdit" name="date_fin">
+              <property name="calendarPopup"><bool>true</bool></property>
+              <property name="displayFormat"><string>dd/MM/yyyy</string></property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel"><property name="text"><string>Caisse</string></property></widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QComboBox" name="combo_caisse"/>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+
+       <!-- CARTE APERÇU -->
+       <item>
+        <widget class="QFrame" name="card">
+         <layout class="QVBoxLayout">
+          <property name="leftMargin"><number>20</number></property>
+          <property name="topMargin"><number>16</number></property>
+          <property name="rightMargin"><number>20</number></property>
+          <property name="bottomMargin"><number>16</number></property>
+          <property name="spacing"><number>10</number></property>
+          <item>
+           <widget class="QLabel">
+            <property name="text"><string>Aperçu des ventes</string></property>
+            <property name="objectName"><string>section_title</string></property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QGridLayout">
+            <property name="horizontalSpacing"><number>20</number></property>
+            <property name="verticalSpacing"><number>10</number></property>
+            <item row="0" column="0">
+             <widget class="QLabel"><property name="text"><string>Factures</string></property></widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLabel" name="lbl_nb_factures">
+              <property name="text"><string>0</string></property>
+              <property name="objectName"><string>value_big</string></property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QLabel"><property name="text"><string>Articles</string></property></widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QLabel" name="lbl_nb_articles">
+              <property name="text"><string>0</string></property>
+              <property name="objectName"><string>value_big</string></property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel"><property name="text"><string>CA total</string></property></widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLabel" name="lbl_ca">
+              <property name="text"><string>0 FC</string></property>
+              <property name="objectName"><string>value_money</string></property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QLabel"><property name="text"><string>Panier moyen</string></property></widget>
+            </item>
+            <item row="1" column="3">
+             <widget class="QLabel" name="lbl_panier">
+              <property name="text"><string>0 FC</string></property>
+              <property name="objectName"><string>value_money</string></property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel"><property name="text"><string>Clients identifiés</string></property></widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLabel" name="lbl_ident">
+              <property name="text"><string>0</string></property>
+              <property name="objectName"><string>value_big</string></property>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="QLabel"><property name="text"><string>Clients anonymes</string></property></widget>
+            </item>
+            <item row="2" column="3">
+             <widget class="QLabel" name="lbl_anon">
+              <property name="text"><string>0</string></property>
+              <property name="objectName"><string>value_big</string></property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel"><property name="text"><string>Annulations (nb)</string></property></widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QLabel" name="lbl_nb_annul">
+              <property name="text"><string>0</string></property>
+              <property name="objectName"><string>value_big</string></property>
+             </widget>
+            </item>
+            <item row="3" column="2">
+             <widget class="QLabel"><property name="text"><string>Montant annulé</string></property></widget>
+            </item>
+            <item row="3" column="3">
+             <widget class="QLabel" name="lbl_montant_annul">
+              <property name="text"><string>0 FC</string></property>
+              <property name="objectName"><string>value_money</string></property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+
+       <!-- CARTE CONTRÔLE -->
+       <item>
+        <widget class="QFrame" name="card">
+         <layout class="QVBoxLayout">
+          <property name="leftMargin"><number>20</number></property>
+          <property name="topMargin"><number>16</number></property>
+          <property name="rightMargin"><number>20</number></property>
+          <property name="bottomMargin"><number>16</number></property>
+          <property name="spacing"><number>10</number></property>
+          <item>
+           <widget class="QLabel">
+            <property name="text"><string>Contrôle de caisse</string></property>
+            <property name="objectName"><string>section_title</string></property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QFormLayout">
+            <property name="spacing"><number>12</number></property>
+            <item row="0" column="0">
+             <widget class="QLabel"><property name="text"><string>Montant CA système</string></property></widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLabel" name="lbl_ca_sys">
+              <property name="text"><string>0 FC</string></property>
+              <property name="objectName"><string>value_money</string></property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel"><property name="text"><string>Montant compté en caisse</string></property></widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QDoubleSpinBox" name="spin_compte">
+              <property name="minimumSize"><size><width>200</width><height>36</height></size></property>
+              <property name="maximum"><double>999999999.99</double></property>
+              <property name="decimals"><number>2</number></property>
+              <property name="suffix"><string> FC</string></property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QLabel" name="lbl_ecart">
+            <property name="text"><string>Écart : 0 FC</string></property>
+            <property name="objectName"><string>ecart_ok</string></property>
+            <property name="alignment"><set>Qt::AlignCenter</set></property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+
+       <!-- CARTE OPTIONS -->
+       <item>
+        <widget class="QFrame" name="card">
+         <layout class="QVBoxLayout">
+          <property name="leftMargin"><number>20</number></property>
+          <property name="topMargin"><number>16</number></property>
+          <property name="rightMargin"><number>20</number></property>
+          <property name="bottomMargin"><number>16</number></property>
+          <property name="spacing"><number>10</number></property>
+          <item>
+           <widget class="QLabel">
+            <property name="text"><string>Options</string></property>
+            <property name="objectName"><string>section_title</string></property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QFormLayout">
+            <property name="spacing"><number>12</number></property>
+            <item row="0" column="0">
+             <widget class="QLabel"><property name="text"><string>Format PDF</string></property></widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QComboBox" name="combo_format">
+              <item><property name="text"><string>Ticket 80mm</string></property></item>
+              <item><property name="text"><string>Feuille A4</string></property></item>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel"><property name="text"><string>Impression</string></property></widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QCheckBox" name="chk_print_auto">
+              <property name="text"><string>Envoyer automatiquement à l'imprimante après génération</string></property>
+              <property name="checked"><bool>true</bool></property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+
+      </layout>
+     </widget>
+    </widget>
+   </item>
+
+   <!-- FOOTER -->
+   <item>
+    <widget class="QFrame">
+     <property name="minimumSize"><size><width>0</width><height>70</height></size></property>
+     <property name="styleSheet">
+      <string>QFrame { background: #ffffff; border-top: 1px solid #e2e8f0; }</string>
+     </property>
+     <layout class="QHBoxLayout">
+      <property name="leftMargin"><number>20</number></property>
+      <property name="rightMargin"><number>20</number></property>
+      <item><spacer><property name="orientation"><enum>Qt::Horizontal</enum></property></spacer></item>
+      <item>
+       <widget class="QPushButton" name="btn_fermer">
+        <property name="text"><string>Fermer</string></property>
+        <property name="objectName"><string>btn_secondary</string></property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_generer">
+        <property name="text"><string>Générer &amp; Imprimer</string></property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
+  </layout>
+ </widget>
+ <resources><include location="../Icon.qrc"/></resources>
+</ui>

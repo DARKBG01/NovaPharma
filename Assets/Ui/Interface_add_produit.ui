@@ -1,0 +1,2076 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1130</width>
+    <height>910</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>980</width>
+    <height>720</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Nouveau produit — Nova Pharma</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* ============================================================
+   NOVA PHARMA — DIALOG AJOUT PRODUIT
+   ============================================================ */
+
+QDialog { background-color: #f0f4f8; }
+
+QWidget {
+    font-family: &quot;Segoe UI&quot;, &quot;Inter&quot;, &quot;Roboto&quot;, sans-serif;
+    font-size: 13px;
+    color: #0f172a;
+    outline: none;
+}
+
+/* ══════════════ SIDEBAR ══════════════ */
+QFrame#sidebar {
+    background: qlineargradient(x1:0, y1:0, x2:0.7, y2:1,
+        stop:0 #023E8A, stop:0.5 #0077B6, stop:1 #00B4D8);
+    border: none;
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+}
+
+QLabel#brand_badge {
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    background: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.28);
+    border-radius: 14px;
+    padding: 6px 14px;
+}
+
+QLabel#sidebar_title {
+    color: #ffffff;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: transparent;
+}
+
+QLabel#sidebar_lead {
+    color: #CAF0F8;
+    font-size: 13px;
+    font-weight: 400;
+    background: transparent;
+}
+
+QFrame#check_row {
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+}
+QFrame#check_row[done=&quot;true&quot;] {
+    background: rgba(255,255,255,0.25);
+    border: 1px solid rgba(255,255,255,0.40);
+}
+QLabel#check_text {
+    color: #e0e7ff;
+    font-size: 12px;
+    font-weight: 600;
+    background: transparent;
+}
+QFrame#check_row[done=&quot;true&quot;] QLabel#check_text {
+    color: #ffffff;
+}
+
+QLabel#progress_label {
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 800;
+    background: transparent;
+    min-width: 45px;
+    qproperty-alignment: 'AlignRight | AlignVCenter';
+}
+QProgressBar#progress_bar {
+    background-color: rgba(255,255,255,0.18);
+    border: none;
+    border-radius: 5px;
+    height: 10px;
+    max-height: 10px;
+    text-align: center;
+}
+QProgressBar#progress_bar::chunk {
+    background-color: #90E0EF;
+    border-radius: 5px;
+}
+
+QLabel#sidebar_footer {
+    color: rgba(255,255,255,0.65);
+    font-size: 11px;
+    background: transparent;
+}
+
+/* ══════════════ PANEL ══════════════ */
+QFrame#panel {
+    background-color: #ffffff;
+    border: 1px solid #e6ebf2;
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+}
+
+QLabel#panel_title {
+    color: #0f172a;
+    font-size: 20px;
+    font-weight: 800;
+    background: transparent;
+}
+QLabel#panel_subtitle {
+    color: #64748b;
+    font-size: 12px;
+    background: transparent;
+}
+
+/* Section numbers */
+QLabel#section_num {
+    background-color: #e0f7fa;
+    color: #0077B6;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 800;
+    min-width: 26px;
+    max-width: 26px;
+    min-height: 26px;
+    max-height: 26px;
+    qproperty-alignment: 'AlignCenter';
+}
+QLabel#section_title {
+    color: #334155;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    background: transparent;
+}
+
+/* Labels de champs */
+QLabel#field_label {
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
+    background: transparent;
+}
+QLabel#field_required {
+    color: #dc2626;
+    font-size: 13px;
+    font-weight: 800;
+    background: transparent;
+}
+QLabel#field_opt {
+    color: #0077B6;
+    font-size: 10px;
+    font-weight: 700;
+    background-color: #e0f7fa;
+    border-radius: 8px;
+    padding: 2px 8px;
+}
+
+/* Inputs */
+QLineEdit, QComboBox, QSpinBox, QDoubleSpinBox {
+    background-color: #f8fafc;
+    border: 1.5px solid #dbe3ec;
+    border-radius: 11px;
+    padding: 10px 14px;
+    color: #0f172a;
+    font-size: 13px;
+    font-weight: 500;
+    selection-background-color: #bfdbfe;
+}
+QLineEdit:hover, QComboBox:hover, QSpinBox:hover, QDoubleSpinBox:hover {
+    border-color: #b9c6d8;
+}
+QLineEdit:focus, QComboBox:focus, QSpinBox:focus, QDoubleSpinBox:focus {
+    background-color: #ffffff;
+    border: 1.5px solid #0077B6;
+}
+QLineEdit[readOnly=&quot;true&quot;], QDoubleSpinBox[readOnly=&quot;true&quot;] {
+    background-color: #f1f5f9;
+    color: #475569;
+}
+
+QComboBox::drop-down { border: none; width: 26px; }
+QComboBox::down-arrow {
+    image: url(:/Icon/Icons/chevron-down.svg);
+    width: 12px; height: 12px;
+}
+QComboBox QAbstractItemView {
+    background-color: #ffffff;
+    border: 1px solid #e6ebf2;
+    border-radius: 10px;
+    padding: 6px;
+    selection-background-color: #eff6ff;
+    selection-color: #0077B6;
+    outline: none;
+}
+
+/* Compteur du nom */
+QLabel#name_counter {
+    color: #0077B6;
+    font-size: 11px;
+    font-weight: 700;
+    background-color: #e0f7fa;
+    border: 1px solid #bae6fd;
+    border-radius: 10px;
+    padding: 3px 10px;
+}
+
+/* Aperçu code-barre */
+QFrame#barcode_preview {
+    background-color: #fbfcfe;
+    border: 1px dashed #dbe3ec;
+    border-radius: 10px;
+    min-height: 44px;
+    max-height: 44px;
+}
+QLabel#barcode_hint {
+    color: #94a3b8;
+    font-size: 11px;
+    background: transparent;
+    qproperty-alignment: 'AlignCenter';
+}
+
+/* Toggle auto */
+QFrame#auto_box {
+    background-color: #f0f9ff;
+    border: 1.5px solid #bae6fd;
+    border-radius: 12px;
+    min-height: 54px;
+}
+QFrame#auto_box[on=&quot;true&quot;] {
+    background-color: #e0f7fa;
+    border: 1.5px solid #00B4D8;
+}
+QCheckBox#auto_check {
+    color: #0369a1;
+    font-size: 13px;
+    font-weight: 700;
+    spacing: 10px;
+    background: transparent;
+}
+QCheckBox#auto_check::indicator {
+    width: 20px; height: 20px;
+    border: 2px solid #bae6fd;
+    border-radius: 10px;
+    background-color: #ffffff;
+}
+QCheckBox#auto_check::indicator:checked {
+    background-color: #0077B6;
+    border: 2px solid #0077B6;
+    image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOCIgaGVpZ2h0PSI4IiB2aWV3Qm94PSIwIDAgOCA4IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIyIiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==);
+}
+QLabel#auto_hint {
+    color: #0284c7;
+    font-size: 11px;
+    font-weight: 600;
+    background: transparent;
+}
+
+/* Totaux */
+QFrame#tot_buy_card {
+    background-color: #f8fafc;
+    border: 1.5px solid #e6ebf2;
+    border-left: 4px solid #0077B6;
+    border-radius: 14px;
+    min-height: 90px;
+}
+QFrame#tot_sell_card {
+    background-color: #f8fafc;
+    border: 1.5px solid #e6ebf2;
+    border-left: 4px solid #16A34A;
+    border-radius: 14px;
+    min-height: 90px;
+}
+QLabel#tot_buy_label, QLabel#tot_sell_label {
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    background: transparent;
+}
+QLabel#tot_buy_value {
+    color: #023E8A;
+    font-size: 22px;
+    font-weight: 800;
+    background: transparent;
+}
+QLabel#tot_sell_value {
+    color: #16A34A;
+    font-size: 22px;
+    font-weight: 800;
+    background: transparent;
+}
+
+QLabel#margin_label, QLabel#profit_label {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+    background: transparent;
+}
+QLabel#margin_value, QLabel#profit_value {
+    color: #0077B6;
+    font-size: 13px;
+    font-weight: 800;
+    background: transparent;
+}
+
+/* Erreur */
+QLabel#label_error {
+    color: #dc2626;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    border-left: 4px solid #dc2626;
+    border-radius: 10px;
+    padding: 10px 14px;
+}
+
+/* Footer */
+QFrame#panel_footer {
+    background-color: #f8fafc;
+    border-top: 1px solid #eef2f7;
+    border-bottom-right-radius: 16px;
+}
+
+QPushButton#btn_cancel {
+    background-color: #ffffff;
+    color: #64748b;
+    border: 1.5px solid #dbe3ec;
+    border-radius: 11px;
+    padding: 12px 26px;
+    font-size: 13px;
+    font-weight: 600;
+    min-width: 120px;
+    min-height: 44px;
+}
+QPushButton#btn_cancel:hover {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border-color: #fecaca;
+}
+
+QPushButton#btn_save {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #0077B6, stop:1 #00B4D8);
+    color: #ffffff;
+    border: none;
+    border-radius: 11px;
+    padding: 12px 30px;
+    font-size: 13px;
+    font-weight: 800;
+    min-width: 190px;
+    min-height: 44px;
+    letter-spacing: 0.3px;
+}
+QPushButton#btn_save:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #023E8A, stop:1 #0077B6);
+}
+QPushButton#btn_save:pressed { background: #023E8A; }
+QPushButton#btn_save:disabled { background: #cbd5e1; color: #94a3b8; }
+
+QPushButton#btn_gen_ref {
+    background-color: #eff6ff;
+    color: #0077B6;
+    border: 1px solid #bae6fd;
+    border-radius: 9px;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 700;
+}
+QPushButton#btn_gen_ref:hover {
+    background-color: #dbeafe;
+    border-color: #93c5fd;
+}
+
+/* ScrollArea */
+QScrollArea {
+    background-color: transparent;
+    border: none;
+}
+QScrollArea &gt; QWidget &gt; QWidget {
+    background-color: #ffffff;
+}
+QScrollBar:vertical {
+    border: none;
+    background: transparent;
+    width: 10px;
+    margin: 2px;
+}
+QScrollBar::handle:vertical {
+    background: #cbd5e1;
+    min-height: 32px;
+    border-radius: 5px;
+}
+QScrollBar::handle:vertical:hover { background: #94a3b8; }
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0px; background: transparent;
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: transparent;
+}
+</string>
+  </property>
+  <layout class="QHBoxLayout" name="root_layout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>20</number>
+   </property>
+   <property name="topMargin">
+    <number>20</number>
+   </property>
+   <property name="rightMargin">
+    <number>20</number>
+   </property>
+   <property name="bottomMargin">
+    <number>20</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="sidebar">
+     <property name="minimumSize">
+      <size>
+       <width>320</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>320</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <layout class="QVBoxLayout" name="sidebar_layout">
+      <property name="spacing">
+       <number>14</number>
+      </property>
+      <property name="leftMargin">
+       <number>32</number>
+      </property>
+      <property name="topMargin">
+       <number>36</number>
+      </property>
+      <property name="rightMargin">
+       <number>32</number>
+      </property>
+      <property name="bottomMargin">
+       <number>28</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="brand_badge">
+        <property name="text">
+         <string>＋  NOUVELLE FICHE PRODUIT</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="side_spacer_1">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Policy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>8</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="sidebar_title">
+        <property name="text">
+         <string>Ajouter un produit</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="sidebar_lead">
+        <property name="text">
+         <string>Remplissez les informations pour référencer ce produit dans votre officine.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="side_spacer_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Policy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>16</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QFrame" name="check_row_code">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QHBoxLayout" name="check_code_layout">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <property name="leftMargin">
+          <number>12</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>12</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="check_code_icon">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../Icon.qrc">:/Icon/Icons/circle_white.svg</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_code_text">
+           <property name="styleSheet">
+            <string notr="true">color: #e0e7ff; font-size: 12px; font-weight: 600; background: transparent;</string>
+           </property>
+           <property name="text">
+            <string>Code référence</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="code_spacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="check_row_name">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QHBoxLayout" name="check_name_layout">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <property name="leftMargin">
+          <number>12</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>12</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="check_name_icon">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../Icon.qrc">:/Icon/Icons/circle_white.svg</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_name_text">
+           <property name="styleSheet">
+            <string notr="true">color: #e0e7ff; font-size: 12px; font-weight: 600; background: transparent;</string>
+           </property>
+           <property name="text">
+            <string>Nom renseigné</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="name_spacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="check_row_cat">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QHBoxLayout" name="check_cat_layout">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <property name="leftMargin">
+          <number>12</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>12</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="check_cat_icon">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../Icon.qrc">:/Icon/Icons/circle_white.svg</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_cat_text">
+           <property name="styleSheet">
+            <string notr="true">color: #e0e7ff; font-size: 12px; font-weight: 600; background: transparent;</string>
+           </property>
+           <property name="text">
+            <string>Catégorie sélectionnée</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="cat_spacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="check_row_stock">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>42</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QHBoxLayout" name="check_stock_layout">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <property name="leftMargin">
+          <number>12</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>12</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="check_stock_icon">
+           <property name="minimumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../Icon.qrc">:/Icon/Icons/circle_white.svg</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="check_stock_text">
+           <property name="styleSheet">
+            <string notr="true">color: #e0e7ff; font-size: 12px; font-weight: 600; background: transparent;</string>
+           </property>
+           <property name="text">
+            <string>Stock &amp; prix renseignés</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="stock_spacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <spacer name="side_spacer_3">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="progress_layout">
+        <property name="spacing">
+         <number>12</number>
+        </property>
+        <item>
+         <widget class="QProgressBar" name="progress_bar">
+          <property name="minimum">
+           <number>0</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="value">
+           <number>0</number>
+          </property>
+          <property name="textVisible">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="progress_label">
+          <property name="text">
+           <string>0 %</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="sidebar_footer">
+        <property name="text">
+         <string>Nova Pharma — Gestion des produits</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="panel">
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <layout class="QVBoxLayout" name="panel_layout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QFrame" name="panel_header">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>70</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>70</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: #ffffff; border-bottom: 1px solid #eef2f7; border-top-right-radius: 16px;</string>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QHBoxLayout" name="panel_header_layout">
+         <property name="spacing">
+          <number>14</number>
+         </property>
+         <property name="leftMargin">
+          <number>28</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>28</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="panel_header_icon">
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: #e0f7fa; border-radius: 12px; padding: 9px;</string>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="../Icon.qrc">:/Icon/Icons/plus.svg</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="panel_header_text">
+           <property name="spacing">
+            <number>2</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="panel_title">
+             <property name="text">
+              <string>Fiche produit</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="panel_subtitle">
+             <property name="text">
+              <string>Les champs marqués d'une * sont obligatoires.</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="header_panel_spacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QScrollArea" name="scroll_area">
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scroll_content">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>758</width>
+           <height>785</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #ffffff;</string>
+         </property>
+         <layout class="QVBoxLayout" name="content_layout">
+          <property name="spacing">
+           <number>18</number>
+          </property>
+          <property name="leftMargin">
+           <number>28</number>
+          </property>
+          <property name="topMargin">
+           <number>22</number>
+          </property>
+          <property name="rightMargin">
+           <number>28</number>
+          </property>
+          <property name="bottomMargin">
+           <number>22</number>
+          </property>
+          <item>
+           <layout class="QHBoxLayout" name="sec1_header">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="sec1_num">
+              <property name="styleSheet">
+               <string notr="true">QLabel { background-color: #e0f7fa; color: #0077B6; border-radius: 8px; font-size: 12px; font-weight: 800; min-width: 26px; max-width: 26px; min-height: 26px; max-height: 26px; qproperty-alignment: 'AlignCenter'; }</string>
+              </property>
+              <property name="text">
+               <string>1</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="sec1_title">
+              <property name="styleSheet">
+               <string notr="true">color: #334155; font-size: 12px; font-weight: 800; letter-spacing: 1px; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>INFORMATIONS DU PRODUIT</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QFrame" name="sec1_line">
+              <property name="styleSheet">
+               <string notr="true">background-color: #eef2f7; border: none; max-height: 1px; min-height: 1px;</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::Shape::HLine</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="row_code">
+            <property name="spacing">
+             <number>14</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="layout_code_ref">
+              <property name="spacing">
+               <number>6</number>
+              </property>
+              <item>
+               <layout class="QHBoxLayout" name="code_ref_label_layout">
+                <property name="spacing">
+                 <number>4</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="lbl_code_ref">
+                  <property name="styleSheet">
+                   <string notr="true">color: #334155; font-size: 12px; font-weight: 700;</string>
+                  </property>
+                  <property name="text">
+                   <string>Code référence</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="req_code">
+                  <property name="styleSheet">
+                   <string notr="true">color: #dc2626; font-size: 13px; font-weight: 800;</string>
+                  </property>
+                  <property name="text">
+                   <string>*</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="code_label_spacer">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="code_ref_input_layout">
+                <property name="spacing">
+                 <number>8</number>
+                </property>
+                <item>
+                 <widget class="QLineEdit" name="input_code_ref">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>44</height>
+                   </size>
+                  </property>
+                  <property name="placeholderText">
+                   <string>MED-00001</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btn_gen_ref">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>44</height>
+                   </size>
+                  </property>
+                  <property name="cursor">
+                   <cursorShape>PointingHandCursor</cursorShape>
+                  </property>
+                  <property name="toolTip">
+                   <string>Générer un nouveau code</string>
+                  </property>
+                  <property name="text">
+                   <string>Auto</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="layout_code_barre">
+              <property name="spacing">
+               <number>6</number>
+              </property>
+              <item>
+               <layout class="QHBoxLayout" name="barcode_label_layout">
+                <property name="spacing">
+                 <number>4</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="lbl_code_barre">
+                  <property name="styleSheet">
+                   <string notr="true">color: #334155; font-size: 12px; font-weight: 700;</string>
+                  </property>
+                  <property name="text">
+                   <string>Code-barre</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="barcode_opt">
+                  <property name="styleSheet">
+                   <string notr="true">color: #0077B6; font-size: 10px; font-weight: 700; background: #e0f7fa; border-radius: 8px; padding: 2px 8px;</string>
+                  </property>
+                  <property name="text">
+                   <string>Optionnel</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="barcode_label_spacer">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="input_code_barre">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>44</height>
+                 </size>
+                </property>
+                <property name="placeholderText">
+                 <string>Ex : 3401234567890</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QFrame" name="barcode_preview">
+            <property name="frameShape">
+             <enum>QFrame::Shape::NoFrame</enum>
+            </property>
+            <layout class="QHBoxLayout" name="barcode_preview_layout">
+             <property name="spacing">
+              <number>2</number>
+             </property>
+             <property name="leftMargin">
+              <number>14</number>
+             </property>
+             <property name="topMargin">
+              <number>4</number>
+             </property>
+             <property name="rightMargin">
+              <number>14</number>
+             </property>
+             <property name="bottomMargin">
+              <number>4</number>
+             </property>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="layout_nom">
+            <property name="spacing">
+             <number>6</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" name="nom_label_layout">
+              <property name="spacing">
+               <number>4</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="lbl_nom">
+                <property name="styleSheet">
+                 <string notr="true">color: #334155; font-size: 12px; font-weight: 700;</string>
+                </property>
+                <property name="text">
+                 <string>Nom du produit</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="req_nom">
+                <property name="styleSheet">
+                 <string notr="true">color: #dc2626; font-size: 13px; font-weight: 800;</string>
+                </property>
+                <property name="text">
+                 <string>*</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="nom_label_spacer">
+                <property name="orientation">
+                 <enum>Qt::Orientation::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QLabel" name="name_counter">
+                <property name="text">
+                 <string>0/120</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="input_nom">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>44</height>
+               </size>
+              </property>
+              <property name="maxLength">
+               <number>120</number>
+              </property>
+              <property name="placeholderText">
+               <string>Ex : Doliprane 1000 mg</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="row_cat_unite">
+            <property name="spacing">
+             <number>14</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="layout_cat">
+              <property name="spacing">
+               <number>6</number>
+              </property>
+              <item>
+               <layout class="QHBoxLayout" name="cat_label_layout">
+                <property name="spacing">
+                 <number>4</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="lbl_cat">
+                  <property name="styleSheet">
+                   <string notr="true">color: #334155; font-size: 12px; font-weight: 700;</string>
+                  </property>
+                  <property name="text">
+                   <string>Catégorie</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="req_cat">
+                  <property name="styleSheet">
+                   <string notr="true">color: #dc2626; font-size: 13px; font-weight: 800;</string>
+                  </property>
+                  <property name="text">
+                   <string>*</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="cat_label_spacer">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QComboBox" name="input_categorie">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>44</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="layout_unite">
+              <property name="spacing">
+               <number>6</number>
+              </property>
+              <item>
+               <layout class="QHBoxLayout" name="unite_label_layout">
+                <property name="spacing">
+                 <number>4</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="lbl_unite">
+                  <property name="styleSheet">
+                   <string notr="true">color: #334155; font-size: 12px; font-weight: 700;</string>
+                  </property>
+                  <property name="text">
+                   <string>Unité</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="req_unite">
+                  <property name="styleSheet">
+                   <string notr="true">color: #dc2626; font-size: 13px; font-weight: 800;</string>
+                  </property>
+                  <property name="text">
+                   <string>*</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="unite_label_spacer">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QComboBox" name="input_unite">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>44</height>
+                 </size>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>pièce</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>comprimé</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>boîte</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>flacon</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>tube</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>sachet</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>ampoule</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>plaquette</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>autre</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="sec2_header">
+            <property name="spacing">
+             <number>10</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="sec2_num">
+              <property name="styleSheet">
+               <string notr="true">QLabel { background-color: #e0f7fa; color: #0077B6; border-radius: 8px; font-size: 12px; font-weight: 800; min-width: 26px; max-width: 26px; min-height: 26px; max-height: 26px; qproperty-alignment: 'AlignCenter'; }</string>
+              </property>
+              <property name="text">
+               <string>2</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="sec2_title">
+              <property name="styleSheet">
+               <string notr="true">color: #334155; font-size: 12px; font-weight: 800; letter-spacing: 1px; background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>STOCK &amp; PRIX</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QFrame" name="sec2_line">
+              <property name="styleSheet">
+               <string notr="true">background-color: #eef2f7; border: none; max-height: 1px; min-height: 1px;</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::Shape::HLine</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="row_stock">
+            <property name="spacing">
+             <number>14</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="layout_qte">
+              <property name="spacing">
+               <number>6</number>
+              </property>
+              <item>
+               <layout class="QHBoxLayout" name="qte_label_layout">
+                <property name="spacing">
+                 <number>4</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="lbl_qte">
+                  <property name="styleSheet">
+                   <string notr="true">color: #334155; font-size: 12px; font-weight: 700;</string>
+                  </property>
+                  <property name="text">
+                   <string>Quantité initiale</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="req_qte">
+                  <property name="styleSheet">
+                   <string notr="true">color: #dc2626; font-size: 13px; font-weight: 800;</string>
+                  </property>
+                  <property name="text">
+                   <string>*</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="qte_label_spacer">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QSpinBox" name="input_quantite">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>44</height>
+                 </size>
+                </property>
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+                </property>
+                <property name="suffix">
+                 <string> unité(s)</string>
+                </property>
+                <property name="minimum">
+                 <number>0</number>
+                </property>
+                <property name="maximum">
+                 <number>1000000</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="layout_prix_achat">
+              <property name="spacing">
+               <number>6</number>
+              </property>
+              <item>
+               <layout class="QHBoxLayout" name="pa_label_layout">
+                <property name="spacing">
+                 <number>4</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="lbl_prix_achat">
+                  <property name="styleSheet">
+                   <string notr="true">color: #334155; font-size: 12px; font-weight: 700;</string>
+                  </property>
+                  <property name="text">
+                   <string>Prix d'achat (FC)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="req_pa">
+                  <property name="styleSheet">
+                   <string notr="true">color: #dc2626; font-size: 13px; font-weight: 800;</string>
+                  </property>
+                  <property name="text">
+                   <string>*</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="pa_label_spacer">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="input_prix_achat">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>44</height>
+                 </size>
+                </property>
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+                </property>
+                <property name="suffix">
+                 <string> FC</string>
+                </property>
+                <property name="decimals">
+                 <number>2</number>
+                </property>
+                <property name="maximum">
+                 <double>999999999999999.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="layout_prix_vente">
+              <property name="spacing">
+               <number>6</number>
+              </property>
+              <item>
+               <layout class="QHBoxLayout" name="pv_label_layout">
+                <property name="spacing">
+                 <number>4</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="lbl_prix_vente">
+                  <property name="styleSheet">
+                   <string notr="true">color: #334155; font-size: 12px; font-weight: 700;</string>
+                  </property>
+                  <property name="text">
+                   <string>Prix de vente (FC)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="req_pv">
+                  <property name="styleSheet">
+                   <string notr="true">color: #dc2626; font-size: 13px; font-weight: 800;</string>
+                  </property>
+                  <property name="text">
+                   <string>*</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="pv_label_spacer">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QDoubleSpinBox" name="input_prix_vente">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>44</height>
+                 </size>
+                </property>
+                <property name="buttonSymbols">
+                 <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
+                </property>
+                <property name="suffix">
+                 <string> FC</string>
+                </property>
+                <property name="decimals">
+                 <number>2</number>
+                </property>
+                <property name="maximum">
+                 <double>999999999999999.000000000000000</double>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QFrame" name="auto_box">
+            <property name="frameShape">
+             <enum>QFrame::Shape::NoFrame</enum>
+            </property>
+            <layout class="QHBoxLayout" name="auto_layout">
+             <property name="spacing">
+              <number>12</number>
+             </property>
+             <property name="leftMargin">
+              <number>16</number>
+             </property>
+             <property name="topMargin">
+              <number>10</number>
+             </property>
+             <property name="rightMargin">
+              <number>16</number>
+             </property>
+             <property name="bottomMargin">
+              <number>10</number>
+             </property>
+             <item>
+              <widget class="QCheckBox" name="auto_check">
+               <property name="cursor">
+                <cursorShape>PointingHandCursor</cursorShape>
+               </property>
+               <property name="text">
+                <string>Calculer automatiquement le prix de vente</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="auto_spacer">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="auto_hint">
+               <property name="text">
+                <string>Marge : 30,0 %</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="totals_layout">
+            <property name="spacing">
+             <number>14</number>
+            </property>
+            <item>
+             <widget class="QFrame" name="tot_buy_card">
+              <property name="frameShape">
+               <enum>QFrame::Shape::NoFrame</enum>
+              </property>
+              <layout class="QVBoxLayout" name="tot_buy_layout">
+               <property name="spacing">
+                <number>4</number>
+               </property>
+               <property name="leftMargin">
+                <number>18</number>
+               </property>
+               <property name="topMargin">
+                <number>14</number>
+               </property>
+               <property name="rightMargin">
+                <number>18</number>
+               </property>
+               <property name="bottomMargin">
+                <number>14</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="tot_buy_label">
+                 <property name="text">
+                  <string>TOTAL ACHAT</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="tot_buy_value">
+                 <property name="text">
+                  <string>0,00 FC</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QFrame" name="tot_sell_card">
+              <property name="frameShape">
+               <enum>QFrame::Shape::NoFrame</enum>
+              </property>
+              <layout class="QVBoxLayout" name="tot_sell_layout">
+               <property name="spacing">
+                <number>4</number>
+               </property>
+               <property name="leftMargin">
+                <number>18</number>
+               </property>
+               <property name="topMargin">
+                <number>14</number>
+               </property>
+               <property name="rightMargin">
+                <number>18</number>
+               </property>
+               <property name="bottomMargin">
+                <number>14</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="tot_sell_label">
+                 <property name="text">
+                  <string>TOTAL VENTE</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="tot_sell_value">
+                 <property name="text">
+                  <string>0,00 FC</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="margin_layout">
+            <property name="spacing">
+             <number>20</number>
+            </property>
+            <item>
+             <layout class="QHBoxLayout" name="margin_applied_layout">
+              <property name="spacing">
+               <number>6</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="margin_label">
+                <property name="text">
+                 <string>Marge appliquée :</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="margin_value">
+                <property name="text">
+                 <string>—</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="profit_layout">
+              <property name="spacing">
+               <number>6</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="profit_label">
+                <property name="text">
+                 <string>Bénéfice estimé :</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="profit_value">
+                <property name="text">
+                 <string>—</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <spacer name="margin_spacer">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_error">
+            <property name="visible">
+             <bool>false</bool>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="panel_footer">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>80</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>80</height>
+         </size>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QHBoxLayout" name="panel_footer_layout">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <property name="leftMargin">
+          <number>28</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>28</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <spacer name="footer_spacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_cancel">
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="text">
+            <string>Annuler</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btn_save">
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="text">
+            <string>＋  Enregistrer le produit</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../Icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>

@@ -1,0 +1,663 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PageSurveillance</class>
+ <widget class="QWidget" name="PageSurveillance">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1240</width>
+    <height>880</height>
+   </rect>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+#PageSurveillance { background: transparent; }
+QLabel { background: transparent; }
+#header_surv {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1,
+        stop:0 #7c2d12, stop:1 #b91c1c);
+    border-radius: 18px;
+    border: 1px solid #7f1d1d;
+}
+#header_surv QLabel { color: #ffffff; }
+#ico_surv {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 14px;
+    padding: 10px;
+}
+#label_surv_title { font-size: 22px; font-weight: 800; }
+#label_surv_sub { font-size: 11px; color: rgba(255,255,255,0.8); }
+#badge_surv {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 12px;
+    padding: 8px 18px;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+QFrame#card_surv {
+    background: #ffffff;
+    border: 1px solid #e6ebf2;
+    border-radius: 16px;
+}
+QLabel#kpi_label_surv {
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+QLabel#kpi_total_surv {
+    color: #0f172a;
+    font-size: 24px;
+    font-weight: 800;
+}
+QLabel#kpi_alertes_surv {
+    color: #b45309;
+    font-size: 24px;
+    font-weight: 800;
+}
+QLabel#kpi_critiques_surv {
+    color: #dc2626;
+    font-size: 24px;
+    font-weight: 800;
+}
+QLabel#kpi_chain_surv {
+    color: #16a34a;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+QPushButton#btn_surv_primary {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #dc2626, stop:1 #991b1b);
+    color: #ffffff;
+    border: 1px solid #7f1d1d;
+    border-radius: 11px;
+    padding: 10px 20px;
+    font-weight: 800;
+}
+QPushButton#btn_surv_primary:hover { background: #7f1d1d; }
+QPushButton#btn_surv_ghost {
+    background: #ffffff;
+    color: #475569;
+    border: 1.5px solid #dbe3ec;
+    border-radius: 11px;
+    padding: 10px 20px;
+    font-weight: 700;
+}
+QPushButton#btn_surv_ghost:hover { background: #f8fafc; }
+
+QComboBox#combo_surv_sev {
+    background: #ffffff;
+    border: 1px solid #dbe3ec;
+    border-radius: 10px;
+    padding: 8px 14px;
+}
+
+QComboBox::drop-down ,QDateEdit::drop-down { border: none; width: 26px; }
+QComboBox::drop-down ,QDateEdit::down-arrow {
+    image: url(:/Icon/Icons/chevron-down.svg);
+    width: 12px; height: 12px;
+}
+
+QLineEdit#inp_surv_search {
+    background: #ffffff;
+    border: 1px solid #dbe3ec;
+    border-radius: 10px;
+    padding: 8px 14px;
+    min-height: 22px;
+}
+QDateEdit#date_surv_debut, QDateEdit#date_surv_fin {
+    background: #ffffff;
+    border: 1px solid #dbe3ec;
+    border-radius: 10px;
+    padding: 6px 10px;
+    min-height: 22px;
+}
+
+QTableWidget#table_surv {
+    background: transparent;
+    border: none;
+    gridline-color: #f1f5f9;
+}
+QTableWidget#table_surv::item {
+    padding: 10px;
+    border-bottom: 1px solid #f1f5f9;
+}
+QTableWidget#table_surv::item:selected {
+    background: #eff6ff;
+    color: #1d4ed8;
+}
+QHeaderView::section {
+    background: #f8fafc;
+    color: #94a3b8;
+    padding: 12px;
+    border: none;
+    border-bottom: 1px solid #e6ebf2;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+   </string>
+  </property>
+  <layout class="QVBoxLayout" name="root_surv_layout">
+   <property name="spacing">
+    <number>16</number>
+   </property>
+   <property name="leftMargin">
+    <number>20</number>
+   </property>
+   <property name="topMargin">
+    <number>20</number>
+   </property>
+   <property name="rightMargin">
+    <number>20</number>
+   </property>
+   <property name="bottomMargin">
+    <number>20</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="header_surv">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>90</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>90</height>
+      </size>
+     </property>
+     <layout class="QHBoxLayout" name="header_surv_layout">
+      <property name="spacing">
+       <number>16</number>
+      </property>
+      <property name="leftMargin">
+       <number>24</number>
+      </property>
+      <property name="topMargin">
+       <number>14</number>
+      </property>
+      <property name="rightMargin">
+       <number>24</number>
+      </property>
+      <property name="bottomMargin">
+       <number>14</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="ico_surv">
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>50</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="header_surv_titles">
+        <property name="spacing">
+         <number>2</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_surv_title">
+          <property name="text">
+           <string>Surveillance &amp; Sécurité</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_surv_sub">
+          <property name="text">
+           <string>Monitoring des actions sensibles et intégrité de l'audit</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <spacer name="spacer_surv">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="badge_surv">
+        <property name="text">
+         <string>●  OWNER / DEVELOPER</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="kpi_surv_layout">
+     <property name="spacing">
+      <number>14</number>
+     </property>
+     <item>
+      <widget class="QFrame" name="card_surv">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>110</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout">
+        <property name="leftMargin">
+         <number>18</number>
+        </property>
+        <property name="topMargin">
+         <number>14</number>
+        </property>
+        <property name="rightMargin">
+         <number>18</number>
+        </property>
+        <property name="bottomMargin">
+         <number>14</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="kpi_label_total">
+          <property name="styleSheet">
+           <string notr="true">color: #64748b; font-size: 10px; font-weight: 800; letter-spacing: 1px;</string>
+          </property>
+          <property name="text">
+           <string>ACTIONS AUJOURD'HUI</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="kpi_surv_total">
+          <property name="styleSheet">
+           <string notr="true">color: #0f172a; font-size: 24px; font-weight: 800;</string>
+          </property>
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="card_surv">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>110</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout">
+        <property name="leftMargin">
+         <number>18</number>
+        </property>
+        <property name="topMargin">
+         <number>14</number>
+        </property>
+        <property name="rightMargin">
+         <number>18</number>
+        </property>
+        <property name="bottomMargin">
+         <number>14</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="kpi_label_alertes">
+          <property name="styleSheet">
+           <string notr="true">color: #64748b; font-size: 10px; font-weight: 800; letter-spacing: 1px;</string>
+          </property>
+          <property name="text">
+           <string>ALERTES (warning + danger)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="kpi_surv_alertes">
+          <property name="styleSheet">
+           <string notr="true">color: #b45309; font-size: 24px; font-weight: 800;</string>
+          </property>
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="card_surv">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>110</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout">
+        <property name="leftMargin">
+         <number>18</number>
+        </property>
+        <property name="topMargin">
+         <number>14</number>
+        </property>
+        <property name="rightMargin">
+         <number>18</number>
+        </property>
+        <property name="bottomMargin">
+         <number>14</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="kpi_label_critiques">
+          <property name="styleSheet">
+           <string notr="true">color: #64748b; font-size: 10px; font-weight: 800; letter-spacing: 1px;</string>
+          </property>
+          <property name="text">
+           <string>ACTIONS CRITIQUES</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="kpi_surv_critiques">
+          <property name="styleSheet">
+           <string notr="true">color: #dc2626; font-size: 24px; font-weight: 800;</string>
+          </property>
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="card_surv">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>110</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout">
+        <property name="leftMargin">
+         <number>18</number>
+        </property>
+        <property name="topMargin">
+         <number>14</number>
+        </property>
+        <property name="rightMargin">
+         <number>18</number>
+        </property>
+        <property name="bottomMargin">
+         <number>14</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="kpi_label_chain">
+          <property name="styleSheet">
+           <string notr="true">color: #64748b; font-size: 10px; font-weight: 800; letter-spacing: 1px;</string>
+          </property>
+          <property name="text">
+           <string>INTÉGRITÉ CHAÎNE</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="kpi_surv_chain">
+          <property name="styleSheet">
+           <string notr="true">color: #16a34a; font-size: 24px; font-weight: 800;</string>
+          </property>
+          <property name="text">
+           <string>—</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QFrame" name="card_surv">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>70</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>70</height>
+      </size>
+     </property>
+     <layout class="QHBoxLayout">
+      <property name="spacing">
+       <number>12</number>
+      </property>
+      <property name="leftMargin">
+       <number>16</number>
+      </property>
+      <property name="topMargin">
+       <number>12</number>
+      </property>
+      <property name="rightMargin">
+       <number>16</number>
+      </property>
+      <property name="bottomMargin">
+       <number>12</number>
+      </property>
+      <item>
+       <widget class="QComboBox" name="combo_surv_sev">
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <item>
+         <property name="text">
+          <string>Toutes sévérités</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>🔴 Danger</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>🟠 Warning</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>🔵 Info</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="inp_surv_search">
+        <property name="placeholderText">
+         <string>Rechercher (utilisateur, action, cible…)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Du</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDateEdit" name="date_surv_debut">
+        <property name="calendarPopup">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>au</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDateEdit" name="date_surv_fin">
+        <property name="calendarPopup">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="spacer_filt">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_surv_chain">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #dc2626, stop:1 #991b1b); color: #ffffff; border: 1px solid #7f1d1d; border-radius: 11px; padding: 10px 20px; font-weight: 800;</string>
+        </property>
+        <property name="text">
+         <string>🔒  Vérifier l'intégrité</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btn_surv_refresh">
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background: #ffffff; color: #475569; border: 1.5px solid #dbe3ec; border-radius: 11px; padding: 10px 20px; font-weight: 700;</string>
+        </property>
+        <property name="text">
+         <string>Actualiser</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="card_surv">
+     <layout class="QVBoxLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QTableWidget" name="table_surv">
+        <property name="editTriggers">
+         <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+        </property>
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectionBehavior::SelectRows</enum>
+        </property>
+        <property name="showGrid">
+         <bool>false</bool>
+        </property>
+        <property name="columnCount">
+         <number>7</number>
+        </property>
+        <attribute name="horizontalHeaderVisible">
+         <bool>true</bool>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderDefaultSectionSize">
+         <number>52</number>
+        </attribute>
+        <column>
+         <property name="text">
+          <string>DATE</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>UTILISATEUR</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>SÉVÉRITÉ</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>ACTION</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>CIBLE</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>IP</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>DÉTAILS</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../Icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>
