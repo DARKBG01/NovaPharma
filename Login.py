@@ -14,6 +14,7 @@ import bcrypt
 from Database import db, audit
 from Client.api_singleton import get_api, is_client_mode
 from Interface_login import Ui_LoginDialog
+from Ui_helpers import fix_all_spinboxes
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -41,6 +42,7 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
+        fix_all_spinboxes(self)
         self.setWindowIcon(QtGui.QIcon(ICON_APP))
         self._center_on_screen()
 

@@ -18,6 +18,7 @@ from PySide6 import QtWidgets, QtGui, QtCore
 from Client.api_singleton import get_api, is_client_mode
 from Database import db
 from Interface_add_produit import Ui_Dialog
+from Ui_helpers import fix_all_spinboxes
 
 logger = logging.getLogger(__name__)
 
@@ -45,6 +46,7 @@ class Add_produit(QtWidgets.QDialog, Ui_Dialog):
     def __init__(self, parent=None, user_id: str = None):
         super().__init__(parent)
         self.setupUi(self)
+        fix_all_spinboxes(self)
 
         # Session
         self.user_id = user_id

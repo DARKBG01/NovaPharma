@@ -14,7 +14,7 @@ import sys
 import logging
 
 import pandas as pd
-from PySide6 import QtWidgets, QtCore
+from PySide6 import QtWidgets, QtCore, QtGui
 
 from Database import db, seed
 from Client import api_singleton
@@ -128,9 +128,23 @@ def main() -> int:
     setup_logging()
     logger = logging.getLogger("main")
 
+    # ═══════════════════════════════════════════════════════════
+    # HighDPI : DOIT être fait AVANT QApplication
+    # ═══════════════════════════════════════════════════════════
+    QtCore.QCoreApplication.setAttribute(
+        QtCore.Qt.AA_EnableHighDpiScaling, True)
+    QtCore.QCoreApplication.setAttribute(
+        QtCore.Qt.AA_UseHighDpiPixmaps, True)
+
+    # Politique d'arrondi : RoundPreferFloor évite les décalages de 1px
+    try:
+        QtGui.QGuiApplication.setHighDpiScaleFactorRoundingPolicy(
+            QtCore.Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+    except Exception:
+        pass
+
     # ═══ UN SEUL QApplication (jamais recréé) ═══
     app = QtWidgets.QApplication.instance()
-
     if app is None:
         app = QtWidgets.QApplication(sys.argv)
     app.setApplicationName("NovaPharma")

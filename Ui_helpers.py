@@ -151,6 +151,87 @@ def setup_blf_dialog_table(table: QtWidgets.QTableWidget) -> None:
         resize_columns=[0, 2, 3],
     )
 
+
+def fix_all_spinboxes(widget_root):
+    """
+    Corrige l'alignement de tous les QSpinBox/QDoubleSpinBox.
+
+    Bug Qt6 : qproperty-alignment ne marche PAS sur QSpinBox.
+    Solution : setAlignment() en Python + padding-right ajusté
+    si pas de boutons up/down.
+    """
+    if widget_root is None:
+        return
+
+    # QSpinBox
+    for w in widget_root.findChildren(QtWidgets.QSpinBox):
+        try:
+            w.setAlignment(Qt.AlignCenter)
+            if w.buttonSymbols() == QtWidgets.QAbstractSpinBox.NoButtons:
+                current = w.styleSheet() or ""
+                if "padding-right" not in current:
+                    w.setStyleSheet(
+                        current + "; QSpinBox { padding-right: 8px; }")
+        except Exception:
+            pass
+
+    # QDoubleSpinBox
+    for w in widget_root.findChildren(QtWidgets.QDoubleSpinBox):
+        try:
+            w.setAlignment(Qt.AlignCenter)
+            if w.buttonSymbols() == QtWidgets.QAbstractSpinBox.NoButtons:
+                current = w.styleSheet() or ""
+                if "padding-right" not in current:
+                    w.setStyleSheet(
+                        current + "; QDoubleSpinBox { padding-right: 8px; }")
+        except Exception:
+            pass
+
+
+def fix_all_tables(widget_root):
+    """Ajoute des scrollbars horizontales automatiques aux tables."""
+    from PySide6.QtWidgets import QTableWidget, QHeaderView
+    if widget_root is None:
+        return
+    for w in widget_root.findChildren(QTableWidget):
+        try:
+            w.setHorizontalScrollMode(
+                QTableWidget.ScrollPerPixel)
+            w.setVerticalScrollMode(
+                QTableWidget.ScrollPerPixel)
+        except Exception:
+            pass
+
+
+def make_dialog_responsive(dialog, ideal_w: int = 600, ideal_h: int = 600):
+    """
+    Rend un QDialog responsive :
+    - Taille par défaut : ideal_w x ideal_h
+    - Taille minimale : 70% de ideal
+    - Taille maximale : 90% de l'écran
+    """
+    from PySide6.QtWidgets import QApplication
+    from PySide6.QtCore import Qt
+
+    screen = QApplication.primaryScreen()
+    if screen is None:
+        dialog.resize(ideal_w, ideal_h)
+        return
+
+    avail = screen.availableGeometry()
+    max_w = int(avail.width() * 0.9)
+    max_h = int(avail.height() * 0.9)
+    min_w = int(ideal_w * 0.7)
+    min_h = int(ideal_h * 0.7)
+
+    dialog.setMinimumSize(min_w, min_h)
+    dialog.setMaximumSize(max_w, max_h)
+    dialog.resize(
+        min(ideal_w, max_w),
+        min(ideal_h, max_h))
+
+
+
 class ProduitCompleter(QtWidgets.QCompleter):
     """
     QCompleter custom affichant :

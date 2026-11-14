@@ -21,6 +21,7 @@ from PySide6 import QtWidgets, QtGui, QtCore
 
 from Database import db, seed, NATIONALITY_LIST
 from Interface_configuration import Ui_Wizard
+from Ui_helpers import fix_all_spinboxes
 
 
 
@@ -377,6 +378,7 @@ class Configuration(QtWidgets.QWizard, Ui_Wizard):
 
         # Installe l'UI de base
         self.setupUi(self)
+        fix_all_spinboxes(self)
 
         # Corrections valeurs par défaut
         self.input_profit_margin.setMinimum(0.0)
