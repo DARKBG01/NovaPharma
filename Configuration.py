@@ -209,9 +209,9 @@ class ConsentementDialog(QtWidgets.QDialog):
 
 
 # ══════════════════════════════════════════════════════════════════
-# Textes détaillés
+# Textes détaillés v2.0
 # ══════════════════════════════════════════════════════════════════
-CGU_TEXT = """CONDITIONS GÉNÉRALES D'UTILISATION — NOVA PHARMA v2.0.0
+CGU_TEXT = """CONDITIONS GÉNÉRALES D'UTILISATION — NOVA PHARMA v2.0
 
 1. OBJET
 Nova Pharma est un logiciel de gestion pharmaceutique destiné aux
@@ -220,35 +220,50 @@ des fournisseurs, des rapports et de la traçabilité des actions.
 
 2. LICENCE D'UTILISATION
 L'utilisation de Nova Pharma est accordée sous licence propriétaire
-non transférable. Vous ne pouvez pas :
-  • Copier, distribuer ou revendre le logiciel
-  • Modifier, décompiler ou tenter d'extraire le code source
-  • Contourner les mécanismes de sécurité
+non transférable. Vous ne pouvez pas copier, distribuer, revendre,
+modifier, décompiler ou contourner les mécanismes de sécurité.
 
-3. RESPONSABILITÉ
+3. RESPONSABILITÉ DE L'UTILISATEUR
 L'utilisateur est seul responsable :
   • De la véracité des données saisies
   • Du respect des réglementations pharmaceutiques locales
   • De la sauvegarde régulière de ses données
   • De la confidentialité de ses identifiants
+  • De la protection physique de son matériel
 
-TEAM NOVA ne saurait être tenu responsable des pertes de données,
-des erreurs de saisie ou des conséquences commerciales liées à
-l'utilisation du logiciel.
+4. EXONÉRATION DE RESPONSABILITÉ
+TEAM NOVA fournit Nova Pharma "en l'état". TEAM NOVA ne saurait
+être tenu responsable :
+  • Des pertes de données (panne, vol, virus, ransomware)
+  • Des erreurs de saisie ou de manipulation
+  • Des conséquences commerciales ou financières
+  • Des dommages indirects, matériels ou immatériels
+  • D'une interruption d'activité, quelle qu'en soit la cause
+  • D'une mauvaise utilisation du logiciel
+  • D'un défaut de sauvegarde par l'utilisateur
 
-4. DONNÉES PERSONNELLES
+L'utilisateur utilise Nova Pharma sous sa seule responsabilité.
+
+5. MAINTENANCE & SUPPORT
+Les conditions de maintenance et de support sont définies par un
+contrat séparé entre l'utilisateur et TEAM NOVA. Les interventions
+de maintenance gratuite peuvent être limitées dans le temps (ex:
+3 mois après l'installation). Au-delà, toute intervention est
+facturée selon les tarifs en vigueur de TEAM NOVA.
+
+6. DONNÉES PERSONNELLES
 Les données des clients (nom, téléphone, adresse, etc.) sont stockées
 localement sur votre serveur. Vous vous engagez à respecter la
 confidentialité de ces informations conformément aux lois en vigueur.
 
-5. SUPPORT & MISES À JOUR
+7. SUPPORT & MISES À JOUR
 Le support technique est disponible via teamnovaoff@gmail.com.
 Les mises à jour sont fournies à la discrétion de TEAM NOVA.
 
-6. RÉSILIATION
+8. RÉSILIATION
 La licence peut être révoquée en cas de non-respect de ces conditions.
 
-7. DROIT APPLICABLE
+9. DROIT APPLICABLE
 Ces conditions sont régies par les lois de la République
 Démocratique du Congo.
 
@@ -260,7 +275,6 @@ SAUVEGARDE_TEXT = """SAUVEGARDE AUTOMATIQUE DES DONNÉES
 
 Nova Pharma peut sauvegarder automatiquement vos données selon
 une politique de rétention configurable :
-
   • Quotidienne : 7 dernières archives
   • Hebdomadaire : 4 dernières archives
   • Mensuelle : 12 dernières archives
@@ -270,12 +284,11 @@ CE QUE ÇA FAIT :
   • Création d'archives ZIP chiffrées (AES-256)
   • Stockage local ou sur USB/NAS/réseau
   • Détection automatique des besoins de sauvegarde
-  • Mot de passe dérivé de l'empreinte machine (anti-vol)
+  • Mot de passe dérivé de l'empreinte machine
 
 CE QUE ÇA NE FAIT PAS :
   • Aucune donnée n'est transmise sur Internet
   • Aucune donnée n'est lue par un tiers
-  • Aucune analyse marketing
 
 RISQUES SANS SAUVEGARDE :
   • Perte totale en cas de panne disque
@@ -286,32 +299,51 @@ Cette option est INDÉPENDANTE et FACULTATIVE. Vous pouvez
 activer/désactiver la sauvegarde à tout moment dans les Paramètres."""
 
 
-IA_TEXT = """UTILISATION ANONYMISÉE POUR AMÉLIORATION (FACULTATIF)
+IA_TEXT = """UTILISATION ANONYMISÉE POUR ÉTUDE DE MARCHÉ (FACULTATIF)
 
-Si vous acceptez, Nova Pharma peut collecter des données
-ANONYMISÉES pour améliorer le logiciel :
+En acceptant cette option, vous autorisez TEAM NOVA à extraire
+périodiquement de votre base des données ANONYMISÉES pour :
 
-DONNÉES COLLECTÉES :
-  • Statistiques d'utilisation (nb de ventes, pages visitées)
-  • Messages d'erreur (sans données clients)
-  • Type de pharmacie (petite/moyenne/grande)
-  • Noms de vos produits
-  • Montants de vos ventes
-  • Version du logiciel
+  1. ÉTUDIER LE MARCHÉ PHARMACEUTIQUE
+     Comprendre les tendances de consommation, les produits les
+     plus vendus par région, les variations saisonnières.
 
-DONNÉES JAMAIS COLLECTÉES :
-  • Noms de vos clients
-  • Numéros de téléphone
-  • Adresses
-  • Toute information permettant de vous identifier
+  2. AMÉLIORER NOS MODÈLES D'INTELLIGENCE ARTIFICIELLE
+     Développer des outils d'aide à la décision pour les pharmacies
+     (prévision de stock, suggestions de réapprovisionnement).
 
-UTILISATION :
-  • Amélioration de l'interface
-  • Détection de bugs récurrents
-  • Priorisation des fonctionnalités
+DONNÉES EXTRAITES (ANONYMISÉES) :
+  ✓ Noms de produits vendus
+  ✓ Catégories de produits
+  ✓ Quantités vendues
+  ✓ Prix de vente (agrégés, sans lien avec des clients)
+  ✓ Statistiques journalières et horaires
+  ✓ Nombre de ventes par jour
 
-Cette option est TOTALEMENT FACULTATIVE. Vous pouvez la refuser
-sans aucune conséquence sur l'utilisation du logiciel."""
+DONNÉES JAMAIS EXTRAITES :
+  ✗ Noms des clients
+  ✗ Téléphones, emails, adresses des clients
+  ✗ Noms des utilisateurs (caissiers, admins)
+  ✗ Nom de votre pharmacie
+  ✗ Adresse IP, identifiants machine
+  ✗ Toute information permettant de vous identifier
+
+CONFIDENTIALITÉ :
+  • Un identifiant unique et irréversible (hash) remplace
+    le nom de votre pharmacie
+  • Impossible de relier les données à votre établissement
+  • Aucune transmission automatique : les extractions sont
+    faites manuellement par le développeur avec votre accord
+
+DROIT DE RETRAIT :
+Vous pouvez retirer votre consentement à tout moment en modifiant
+cette option dans les Paramètres. Les extractions futures seront
+alors refusées.
+
+Cette option est TOTALEMENT FACULTATIVE. Refuser n'a AUCUNE
+conséquence sur l'utilisation de Nova Pharma. Conformément aux
+lois sur la protection des données, votre refus est libre et
+sans justification."""
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -973,3 +1005,231 @@ class Configuration(QtWidgets.QWizard, Ui_Wizard):
             db.close()
         finally:
             super().closeEvent(event)
+
+
+class ConsentementDialog(QtWidgets.QDialog):
+    """Dialogue de consentements v2.0 avec 3 sections séparées."""
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Consentements — Nova Pharma v2.0")
+        self.setMinimumSize(800, 720)
+        self.setModal(True)
+        self._build_ui()
+
+    def _build_ui(self):
+        self.setStyleSheet("""
+            QDialog { background: #f0f4f8; }
+            QLabel { color: #334155; background: transparent; }
+            QLabel#title {
+                color: #023E8A; font-size: 20px; font-weight: 800;
+            }
+            QLabel#sub {
+                color: #64748b; font-size: 12px;
+            }
+            QFrame#card {
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 12px;
+            }
+            QFrame#card_mandatory {
+                background: #ffffff;
+                border: 2px solid #dc2626;
+                border-radius: 12px;
+            }
+            QFrame#card_optional {
+                background: #ffffff;
+                border: 1px solid #e2e8f0;
+                border-radius: 12px;
+            }
+            QFrame#card QLabel { background: transparent; }
+            QTextEdit {
+                background: #f8fafc;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                padding: 12px;
+                color: #1e293b;
+                font-size: 12px;
+            }
+            QCheckBox {
+                font-size: 13px; font-weight: 600;
+                color: #0f172a; spacing: 10px;
+            }
+            QCheckBox#cb_mandatory {
+                color: #dc2626; font-weight: 700;
+            }
+            QLabel#badge_mandatory {
+                background: #fef2f2; color: #b91c1c;
+                border: 1px solid #fecaca; border-radius: 6px;
+                padding: 3px 10px; font-size: 10px; font-weight: 800;
+            }
+            QLabel#badge_optional {
+                background: #f0fdf4; color: #15803d;
+                border: 1px solid #bbf7d0; border-radius: 6px;
+                padding: 3px 10px; font-size: 10px; font-weight: 800;
+            }
+            QLabel#badge_disabled {
+                background: #f8fafc; color: #64748b;
+                border: 1px solid #e2e8f0; border-radius: 6px;
+                padding: 3px 10px; font-size: 10px; font-weight: 800;
+            }
+            QPushButton {
+                background: #0077B6; color: white;
+                border: none; border-radius: 10px;
+                padding: 10px 24px; font-weight: 700;
+                font-size: 12px; min-width: 140px;
+            }
+            QPushButton:hover { background: #023E8A; }
+            QPushButton#btn_cancel {
+                background: transparent; color: #64748b;
+                border: 1.5px solid #e2e8f0;
+            }
+            QPushButton#btn_cancel:hover {
+                background: #fef2f2; color: #dc2626;
+                border-color: #fecaca;
+            }
+        """)
+
+        v = QtWidgets.QVBoxLayout(self)
+        v.setContentsMargins(24, 20, 24, 20)
+        v.setSpacing(12)
+
+        # Header
+        t = QtWidgets.QLabel("Consentements & Conditions")
+        t.setObjectName("title")
+        v.addWidget(t)
+
+        s = QtWidgets.QLabel(
+            "Lisez chaque section. Les CGU sont OBLIGATOIRES. Les 2 autres "
+            "sont FACULTATIVES et indépendantes. Vous pouvez les refuser "
+            "sans aucune conséquence sur l'utilisation de Nova Pharma.")
+        s.setObjectName("sub")
+        s.setWordWrap(True)
+        v.addWidget(s)
+
+        # Scroll
+        scroll = QtWidgets.QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setFrameShape(QtWidgets.QFrame.NoFrame)
+        scroll.setStyleSheet("background: transparent;")
+
+        content = QtWidgets.QWidget()
+        content.setStyleSheet("background: transparent;")
+        cv = QtWidgets.QVBoxLayout(content)
+        cv.setContentsMargins(0, 0, 0, 0)
+        cv.setSpacing(14)
+
+        # ─── 1. CGU (OBLIGATOIRE) ───
+        self.check_cgu = self._make_section(
+            cv, "1. Conditions Générales d'Utilisation",
+            CGU_TEXT,
+            "J'ai lu et j'accepte les CGU de Nova Pharma. "
+            "(OBLIGATOIRE)",
+            checked=True,
+            mandatory=True,
+            badge_text="OBLIGATOIRE")
+
+        # ─── 2. Sauvegarde (FACULTATIF, coché) ───
+        self.check_sauvegarde = self._make_section(
+            cv, "2. Sauvegarde automatique des données",
+            SAUVEGARDE_TEXT,
+            "J'accepte la sauvegarde automatique de mes données. "
+            "(FACULTATIF - recommandé)",
+            checked=True,
+            mandatory=False,
+            badge_text="FACULTATIF")
+
+        # ─── 3. IA anonymisée (FACULTATIF, DÉCOCHÉ) ───
+        self.check_ia = self._make_section(
+            cv, "3. Extraction anonymisée pour étude de marché",
+            IA_TEXT,
+            "J'autorise l'extraction de données ANONYMISÉES pour "
+            "l'étude de marché et l'amélioration des modèles IA. "
+            "(FACULTATIF - décoché par défaut)",
+            checked=False,
+            mandatory=False,
+            badge_text="FACULTATIF - NON COCHÉ")
+
+        cv.addStretch()
+        scroll.setWidget(content)
+        v.addWidget(scroll, 1)
+
+        # Footer
+        hf = QtWidgets.QHBoxLayout()
+        hf.addStretch()
+
+        btn_cancel = QtWidgets.QPushButton("Annuler")
+        btn_cancel.setObjectName("btn_cancel")
+        btn_cancel.clicked.connect(self.reject)
+        hf.addWidget(btn_cancel)
+
+        btn_ok = QtWidgets.QPushButton("Valider mes choix")
+        btn_ok.clicked.connect(self._on_accept)
+        hf.addWidget(btn_ok)
+        v.addLayout(hf)
+
+    def _make_section(self, layout, titre, texte, checkbox_text,
+                      checked=False, mandatory=False, badge_text=""):
+        """Crée une section avec texte détaillé + checkbox."""
+        card = QtWidgets.QFrame()
+        card.setObjectName("card_mandatory" if mandatory else "card_optional")
+        cv = QtWidgets.QVBoxLayout(card)
+        cv.setContentsMargins(20, 16, 20, 16)
+        cv.setSpacing(10)
+
+        # Titre + badge
+        h = QtWidgets.QHBoxLayout()
+        h.setSpacing(10)
+
+        tl = QtWidgets.QLabel(titre)
+        tl.setStyleSheet(
+            "color: #023E8A; font-size: 13px; font-weight: 800;")
+        h.addWidget(tl)
+        h.addStretch()
+
+        if badge_text:
+            badge = QtWidgets.QLabel(badge_text)
+            if mandatory:
+                badge.setObjectName("badge_mandatory")
+            elif "NON COCHÉ" in badge_text:
+                badge.setObjectName("badge_disabled")
+            else:
+                badge.setObjectName("badge_optional")
+            h.addWidget(badge)
+
+        cv.addLayout(h)
+
+        # Texte
+        txt = QtWidgets.QTextEdit()
+        txt.setPlainText(texte)
+        txt.setReadOnly(True)
+        txt.setMinimumHeight(140)
+        txt.setMaximumHeight(200)
+        cv.addWidget(txt)
+
+        # Checkbox
+        chk = QtWidgets.QCheckBox(checkbox_text)
+        chk.setChecked(checked)
+        if mandatory:
+            chk.setObjectName("cb_mandatory")
+        cv.addWidget(chk)
+
+        layout.addWidget(card)
+        return chk
+
+    def _on_accept(self):
+        if not self.check_cgu.isChecked():
+            QtWidgets.QMessageBox.warning(
+                self, "CGU obligatoires",
+                "Vous devez accepter les Conditions Générales "
+                "d'Utilisation pour continuer.\n\n"
+                "Les 2 autres options sont facultatives.")
+            return
+        self.accept()
+
+    def resultats(self):
+        return (
+            self.check_sauvegarde.isChecked(),
+            self.check_ia.isChecked(),
+            self.check_cgu.isChecked(),
+        )

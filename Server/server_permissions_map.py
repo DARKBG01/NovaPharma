@@ -60,6 +60,38 @@ ROUTES_PERMISSIONS = [
     ("GET",  r"^/api/retours/[^/]+$",        "voir_historique_ventes"),
     ("POST", r"^/api/retours$",              "annuler_vente"),
 
+    # ─── MONITORING (OWNER/DEV uniquement) ───
+    ("GET", r"^/api/monitoring/machines$", "configurer"),
+
+    # ─── UTILISATEURS (Phase 2) ───
+    ("GET", r"^/api/users$", "voir_utilisateurs"),
+    ("GET", r"^/api/users/[^/]+$", "voir_utilisateurs"),
+    ("POST", r"^/api/users$", "ajouter_user"),
+    ("PUT", r"^/api/users/[^/]+$", "modifier_user"),
+    ("POST", r"^/api/users/[^/]+/reset-password$", "modifier_user"),
+    ("DELETE", r"^/api/users/[^/]+$", "desactiver_user"),
+
+    # ─── PARAMÈTRES / CONFIG (Phase 2) ───
+    ("GET", r"^/api/config/full$", "configurer"),
+    ("PUT", r"^/api/config$", "configurer"),
+    ("GET", r"^/api/pharmacie$", "configurer"),
+    ("PUT", r"^/api/pharmacie$", "configurer"),
+
+    # ─── FOURNISSEURS (Phase 2) ───
+    ("GET", r"^/api/fournisseurs$", "voir_fournisseurs"),
+    ("GET", r"^/api/fournisseurs/[^/]+$", "voir_fournisseurs"),
+    ("POST", r"^/api/fournisseurs$", "ajouter_fournisseur"),
+    ("PUT", r"^/api/fournisseurs/[^/]+$", "modifier_fournisseur"),
+
+    # ─── CATÉGORIES (Phase 2) ───
+    ("GET", r"^/api/categories$", "voir_produits"),
+    ("POST", r"^/api/categories$", "ajouter_produit"),
+    ("PUT", r"^/api/categories/[^/]+$", "modifier_produit"),
+    ("DELETE", r"^/api/categories/[^/]+$", "supprimer_produit"),
+
+    # ─── CHARTS (Phase 2+) ───
+    ("GET", r"^/api/charts/dashboard$", "voir_dashboard"),
+
 
 ]
 

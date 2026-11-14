@@ -18,6 +18,7 @@
 Img/*.png
 Sauvegarde
 Factures
+scripts
 .Cache
 .idea
 logs

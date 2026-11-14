@@ -15,16 +15,19 @@ Usage :
 import logging
 import sys
 
+from Database import db
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from reportlab.graphics import charts
 
 from Server import server_db
 from Server import server_config as cfg
 from Server import server_middlewares as mw
 from Server import server_audit_middleware as audit_mw
 from Server import server_permissions_middleware as perm_mw
-from Server.routes import blf, health, auth, produits, clients, rapports, ventes, sessions, audit as audit_route, retours
+from Server.routes import blf, health, auth, produits, clients, rapports, ventes, sessions, audit as audit_route, \
+    retours, monitoring, users, parametres, fournisseurs, categories,charts
 
 logger = logging.getLogger(__name__)
 
@@ -32,10 +35,15 @@ logger = logging.getLogger(__name__)
 # ══════════════════════════════════════════════════════════════════
 def create_app() -> FastAPI:
     """Crée l'application FastAPI."""
+    allow_docs = db.get_config("server_mode", "autonome") != "client"
+
     app = FastAPI(
         title="Nova Pharma Server",
-        version="0.1.0",
-        description="API REST pour Nova Pharma — gestion pharmacie",
+        version="2.0.0",
+        description="API REST pour Nova Pharma",
+        docs_url="/docs" if allow_docs else None,
+        redoc_url="/redoc" if allow_docs else None,
+        openapi_url="/openapi.json" if allow_docs else None,
     )
 
     # ─── CORS (autorise tous les clients du LAN) ───
@@ -58,6 +66,7 @@ def create_app() -> FastAPI:
     app.middleware("http")(mw.middleware_log)
     app.middleware("http")(perm_mw.middleware_permissions)
     app.middleware("http")(mw.middleware_auth)
+    app.middleware("http")(mw.middleware_rate_limit)
     app.middleware("http")(mw.middleware_horaires)
 
     # ─── Routes ───
@@ -71,6 +80,12 @@ def create_app() -> FastAPI:
     app.include_router(audit_route.router)
     app.include_router(retours.router)
     app.include_router(sessions.router)
+    app.include_router(monitoring.router)
+    app.include_router(users.router)
+    app.include_router(parametres.router)  # ← AJOUT
+    app.include_router(fournisseurs.router)  # ← AJOUT
+    app.include_router(categories.router)
+    app.include_router(charts.router)  # ← AJOUT
 
     # ─── Gestionnaires d'erreurs ───
     @app.exception_handler(Exception)

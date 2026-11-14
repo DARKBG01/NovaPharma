@@ -426,6 +426,143 @@ class NovaApiClient:
             })
 
 
+    # ══════════════════════════════════════════════════════════════
+    # Monitoring — Whitelist PC (Phase 1)
+    # ══════════════════════════════════════════════════════════════
+    def validate_machine(self, machine_id: str, hostname: str = "",
+                         role_attempt: str = "ADMIN") -> dict:
+        """
+        Vérifie si cette machine peut se connecter avec ce rôle.
+        Public (pas besoin de token).
+        Retourne : {allowed: bool, reason: str}
+        """
+        return self._request(
+            "POST", "/api/auth/validate-machine",
+            json={
+                "machine_id": machine_id,
+                "hostname": hostname,
+                "role_attempt": role_attempt,
+            })
+
+    def list_monitoring_machines(self) -> dict:
+        """
+        Liste les machines whitelistées.
+        Retourne : {total: int, max_allowed: int, items: [...]}
+        """
+        return self._request("GET", "/api/monitoring/machines")
+
+    # ══════════════════════════════════════════════════════════════
+    # Users (Phase 2)
+    # ══════════════════════════════════════════════════════════════
+    def list_users(self, page: int = 1, per_page: int = 30,
+                   search: str = "", role: str = "",
+                   actif: int = -1) -> dict:
+        """Liste paginée des utilisateurs."""
+        params = {"page": page, "per_page": per_page, "actif": actif}
+        if search:
+            params["search"] = search
+        if role:
+            params["role"] = role
+        return self._request("GET", "/api/users", params=params)
+
+    def get_user(self, user_id: str) -> dict:
+        """Détail d'un utilisateur (+ permissions)."""
+        return self._request("GET", f"/api/users/{user_id}")
+
+    def create_user(self, data: dict) -> dict:
+        """Crée un utilisateur."""
+        return self._request("POST", "/api/users", json=data)
+
+    def update_user(self, user_id: str, data: dict) -> dict:
+        """Modifie un utilisateur."""
+        return self._request("PUT", f"/api/users/{user_id}", json=data)
+
+    def reset_user_password(self, user_id: str) -> dict:
+        """Génère un mot de passe temporaire NOVA-YYYY-XXXX."""
+        return self._request(
+            "POST", f"/api/users/{user_id}/reset-password")
+
+    def delete_user(self, user_id: str) -> dict:
+        """Désactive un utilisateur (soft delete)."""
+        return self._request("DELETE", f"/api/users/{user_id}")
+
+    # ══════════════════════════════════════════════════════════════
+    # Config / Paramètres (Phase 2)
+    # ══════════════════════════════════════════════════════════════
+    def get_full_config(self) -> dict:
+        """Retourne toutes les configs admin."""
+        return self._request("GET", "/api/config/full")
+
+    def save_config(self, data: dict) -> dict:
+        """Sauvegarde une ou plusieurs configs."""
+        return self._request("PUT", "/api/config", json=data)
+
+    def get_pharmacie(self) -> dict:
+        """Retourne les infos pharmacie."""
+        return self._request("GET", "/api/pharmacie")
+
+    def save_pharmacie(self, data: dict) -> dict:
+        """Modifie les infos pharmacie."""
+        return self._request("PUT", "/api/pharmacie", json=data)
+
+    # ══════════════════════════════════════════════════════════════
+    # Fournisseurs (Phase 2)
+    # ══════════════════════════════════════════════════════════════
+    def list_fournisseurs(self, page: int = 1, per_page: int = 50,
+                          search: str = "", actif: int = -1) -> dict:
+        """Liste paginée des fournisseurs."""
+        params = {"page": page, "per_page": per_page, "actif": actif}
+        if search:
+            params["search"] = search
+        return self._request(
+            "GET", "/api/fournisseurs", params=params)
+
+    def get_fournisseur(self, fournisseur_id: str) -> dict:
+        return self._request(
+            "GET", f"/api/fournisseurs/{fournisseur_id}")
+
+    def create_fournisseur(self, data: dict) -> dict:
+        return self._request(
+            "POST", "/api/fournisseurs", json=data)
+
+    def update_fournisseur(self, fournisseur_id: str,
+                           data: dict) -> dict:
+        return self._request(
+            "PUT", f"/api/fournisseurs/{fournisseur_id}", json=data)
+
+    # ══════════════════════════════════════════════════════════════
+    # Catégories (Phase 2)
+    # ══════════════════════════════════════════════════════════════
+    def list_categories(self, actif: int = 1) -> dict:
+        """Liste des catégories (actives par défaut)."""
+        return self._request(
+            "GET", "/api/categories", params={"actif": actif})
+
+    def create_categorie(self, nom: str,
+                         description: str = None) -> dict:
+        """Crée une catégorie."""
+        return self._request(
+            "POST", "/api/categories",
+            json={"nom": nom, "description": description})
+
+    def update_categorie(self, categorie_id: str,
+                         data: dict) -> dict:
+        return self._request(
+            "PUT", f"/api/categories/{categorie_id}", json=data)
+
+    def delete_categorie(self, categorie_id: str) -> dict:
+        """Soft delete (actif = 0)."""
+        return self._request(
+            "DELETE", f"/api/categories/{categorie_id}")
+
+    # ══════════════════════════════════════════════════════════════
+    # Charts (Phase 2+)
+    # ══════════════════════════════════════════════════════════════
+    def get_dashboard_charts(self) -> dict:
+        """Retourne toutes les données des 4 graphiques dashboard."""
+        return self._request("GET", "/api/charts/dashboard")
+
+
 if __name__ == "__main__":
     import sys
     logging.basicConfig(level=logging.INFO)

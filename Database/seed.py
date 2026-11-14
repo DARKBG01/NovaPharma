@@ -53,8 +53,9 @@ l'utilisation normale de NovaPharma.
 Vous pouvez retirer votre consentement à tout moment.
 """.strip()
 
-VERSION_SAUVEGARDE = "v1.0"
-VERSION_IA         = "v1.0"
+VERSION_SAUVEGARDE = "v2.0"
+VERSION_IA         = "v2.0"
+VERSION_CGU        = "v2.0"
 
 
 # ==================================================================

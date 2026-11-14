@@ -163,6 +163,7 @@ class PageRapports(QtWidgets.QWidget, Ui_PageRapports):
             "ventes_kpi": data_v.get("kpi", {}),
             "ventes_kpi_n1": data_v.get("kpi_n1", {}),
             "ventes_var": data_v.get("variation", {}),
+            "serie_ca": data_v.get("serie_ca", []),  # ← AJOUT
             "top_produits": data_v.get("top_produits", []),
             "categories": data_v.get("categories", []),
             "vendeurs": data_e.get("vendeurs", []),
@@ -238,49 +239,30 @@ class PageRapports(QtWidgets.QWidget, Ui_PageRapports):
         for j in (1, 2, 3, 4):
             h.setSectionResizeMode(j, QtWidgets.QHeaderView.ResizeToContents)
 
-        # ═══ GRAPHIQUES ═══
-        if is_client_mode() and getattr(self, "_use_api_data", False):
-            self._render_charts_api_message()
-        else:
-            self._render_chart_ca()
-            self._render_chart_cat()
+        # ═══ GRAPHIQUES (API ou DB) ═══
+        self._render_chart_ca()
+        self._render_chart_cat()
 
-    def _render_charts_api_message(self):
-        """En mode API, on remplace les graphiques par un message."""
-        for layout, title_obj in (
-            (self.chart_ca.layout(), "chart_ca_title"),
-            (self.chart_cat.layout(), "chart_cat_title"),
-        ):
-            try:
-                self._clean_layout_keep_title(layout, title_obj)
-                lbl = QtWidgets.QLabel(
-                    "Graphique disponible uniquement en mode local.\n"
-                    "Utilisez les tableaux ci-dessous pour l'analyse.")
-                lbl.setAlignment(Qt.AlignCenter)
-                lbl.setStyleSheet(
-                    "color: #94a3b8; font-size: 11px; "
-                    "font-style: italic; background: transparent;")
-                layout.addWidget(lbl)
-            except Exception:
-                logger.exception("Erreur remplacement graphique")
 
     def _render_chart_ca(self):
         try:
             from PySide6.QtCharts import (
                 QChart, QChartView, QLineSeries, QValueAxis
             )
-            from PySide6.QtCore import QPointF
 
             layout = self.chart_ca.layout()
-
-            # ═══ Nettoyage : garde SEULEMENT le titre (chart_ca_title) ═══
             self._clean_layout_keep_title(layout, "chart_ca_title")
 
-            # ═══ Récupère les données ═══
-            serie = engine.serie_ca_journalier(self._debut, self._fin)
+            # ─── Récupère la série (API ou DB) ───
+            if is_client_mode() and getattr(self, "_use_api_data", False):
+                serie = self._current_data.get("serie_ca", []) or []
+            else:
+                serie = engine.serie_ca_journalier(
+                    self._debut, self._fin)
 
             if not serie:
-                lbl = QtWidgets.QLabel("Aucune donnée sur la période")
+                lbl = QtWidgets.QLabel(
+                    "Aucune donnée sur la période")
                 lbl.setAlignment(Qt.AlignCenter)
                 lbl.setStyleSheet(
                     "color: #94a3b8; font-size: 12px; "
@@ -288,9 +270,9 @@ class PageRapports(QtWidgets.QWidget, Ui_PageRapports):
                 layout.addWidget(lbl)
                 return
 
-            # ═══ Crée le nouveau chart ═══
             chart = QChart()
-            chart.setBackgroundBrush(QtGui.QBrush(QtGui.QColor("#ffffff")))
+            chart.setBackgroundBrush(
+                QtGui.QBrush(QtGui.QColor("#ffffff")))
             chart.setPlotAreaBackgroundBrush(
                 QtGui.QBrush(QtGui.QColor("#ffffff")))
             chart.setPlotAreaBackgroundVisible(True)
@@ -303,13 +285,14 @@ class PageRapports(QtWidgets.QWidget, Ui_PageRapports):
             series.setPen(pen)
 
             max_y = 0.0
-            for i, (_, ca) in enumerate(serie):
-                series.append(float(i), float(ca))
-                max_y = max(max_y, float(ca))
+            for i, item in enumerate(serie):
+                # item = (label, ca) selon l'API
+                ca = float(item[1]) if isinstance(item, (list, tuple)) and len(item) > 1 else 0
+                series.append(float(i), ca)
+                max_y = max(max_y, ca)
 
             chart.addSeries(series)
 
-            # ─── Axe X ───
             axis_x = QValueAxis()
             axis_x.setLabelFormat("%d")
             axis_x.setLabelsColor(QtGui.QColor("#64748b"))
@@ -321,7 +304,6 @@ class PageRapports(QtWidgets.QWidget, Ui_PageRapports):
             chart.addAxis(axis_x, Qt.AlignBottom)
             series.attachAxis(axis_x)
 
-            # ─── Axe Y ───
             axis_y = QValueAxis()
             axis_y.setLabelFormat("%.0f")
             axis_y.setLabelsColor(QtGui.QColor("#64748b"))
@@ -334,7 +316,8 @@ class PageRapports(QtWidgets.QWidget, Ui_PageRapports):
 
             view = QChartView(chart)
             view.setRenderHint(QtGui.QPainter.Antialiasing)
-            view.setStyleSheet("background: transparent; border: none;")
+            view.setStyleSheet(
+                "background: transparent; border: none;")
             view.setMinimumHeight(220)
             layout.addWidget(view)
 
@@ -346,13 +329,17 @@ class PageRapports(QtWidgets.QWidget, Ui_PageRapports):
             from PySide6.QtCharts import QChart, QChartView, QPieSeries
 
             layout = self.chart_cat.layout()
-
-            # ═══ Nettoyage : garde SEULEMENT le titre (chart_cat_title) ═══
             self._clean_layout_keep_title(layout, "chart_cat_title")
 
-            # ═══ Données ═══
-            data = engine.repartition_categories(self._debut, self._fin)
-            data = [(d["cat"], d["ca"]) for d in data if d["ca"] > 0]
+            # ─── Récupère les données (API ou DB) ───
+            if is_client_mode() and getattr(self, "_use_api_data", False):
+                raw = self._current_data.get("categories", []) or []
+                data = [(d.get("cat", "—"), d.get("ca", 0))
+                        for d in raw if (d.get("ca") or 0) > 0]
+            else:
+                raw = engine.repartition_categories(
+                    self._debut, self._fin)
+                data = [(d["cat"], d["ca"]) for d in raw if d["ca"] > 0]
 
             if not data:
                 lbl = QtWidgets.QLabel("Aucune donnée")
@@ -363,9 +350,9 @@ class PageRapports(QtWidgets.QWidget, Ui_PageRapports):
                 layout.addWidget(lbl)
                 return
 
-            # ═══ Chart ═══
             chart = QChart()
-            chart.setBackgroundBrush(QtGui.QBrush(QtGui.QColor("#ffffff")))
+            chart.setBackgroundBrush(
+                QtGui.QBrush(QtGui.QColor("#ffffff")))
             chart.setMargins(QtCore.QMargins(4, 4, 4, 4))
 
             series = QPieSeries()
@@ -374,7 +361,8 @@ class PageRapports(QtWidgets.QWidget, Ui_PageRapports):
 
             for i, (cat, ca) in enumerate(data[:8]):
                 slice_ = series.append(str(cat), float(ca))
-                slice_.setBrush(QtGui.QColor(palette[i % len(palette)]))
+                slice_.setBrush(
+                    QtGui.QColor(palette[i % len(palette)]))
                 slice_.setLabelVisible(False)
 
             chart.addSeries(series)
@@ -385,7 +373,8 @@ class PageRapports(QtWidgets.QWidget, Ui_PageRapports):
 
             view = QChartView(chart)
             view.setRenderHint(QtGui.QPainter.Antialiasing)
-            view.setStyleSheet("background: transparent; border: none;")
+            view.setStyleSheet(
+                "background: transparent; border: none;")
             view.setMinimumHeight(220)
             layout.addWidget(view)
 

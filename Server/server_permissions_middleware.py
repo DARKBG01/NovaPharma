@@ -25,7 +25,8 @@ PUBLIC_PATHS = {
     "/api/auth/login",
     "/api/auth/logout",
     "/api/auth/me",
-    "/api/auth/change-password",   # ← AJOUT
+    "/api/auth/change-password",
+    "/api/auth/validate-machine",   # ← AJOUT
     "/docs",
     "/openapi.json",
     "/redoc",

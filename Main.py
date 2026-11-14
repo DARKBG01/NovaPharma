@@ -19,6 +19,28 @@ from PySide6 import QtWidgets, QtCore
 from Database import db, seed
 from Client import api_singleton
 
+def check_license_before_start() -> bool:
+    """Vérifie la licence / l'essai avant de lancer l'app."""
+    from Core.license_manager import check_license_and_trial
+    from Core.license_dialog import LicenseDialog
+
+    ok, days_left, msg = check_license_and_trial()
+
+    if ok:
+        # Essai ou licence valide
+        if days_left > 0:
+            logging.getLogger("main").info(
+                f"Essai gratuit : {days_left} jour(s) restant(s)")
+        return True
+
+    # Blocage : afficher le dialogue d'activation
+    dlg = LicenseDialog(message=msg)
+    if dlg.exec() == QtWidgets.QDialog.Accepted:
+        # Re-vérifier après activation
+        ok2, _, _ = check_license_and_trial()
+        return ok2
+
+    return False
 
 def setup_logging():
     import os
@@ -108,6 +130,7 @@ def main() -> int:
 
     # ═══ UN SEUL QApplication (jamais recréé) ═══
     app = QtWidgets.QApplication.instance()
+
     if app is None:
         app = QtWidgets.QApplication(sys.argv)
     app.setApplicationName("NovaPharma")
@@ -149,6 +172,18 @@ def main() -> int:
         QtWidgets.QMessageBox.critical(
             None, "Erreur fatale",
             f"Impossible d'initialiser la base de données :\n{e}")
+        return 1
+
+    # ═══ VÉRIFICATION LICENCE / ESSAI ═══
+    try:
+        if not check_license_before_start():
+            logger.info("Licence non valide — fermeture.")
+            return 0
+    except Exception:
+        logger.exception("Erreur vérification licence")
+        QtWidgets.QMessageBox.critical(
+            None, "Erreur",
+            "Impossible de vérifier la licence.")
         return 1
 
     # ═══ 1.5 Détecte le mode serveur/client ═══

@@ -17,6 +17,7 @@ import re
 
 from PySide6 import QtWidgets, QtGui, QtCore
 
+from Client.api_singleton import is_client_mode, get_api
 from Database import db
 from Interface_edit_produit import Ui_Dialog
 
@@ -92,9 +93,18 @@ class Edit_produit(QtWidgets.QDialog, Ui_Dialog):
 
     def _load_categories(self):
         try:
-            rows = db.query(
-                "SELECT nom FROM Categorie WHERE actif = 1 ORDER BY nom ASC")
-            cats = [r["nom"] for r in rows]
+            cats = []
+            if is_client_mode():
+                api = get_api()
+                if api is not None:
+                    data = api.list_categories()
+                    cats = [r["nom"] for r in data.get("items", [])]
+            else:
+                rows = db.query(
+                    "SELECT nom FROM Categorie WHERE actif = 1 "
+                    "ORDER BY nom ASC")
+                cats = [r["nom"] for r in rows]
+
             self.input_categorie.clear()
             if cats:
                 self.input_categorie.addItems(cats)
@@ -105,26 +115,51 @@ class Edit_produit(QtWidgets.QDialog, Ui_Dialog):
             self.input_categorie.addItem("(erreur)")
 
     def _load_produit(self):
-        """Charge le produit depuis la base."""
         if not self.code_reference:
             self._produit = None
             return
         try:
-            row = db.query_one(
-                """SELECT Code_reference, Nom, Code_barre, Categorie,
-                          Description, Unite, Quantite, Quantite_initiale,
-                          Prix_achat, Prix_vente, Prix_unitaire, Date_ajout
-                   FROM produits WHERE Code_reference = ? LIMIT 1""",
-                (self.code_reference,))
-            self._produit = dict(row) if row else None
+            if is_client_mode():
+                api = get_api()
+                if api is None:
+                    self._produit = None
+                    return
+                data = api.get_produit(self.code_reference)
+                self._produit = data
+            else:
+                row = db.query_one(
+                    """SELECT Code_reference, Nom, Code_barre, Categorie,
+                              Description, Unite, Quantite, Quantite_initiale,
+                              Prix_achat, Prix_vente, Prix_unitaire, Date_ajout
+                       FROM produits WHERE Code_reference = ? LIMIT 1""",
+                    (self.code_reference,))
+                self._produit = dict(row) if row else None
+
             if self._produit:
-                self._stock_initial = int(self._produit["Quantite"] or 0)
+                self._stock_initial = int(
+                    self._produit.get("Quantite") or 0)
         except Exception:
             logger.exception("Erreur chargement produit")
             self._produit = None
 
     def _load_historique_ajustements(self):
-        """Charge les 10 derniers ajustements de ce produit."""
+        """Charge les 10 derniers ajustements (API non disponible)."""
+        # ─── Mode client : pas d'API dédiée ───
+        if is_client_mode():
+            self.table_ajustements.setRowCount(1)
+            it = QtWidgets.QTableWidgetItem(
+                "Historique non disponible en mode client")
+            it.setTextAlignment(QtCore.Qt.AlignCenter)
+            it.setForeground(QtGui.QColor("#94a3b8"))
+            f = QtGui.QFont("Segoe UI", 10)
+            f.setItalic(True)
+            it.setFont(f)
+            self.table_ajustements.setItem(0, 0, it)
+            self.table_ajustements.setSpan(
+                0, 0, 1, self.table_ajustements.columnCount())
+            return
+
+        # ─── Mode local ───
         try:
             rows = db.query(
                 """SELECT date_ajustement, difference, motif, stock_apres
@@ -442,8 +477,47 @@ class Edit_produit(QtWidgets.QDialog, Ui_Dialog):
 
         diff_qte = new_quantite - self._stock_initial
 
+        # ═══════════════════════════════════════════════════════════
+        # MODE CLIENT → API
+        # ═══════════════════════════════════════════════════════════
+        if is_client_mode():
+            try:
+                api = get_api()
+                if api is None:
+                    raise RuntimeError("API non initialisée")
+
+                data = {
+                    "Nom": nom,
+                    "Code_barre": code_barre,
+                    "Categorie": categorie,
+                    "Description": description,
+                    "Unite": unite,
+                    "Quantite": new_quantite,
+                    "Prix_achat": prix_achat,
+                    "Prix_vente": prix_vente,
+                    "Prix_unitaire": prix_vente,
+                }
+                api.update_produit(self.code_reference, data)
+
+                logger.info(
+                    "Produit modifié (API) : %s (diff stock: %+d)",
+                    self.code_reference, diff_qte)
+                self.product_updated.emit(self.code_reference)
+                QtWidgets.QMessageBox.information(
+                    self, "Produit modifié",
+                    f"Les modifications du produit « {nom} » ont été "
+                    "enregistrées.")
+                self.accept()
+                return
+            except Exception as e:
+                logger.exception("Échec modification produit (API)")
+                self._show_error(f"Erreur d'enregistrement : {e}")
+                return
+
+        # ═══════════════════════════════════════════════════════════
+        # MODE LOCAL (code existant)
+        # ═══════════════════════════════════════════════════════════
         try:
-            # ═══ SNAPSHOT AVANT ═══
             from Database import audit
             avant = audit.snapshot(
                 "produits", "Code_reference", self.code_reference)

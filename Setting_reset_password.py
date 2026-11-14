@@ -14,6 +14,7 @@ import bcrypt
 from PySide6 import QtWidgets, QtGui, QtCore
 from PySide6.QtCore import Qt
 
+from Client.api_singleton import get_api, is_client_mode
 from Database import db, audit
 from Interface_reset_password import Ui_Dialog
 
@@ -47,17 +48,35 @@ class Setting_reset_password(QtWidgets.QDialog, Ui_Dialog):
         self.btn_copy.clicked.connect(self._copy_to_clipboard)
 
     def _apply_reset(self):
-        try:
-            from Database import audit
+        # ─── MODE CLIENT → API ───
+        if is_client_mode():
+            try:
+                api = get_api()
+                if api is None:
+                    raise RuntimeError("API non initialisée")
 
+                result = api.reset_user_password(self.user_id)
+                self._temp_password = result.get(
+                    "temp_password", self._temp_password)
+                self.lbl_pwd.setText(self._temp_password)
+                return
+            except Exception as e:
+                logger.exception("Erreur reset password (API)")
+                QtWidgets.QMessageBox.critical(
+                    self, "Erreur",
+                    f"Impossible de réinitialiser :\n{e}")
+                self._temp_password = "ERREUR"
+                self.lbl_pwd.setText("Échec de la réinitialisation")
+                return
+
+        # ─── MODE LOCAL (code existant) ───
+        try:
             pwd_hash = bcrypt.hashpw(
                 self._temp_password.encode("utf-8"),
                 bcrypt.gensalt()).decode("utf-8")
 
-            # ─── Snapshot AVANT ───
             avant = audit.snapshot("Utilisateur", "id", self.user_id)
 
-            # ─── Récupère le nom cible ───
             cible_nom = "Utilisateur"
             try:
                 r = db.query_one(
@@ -76,7 +95,6 @@ class Setting_reset_password(QtWidgets.QDialog, Ui_Dialog):
                     "must_change_password = 1 WHERE id = ?",
                     (pwd_hash, self.user_id))
 
-            # ═══ AUDIT ═══
             try:
                 audit.log(
                     audit.ACTION_RESET_MOT_DE_PASSE,
@@ -89,8 +107,9 @@ class Setting_reset_password(QtWidgets.QDialog, Ui_Dialog):
                         "temp_password_generated": True,
                         "force_change_at_login": True,
                     },
-                    avant={"must_change_password": avant.get(
-                        "must_change_password") if avant else None})
+                    avant={"must_change_password":
+                               avant.get("must_change_password")
+                               if avant else None})
             except Exception:
                 logger.exception("Erreur audit reset mdp")
 

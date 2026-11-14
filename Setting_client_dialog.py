@@ -153,12 +153,28 @@ class Setting_client_dialog(QtWidgets.QDialog, Ui_Dialog):
     # ------------------------------------------------------------------
     def _load_client(self):
         try:
-            row = db.query_one(
-                """SELECT id, COALESCE(C_name, nom) AS nom,
-                          numero, adresse, email, notes, sexe
-                   FROM Client WHERE id = ? LIMIT 1""",
-                (self.client_id,))
-            self._client_data = dict(row) if row else None
+            if is_client_mode():
+                from Client.api_singleton import get_api
+                api = get_api()
+                if api is None:
+                    self._client_data = None
+                    return
+                data = api.get_client(self.client_id)
+                self._client_data = {
+                    "nom": data.get("nom"),
+                    "numero": data.get("numero"),
+                    "email": data.get("email"),
+                    "adresse": data.get("adresse"),
+                    "notes": data.get("notes"),
+                    "sexe": data.get("sexe") or "M",
+                }
+            else:
+                row = db.query_one(
+                    """SELECT id, COALESCE(C_name, nom) AS nom,
+                              numero, adresse, email, notes, sexe
+                       FROM Client WHERE id = ? LIMIT 1""",
+                    (self.client_id,))
+                self._client_data = dict(row) if row else None
         except Exception:
             logger.exception("Erreur chargement client")
             self._client_data = None

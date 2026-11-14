@@ -15,6 +15,7 @@ import re
 from PySide6 import QtWidgets, QtGui, QtCore
 from PySide6.QtCore import Qt
 
+from Client.api_singleton import is_client_mode, get_api
 from Database import db, audit
 from Interface_add_fournisseur import Ui_DialogAddFournisseur
 
@@ -83,15 +84,19 @@ class Setting_add_fourniss(QtWidgets.QDialog, Ui_DialogAddFournisseur):
         if tel and not PHONE_REGEX.match(tel):
             return False, "Téléphone invalide."
 
-        # Unicité entreprise
-        try:
-            if db.query_one(
-                "SELECT 1 FROM Fournisseur WHERE LOWER(Entreprise) = LOWER(?) LIMIT 1",
-                (entreprise,)
-            ):
-                return False, f"Un fournisseur « {entreprise} » existe déjà."
-        except Exception:
-            logger.exception("Erreur vérif unicité")
+        # Unicité entreprise (uniquement en mode local —
+        # l'API renvoie 409 si doublon)
+        if not is_client_mode():
+            try:
+                if db.query_one(
+                        "SELECT 1 FROM Fournisseur "
+                        "WHERE LOWER(Entreprise) = LOWER(?) LIMIT 1",
+                        (entreprise,)
+                ):
+                    return False, (
+                        f"Un fournisseur « {entreprise} » existe déjà.")
+            except Exception:
+                logger.exception("Erreur vérif unicité")
 
         return True, ""
 
@@ -125,13 +130,52 @@ class Setting_add_fourniss(QtWidgets.QDialog, Ui_DialogAddFournisseur):
             self._show_error(msg)
             return
 
-        entreprise  = self.edit_raison_sociale.text().strip().upper()
-        categorie   = self.cmb_categorie.currentText().strip().upper()
+        entreprise = self.edit_raison_sociale.text().strip().upper()
+        categorie = self.cmb_categorie.currentText().strip().upper()
         responsable = self.edit_nom_contact.text().strip().upper() or None
-        numero      = self.edit_tel_contact.text().strip() or None
-        email       = self.edit_email_contact.text().strip().lower() or None
-        adresse     = self.edit_adresse.text().strip() or None
+        numero = self.edit_tel_contact.text().strip() or None
+        email = self.edit_email_contact.text().strip().lower() or None
+        adresse = self.edit_adresse.text().strip() or None
 
+        # ═══════════════════════════════════════════════════════════
+        # MODE CLIENT → API
+        # ═══════════════════════════════════════════════════════════
+        if is_client_mode():
+            try:
+                api = get_api()
+                if api is None:
+                    raise RuntimeError("API non initialisée")
+
+                data = {
+                    "Entreprise": entreprise,
+                    "Categorie": categorie,
+                    "Responsable": responsable,
+                    "Numero": numero,
+                    "Email": email,
+                    "Adresse": adresse,
+                }
+                result = api.create_fournisseur(data)
+                fid = result.get("Id_fournisseur", "")
+
+                logger.info(
+                    "Fournisseur créé (API) : %s (%s)",
+                    entreprise, fid)
+                self.fournisseur_created.emit(fid)
+
+                QtWidgets.QMessageBox.information(
+                    self, "Fournisseur créé",
+                    f"Le fournisseur « {entreprise} » a été ajouté.\n\n"
+                    f"Identifiant : {fid}")
+                self.accept()
+                return
+            except Exception as e:
+                logger.exception("Échec création fournisseur (API)")
+                self._show_error(f"Erreur d'enregistrement : {e}")
+                return
+
+        # ═══════════════════════════════════════════════════════════
+        # MODE LOCAL (code existant)
+        # ═══════════════════════════════════════════════════════════
         id_four = self._next_id_fournisseur()
 
         try:

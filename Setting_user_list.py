@@ -10,6 +10,7 @@ import logging
 from PySide6 import QtWidgets, QtGui, QtCore
 from PySide6.QtCore import Qt
 
+from Client.api_singleton import get_api, is_client_mode
 from Database import db
 from Interface_page_users import Ui_PageUsers
 
@@ -95,41 +96,78 @@ class PageUsers(QtWidgets.QWidget, Ui_PageUsers):
 
     def _load_page(self, page):
         try:
-            clause, params = FILTERS.get(self._filter, ("1=1", ()))
-            where = [clause]
-            p = list(params)
-
-            if self._search:
-                where.append("(prenom LIKE ? OR nom LIKE ? OR "
-                             "email LIKE ? OR numero LIKE ?)")
-                like = f"%{self._search}%"
-                p.extend([like, like, like, like])
-
-            wc = " AND ".join(where)
-            row = db.query_one(
-                f"SELECT COUNT(*) AS n FROM Utilisateur WHERE {wc}",
-                tuple(p))
-            self._total_count = int(row["n"] or 0) if row else 0
-            self._total_pages = max(
-                1, (self._total_count + PAGE_SIZE - 1) // PAGE_SIZE)
-            self._page = max(1, min(page, self._total_pages))
-
-            offset = (self._page - 1) * PAGE_SIZE
-            rows = db.query(
-                f"""SELECT id, identifiant, prenom, nom, email, numero,
-                          role, actif, derniere_connexion,
-                          is_owner, is_developer
-                    FROM Utilisateur
-                    WHERE {wc}
-                    ORDER BY is_owner DESC, is_developer DESC,
-                             created_at ASC
-                    LIMIT ? OFFSET ?""",
-                tuple(p + [PAGE_SIZE, offset]))
-
-            self._populate(rows)
+            if is_client_mode():
+                self._load_page_api(page)
+            else:
+                self._load_page_local(page)
             self._update_pagination()
         except Exception:
             logger.exception("Erreur chargement utilisateurs")
+
+    def _load_page_local(self, page):
+        clause, params = FILTERS.get(self._filter, ("1=1", ()))
+        where = [clause]
+        p = list(params)
+
+        if self._search:
+            where.append("(prenom LIKE ? OR nom LIKE ? OR "
+                         "email LIKE ? OR numero LIKE ?)")
+            like = f"%{self._search}%"
+            p.extend([like, like, like, like])
+
+        wc = " AND ".join(where)
+        row = db.query_one(
+            f"SELECT COUNT(*) AS n FROM Utilisateur WHERE {wc}",
+            tuple(p))
+        self._total_count = int(row["n"] or 0) if row else 0
+        self._total_pages = max(
+            1, (self._total_count + PAGE_SIZE - 1) // PAGE_SIZE)
+        self._page = max(1, min(page, self._total_pages))
+
+        offset = (self._page - 1) * PAGE_SIZE
+        rows = db.query(
+            f"""SELECT id, identifiant, prenom, nom, email, numero,
+                      role, actif, derniere_connexion,
+                      is_owner, is_developer
+                FROM Utilisateur
+                WHERE {wc}
+                ORDER BY is_owner DESC, is_developer DESC,
+                         created_at ASC
+                LIMIT ? OFFSET ?""",
+            tuple(p + [PAGE_SIZE, offset]))
+
+        self._populate(rows)
+
+    def _load_page_api(self, page):
+        api = get_api()
+        if api is None:
+            raise RuntimeError("API non initialisée")
+
+        # Mapping filtre UI → rôle API
+        role_map = {
+            "Rôle : ADMIN": "ADMIN",
+            "Rôle : UTILISATEUR": "UTILISATEUR",
+            "Rôle : CAISSIER": "CAISSIER",
+        }
+        role = role_map.get(self._filter, "")
+
+        actif = -1
+        if self._filter == "Actifs":
+            actif = 1
+        elif self._filter == "Inactifs":
+            actif = 0
+
+        data = api.list_users(
+            page=page, per_page=PAGE_SIZE,
+            search=self._search, role=role, actif=actif)
+
+        self._total_count = int(data.get("total", 0))
+        self._total_pages = int(data.get("pages", 1))
+        self._page = int(data.get("page", 1))
+
+        # Convertit items dict → objets compatibles _populate
+        items = data.get("items", [])
+        self._populate(items)
 
     def _populate(self, rows):
         t = self.users_table
@@ -155,37 +193,45 @@ class PageUsers(QtWidgets.QWidget, Ui_PageUsers):
         fn = QtGui.QFont("Segoe UI", 10)
         fm = QtGui.QFont("Courier New", 9)
 
+        # ✅ APRÈS
+        # Normalise : dict ou sqlite3.Row → dict
+        def _d(r, k, default=None):
+            try:
+                return r.get(k, default) if isinstance(r, dict) else (r[k] if k in r.keys() else default)
+            except Exception:
+                return default
+
         for i, r in enumerate(rows):
-            prenom = r["prenom"] or ""
-            nom = r["nom"] or ""
+            prenom = _d(r, "prenom") or ""
+            nom = _d(r, "nom") or ""
             full = f"{prenom} {nom}".strip()
 
             it0 = QtWidgets.QTableWidgetItem(full)
             it0.setFont(fb)
             it0.setForeground(QtGui.QColor("#0f172a"))
-            it0.setData(Qt.UserRole, r["id"])
-            if r["is_owner"]:
+            it0.setData(Qt.UserRole, _d(r, "id"))
+            if _d(r, "is_owner"):
                 it0.setIcon(QtGui.QIcon(":/Icon/Icons/crown.svg"))
-            elif r["is_developer"]:
+            elif _d(r, "is_developer"):
                 it0.setIcon(QtGui.QIcon(":/Icon/Icons/wrench.svg"))
             t.setItem(i, COL_USER, it0)
 
-            it1 = QtWidgets.QTableWidgetItem(r["email"] or "—")
+            it1 = QtWidgets.QTableWidgetItem(_d(r, "email") or "—")
             it1.setFont(fn)
             it1.setForeground(QtGui.QColor("#475569"))
             t.setItem(i, COL_EMAIL, it1)
 
-            it2 = QtWidgets.QTableWidgetItem(r["numero"] or "—")
+            it2 = QtWidgets.QTableWidgetItem(_d(r, "numero") or "—")
             it2.setFont(fm)
             it2.setForeground(QtGui.QColor("#64748b"))
             it2.setTextAlignment(Qt.AlignCenter)
             t.setItem(i, COL_NUM, it2)
 
-            role = r["role"] or "UTILISATEUR"
+            role = _d(r, "role") or "UTILISATEUR"
             label, fg, bg = ROLE_BADGES.get(role, (role, "#334155", "#e2e8f0"))
-            if r["is_owner"]:
+            if _d(r, "is_owner"):
                 label, fg, bg = "PROPRIÉTAIRE", "#92400e", "#fef3c7"
-            elif r["is_developer"]:
+            elif _d(r, "is_developer"):
                 label, fg, bg = "DÉVELOPPEUR", "#4338ca", "#e0e7ff"
 
             it3 = QtWidgets.QTableWidgetItem(label)
@@ -195,7 +241,7 @@ class PageUsers(QtWidgets.QWidget, Ui_PageUsers):
             it3.setTextAlignment(Qt.AlignCenter)
             t.setItem(i, COL_ROLE, it3)
 
-            actif = int(r["actif"] or 0)
+            actif = int(_d(r, "actif") or 0)
             txt, c = ("Actif", "#15803d") if actif else ("Inactif", "#64748b")
             it4 = QtWidgets.QTableWidgetItem(txt)
             it4.setFont(fb)
@@ -203,7 +249,7 @@ class PageUsers(QtWidgets.QWidget, Ui_PageUsers):
             it4.setTextAlignment(Qt.AlignCenter)
             t.setItem(i, COL_STATUS, it4)
 
-            last = r["derniere_connexion"] or "—"
+            last = _d(r, "derniere_connexion") or "—"
             if last and len(str(last)) > 16:
                 last = str(last)[:16]
             it5 = QtWidgets.QTableWidgetItem(str(last))

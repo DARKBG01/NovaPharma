@@ -3,12 +3,6 @@
 """
 Login.py — Portail de connexion Nova Pharma
 ============================================
-- Authentification LOCALE (bcrypt sur DB) ou via API (mode client)
-- Anti-bruteforce (5 tentatives → verrouillage 5 min)
-- Persistance "se souviens de moi" via QSettings
-- Détection must_change_password → dialogue obligatoire
-- Journal d'audit : CONNEXION, ECHEC_CONNEXION
-- Signal login_success(user_id, role, identifiant)
 """
 
 import logging
@@ -40,12 +34,9 @@ ICON_EYE_OPEN       = ":/Icon/Icons/eye.svg"
 ICON_EYE_CLOSED     = ":/Icon/Icons/eye-off.svg"
 
 
-# ══════════════════════════════════════════════════════════════════
-# Dialogue de connexion
-# ══════════════════════════════════════════════════════════════════
 class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
 
-    login_success = QtCore.Signal(str, str, str)  # user_id, role, identifiant
+    login_success = QtCore.Signal(str, str, str)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -69,7 +60,6 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
         else:
             self.lineEdit_username.setFocus()
 
-    # ------------------------------------------------------------------
     def _center_on_screen(self):
         screen = QtWidgets.QApplication.primaryScreen().availableGeometry()
         size = self.geometry()
@@ -78,7 +68,6 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
             (screen.height() - size.height()) // 2,
         )
 
-    # ------------------------------------------------------------------
     def _connect_signals(self):
         self.pushButton_login.clicked.connect(self._on_login_clicked)
         self.lineEdit_username.returnPressed.connect(self._on_login_clicked)
@@ -87,20 +76,16 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
         self.labelForgot.mousePressEvent = self._on_forgot_password
         self.labelHelp.linkActivated.connect(self._on_contact_support)
 
-    # ------------------------------------------------------------------
     def _adapt_to_mode(self):
-        """Affiche une info de mode (client) si nécessaire."""
         try:
             if is_client_mode():
                 api = get_api()
                 if api is not None:
-                    # Petit hint sous le titre (si le widget existe)
                     self.setWindowTitle(
                         f"Nova Pharma — Client ({api.base_url})")
         except Exception:
             pass
 
-    # ------------------------------------------------------------------
     def _install_focus_effects(self):
         for line, frame in (
             (self.lineEdit_username, self.frameUsernameField),
@@ -128,7 +113,6 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
             line.focusInEvent  = make_in(frame, orig_in)
             line.focusOutEvent = make_out(frame, orig_out)
 
-    # ------------------------------------------------------------------
     def _toggle_password(self):
         self._pwd_visible = not self._pwd_visible
         if self._pwd_visible:
@@ -138,7 +122,6 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
             self.lineEdit_password.setEchoMode(QtWidgets.QLineEdit.Password)
             self.btn_toggle_pwd.setIcon(QtGui.QIcon(ICON_EYE_OPEN))
 
-    # ------------------------------------------------------------------
     def _restore_settings(self):
         remember = self.settings.value(KEY_REMEMBER, True, type=bool)
         self.checkBox_remember.setChecked(remember)
@@ -155,7 +138,6 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
         else:
             self.settings.remove(KEY_LAST_USER)
 
-    # ------------------------------------------------------------------
     def _get_failed_count(self) -> int:
         return self.settings.value(KEY_FAILED_COUNT, 0, type=int)
 
@@ -186,7 +168,6 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
             return False, 0
         return True, int(delta // 60) + 1
 
-    # ------------------------------------------------------------------
     def _show_error(self, message: str):
         self.labelErrorText.setText(message)
         self.frameError.setVisible(True)
@@ -211,9 +192,6 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
             self.pushButton_login.setText("  Se connecter au portail")
             self.unsetCursor()
 
-    # ------------------------------------------------------------------
-    # Connexion
-    # ------------------------------------------------------------------
     def _on_login_clicked(self):
         self._hide_error()
 
@@ -237,25 +215,15 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
             self.lineEdit_password.setFocus()
             return
 
-        # ═══════════════════════════════════════════════════════════
-        # MODE CLIENT → authentification via API
-        # ═══════════════════════════════════════════════════════════
         if is_client_mode():
             self._login_via_api(identifiant, password)
-            return
+        else:
+            self._login_local(identifiant, password)
 
-        # ═══════════════════════════════════════════════════════════
-        # MODE AUTONOME / SERVEUR → authentification locale
-        # ═══════════════════════════════════════════════════════════
-        self._login_local(identifiant, password)
-
-    # ------------------------------------------------------------------
     def _login_via_api(self, identifiant: str, password: str):
-        """Authentification via le serveur (mode client)."""
         api = get_api()
         if api is None:
-            self._show_error(
-                "Mode client configuré mais API non initialisée.")
+            self._show_error("Mode client configuré mais API non initialisée.")
             return
 
         self._set_loading(True)
@@ -271,24 +239,16 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
             self.last_role = user_api.get("role")
             self.last_identifiant = user_api.get("identifiant")
 
-            # ═══════════════════════════════════════════════════════
-            # NOUVEAU : changement de mdp forcé
-            # ═══════════════════════════════════════════════════════
             if user_api.get("must_change_password"):
-                logging.info(
-                    "Changement de mdp forcé pour %s",
-                    user_api.get("identifiant"))
+                logging.info("Changement de mdp forcé pour %s", user_api.get("identifiant"))
                 self._log_success(user_api, note="force_password_change")
 
                 if not self._force_change_password_api(user_api, password):
-                    # Refusé ou annulé → on efface et on retourne au login
                     self.lineEdit_password.clear()
                     self.lineEdit_password.setFocus()
                     return
 
-            logging.info(
-                "Connexion (client) réussie : %s (%s)",
-                identifiant, user_api.get("role"))
+            logging.info("Connexion (client) réussie : %s (%s)", identifiant, user_api.get("role"))
 
             self._log_success(user_api)
             self.login_success.emit(
@@ -299,32 +259,34 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
 
         except Exception as e:
             self._set_loading(False)
-            self._register_failure()
-
             msg = str(e)
             low = msg.lower()
 
+            if "403" in msg or "autorisé" in low or "forbidden" in low:
+                self._show_error("Ce poste n'est pas autorisé pour ce rôle.\nContactez l'administrateur réseau.")
+                self.lineEdit_password.clear()
+                self.lineEdit_password.setFocus()
+                return
+
+            self._register_failure()
+
             if "401" in msg or "incorrect" in low:
-                self._show_error(
-                    "Identifiant ou mot de passe incorrect.")
-            elif "indisponible" in low or "connect" in low:
-                self._show_error(
-                    "Serveur indisponible. Contactez l'administrateur.")
+                self._show_error("Identifiant ou mot de passe incorrect.")
+            elif "indisponible" in low or "connect" in low or "refusée" in low:
+                self._show_error("Serveur injoignable. Vérifiez que le serveur est allumé et que vous êtes connecté au réseau.")
             elif "fermé" in low or "503" in msg or "horaires" in low:
-                self._show_error(
-                    "Serveur fermé (hors horaires d'ouverture).")
+                self._show_error("Serveur fermé (hors horaires d'ouverture).")
             else:
-                self._show_error(f"Erreur : {msg}")
+                self._show_error(f"Erreur de connexion : {msg}")
 
             self.lineEdit_password.clear()
             self.lineEdit_password.setFocus()
 
-    def _force_change_password_api(self, user: dict,
-                                   old_plain: str) -> bool:
+    def _force_change_password_api(self, user: dict, old_plain: str) -> bool:
         try:
             from Client.api_singleton import get_api
             api_check = get_api()
-            logger.info(
+            logging.info(
                 "→ _force_change_password_api | api=%s | token=%s",
                 "OK" if api_check else "None",
                 "PRÉSENT" if (api_check and api_check.token) else "❌ ABSENT")
@@ -342,9 +304,7 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
             logging.exception("Erreur changement mdp API")
             return False
 
-    # ------------------------------------------------------------------
     def _login_local(self, identifiant: str, password: str):
-        """Authentification locale (bcrypt sur DB)."""
         self._set_loading(True)
         try:
             user = self._fetch_user(identifiant)
@@ -354,7 +314,6 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
             self._show_error(f"Erreur interne : {e}")
             return
 
-        # ─── Identifiant introuvable ───
         if user is None:
             self._set_loading(False)
             self._register_failure()
@@ -364,7 +323,6 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
             self.lineEdit_password.setFocus()
             return
 
-        # ─── Mot de passe incorrect ───
         if not self._verify_password(password, user["pswd_hash"]):
             self._set_loading(False)
             self._register_failure()
@@ -376,18 +334,14 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
             self.lineEdit_password.setFocus()
             return
 
-        # ─── Compte inactif ───
         if not user["actif"]:
             self._set_loading(False)
             self._log_failure(identifiant, reason="inactive",
                               user_id=user.get("id"),
                               user_name=user.get("identifiant"))
-            self._show_error(
-                "Votre compte n'est pas encore activé. "
-                "Contactez l'administrateur.")
+            self._show_error("Votre compte n'est pas encore activé. Contactez l'administrateur.")
             return
 
-        # ─── Changement obligatoire ? ───
         if user.get("must_change_password"):
             self._set_loading(False)
             self._log_success(user, note="force_password_change")
@@ -396,7 +350,6 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
                 self.lineEdit_password.setFocus()
                 return
 
-        # ─── Succès ───
         self._reset_failures()
         self._save_settings(identifiant)
         self._update_last_login(user["id"])
@@ -406,16 +359,11 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
         self.last_role = user["role"]
         self.last_identifiant = user["identifiant"]
 
-        logging.info("Connexion réussie : %s (%s)",
-                     identifiant, user["role"])
+        logging.info("Connexion réussie : %s (%s)", identifiant, user["role"])
         self._log_success(user)
-        self.login_success.emit(
-            user["id"], user["role"], user["identifiant"])
+        self.login_success.emit(user["id"], user["role"], user["identifiant"])
         self.accept()
 
-    # ------------------------------------------------------------------
-    # Force le changement de mot de passe
-    # ------------------------------------------------------------------
     def _force_change_password(self, user: dict, old_plain: str) -> bool:
         try:
             from Setting_change_password import Setting_change_password
@@ -430,9 +378,6 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
             logging.exception("Erreur changement forcé de mot de passe")
             return False
 
-    # ------------------------------------------------------------------
-    # Audit
-    # ------------------------------------------------------------------
     @staticmethod
     def _log_success(user: dict, note: str = ""):
         audit.log(
@@ -458,9 +403,6 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
             cible_nom=identifiant,
             details={"reason": reason})
 
-    # ------------------------------------------------------------------
-    # Accès DB
-    # ------------------------------------------------------------------
     def _fetch_user(self, identifiant: str):
         conn = db.get_conn()
         cur = conn.execute(
@@ -497,55 +439,36 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
                 "WHERE id = ?",
                 (user_id,))
         except Exception as e:
-            logging.warning(
-                "Impossible de mettre à jour derniere_connexion : %s", e)
+            logging.warning("Impossible de mettre à jour derniere_connexion : %s", e)
 
-    # ------------------------------------------------------------------
     def _on_forgot_password(self, event):
         identifiant = self.lineEdit_username.text().strip().lower()
-
         if not identifiant:
             QtWidgets.QMessageBox.information(
                 self, "Mot de passe oublié",
-                "Saisissez d'abord votre identifiant ou email dans le "
-                "premier champ, puis cliquez à nouveau sur "
-                "« Mot de passe oublié ? ».")
+                "Saisissez d'abord votre identifiant ou email dans le premier champ, puis cliquez à nouveau sur « Mot de passe oublié ? ».")
             self.lineEdit_username.setFocus()
             return
 
         QtWidgets.QMessageBox.information(
             self, "Réinitialisation",
-            f"Si un compte est associé à <b>{identifiant}</b>, "
-            "contactez un administrateur pour réinitialiser votre "
-            "mot de passe.<br><br>"
-            "Aucune dépendance internet : la réinitialisation se fait "
-            "directement depuis l'application.")
+            f"Si un compte est associé à <b>{identifiant}</b>, contactez un administrateur pour réinitialiser votre mot de passe.<br><br>Aucune dépendance internet : la réinitialisation se fait directement depuis l'application.")
 
     def _on_contact_support(self, link: str):
         QtWidgets.QMessageBox.information(
             self, "Support TEAM NOVA",
-            "<b>Contact support Nova Pharma</b><br><br>"
-            "<b>Équipe :</b> TEAM NOVA<br>"
-            "<b>Email :</b> teamnovaoff@gmail.com<br>"
-            "<b>Tél.  :</b> 08 XX XX XX XX<br><br>"
-            "Horaires : Lun–Ven, 08h00 – 18h00 (GMT+1)")
+            "<b>Contact support Nova Pharma</b><br><br><b>Équipe :</b> TEAM NOVA<br><b>Email :</b> teamnovaoff@gmail.com<br><b>Tél.  :</b> 08 XX XX XX XX<br><br>Horaires : Lun–Ven, 08h00 – 18h00 (GMT+1)")
 
-    # ------------------------------------------------------------------
     def closeEvent(self, event):
         super().closeEvent(event)
 
-
-# ══════════════════════════════════════════════════════════════════
 if __name__ == "__main__":
     import sys
     logging.basicConfig(level=logging.INFO)
-
     app = QtWidgets.QApplication(sys.argv)
-
     dlg = LoginDialog()
     dlg.login_success.connect(
         lambda uid, role, ident: print(f"→ OK : {ident} ({role})"))
-
     if dlg.exec() == QtWidgets.QDialog.Accepted:
         print("Connexion validée → on peut ouvrir le MainWindow")
     else:

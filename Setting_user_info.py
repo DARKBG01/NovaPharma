@@ -11,6 +11,7 @@ import logging
 from PySide6 import QtWidgets, QtGui, QtCore
 from PySide6.QtCore import Qt
 
+from Client.api_singleton import is_client_mode, get_api
 from Database import db, audit
 from Database import permissions as perms
 from Interface_user_info import Ui_Dialog
@@ -65,6 +66,13 @@ class Setting_user_info(QtWidgets.QDialog, Ui_Dialog):
 
     def _load_user(self):
         try:
+            if is_client_mode():
+                api = get_api()
+                if api is None:
+                    self._user_data = None
+                    return
+                self._user_data = api.get_user(self.user_id)
+                return
             row = db.query_one(
                 "SELECT * FROM Utilisateur WHERE id = ? LIMIT 1",
                 (self.user_id,))
@@ -171,11 +179,16 @@ class Setting_user_info(QtWidgets.QDialog, Ui_Dialog):
 
         active = set()
         try:
-            rows = db.query(
-                "SELECT permission_key FROM UtilisateurPermission "
-                "WHERE utilisateur_id = ? AND actif = 1",
-                (self.user_id,))
-            active = {r["permission_key"] for r in rows}
+            if is_client_mode():
+                # Déjà dans _user_data["permissions"]
+                active = set(
+                    (self._user_data or {}).get("permissions", []) or [])
+            else:
+                rows = db.query(
+                    "SELECT permission_key FROM UtilisateurPermission "
+                    "WHERE utilisateur_id = ? AND actif = 1",
+                    (self.user_id,))
+                active = {r["permission_key"] for r in rows}
         except Exception:
             logger.exception("Erreur lecture permissions")
 
@@ -226,29 +239,47 @@ class Setting_user_info(QtWidgets.QDialog, Ui_Dialog):
 
     def _load_history(self):
         try:
-            rows = db.query(
-                """SELECT date_action, action, details FROM AuditLog
-                   WHERE cible_id = ? OR utilisateur_id = ?
-                   ORDER BY date_action DESC LIMIT 50""",
-                (self.user_id, self.user_id))
+            rows = []
+            if is_client_mode():
+                from Client.api_singleton import get_api
+                api = get_api()
+                if api:
+                    # On filtre par utilisateur_id via l'API
+                    data = api.list_audit(
+                        page=1, per_page=50,
+                        utilisateur_id=self.user_id)
+                    rows = data.get("items", [])
+            else:
+                db_rows = db.query(
+                    """SELECT date_action, action, details FROM AuditLog
+                       WHERE cible_id = ? OR utilisateur_id = ?
+                       ORDER BY date_action DESC LIMIT 50""",
+                    (self.user_id, self.user_id))
+                rows = [dict(r) for r in db_rows]
+
             self.history_table.setRowCount(len(rows))
             for i, r in enumerate(rows):
-                d = QtWidgets.QTableWidgetItem(str(r["date_action"]))
+                d = QtWidgets.QTableWidgetItem(str(r.get("date_action", "")))
                 d.setForeground(QtGui.QColor("#64748b"))
                 self.history_table.setItem(i, 0, d)
 
-                a = QtWidgets.QTableWidgetItem(str(r["action"]))
+                a = QtWidgets.QTableWidgetItem(str(r.get("action", "")))
                 a.setForeground(QtGui.QColor("#023E8A"))
                 a.setFont(QtGui.QFont("Segoe UI", 10, QtGui.QFont.Bold))
                 self.history_table.setItem(i, 1, a)
 
                 try:
-                    det = json.loads(r["details"]) if r["details"] else {}
-                    det_str = ", ".join(f"{k}={v}" for k, v in det.items())
+                    det = r.get("details", "")
+                    if isinstance(det, str) and det.startswith("{"):
+                        import json
+                        det_dict = json.loads(det)
+                        det_str = ", ".join(f"{k}={v}" for k, v in det_dict.items())
+                    else:
+                        det_str = str(det or "")
                 except Exception:
-                    det_str = str(r["details"] or "")
-                self.history_table.setItem(
-                    i, 2, QtWidgets.QTableWidgetItem(det_str))
+                    det_str = str(r.get("details") or "")
+
+                self.history_table.setItem(i, 2, QtWidgets.QTableWidgetItem(det_str))
 
             setup_user_info_history_table(self.history_table)
         except Exception:
@@ -316,12 +347,36 @@ class Setting_user_info(QtWidgets.QDialog, Ui_Dialog):
         if rep != QtWidgets.QMessageBox.Yes:
             return
 
+        # ─── MODE CLIENT → API ───
+        if is_client_mode():
+            try:
+                api = get_api()
+                if api is None:
+                    return
+                if not actif:
+                    # Réactivation : PUT actif=1
+                    api.update_user(self.user_id, {"actif": 1})
+                else:
+                    # Désactivation : DELETE (soft delete)
+                    api.delete_user(self.user_id)
+
+                self.user_changed.emit(self.user_id)
+                self.accept()
+                QtWidgets.QMessageBox.information(
+                    self, "Succès",
+                    f"Le compte a été "
+                    f"{'réactivé' if not actif else 'désactivé'}.")
+                return
+            except Exception as e:
+                logger.exception("Erreur changement statut (API)")
+                QtWidgets.QMessageBox.critical(
+                    self, "Erreur", str(e))
+                return
+
+        # ─── MODE LOCAL (code existant) ───
         try:
             from Database import audit
-
             new_actif = 0 if actif else 1
-
-            # ─── Snapshot AVANT ───
             avant = audit.snapshot("Utilisateur", "id", self.user_id)
 
             with db.transaction():
@@ -329,14 +384,13 @@ class Setting_user_info(QtWidgets.QDialog, Ui_Dialog):
                     "UPDATE Utilisateur SET actif = ? WHERE id = ?",
                     (new_actif, self.user_id))
 
-            # ═══ AUDIT ═══
             try:
                 apres = audit.snapshot("Utilisateur", "id", self.user_id)
-                action = (audit.ACTION_ACTIVATION_USER
-                          if new_actif
-                          else audit.ACTION_DESACTIVATION_USER)
+                action_log = (audit.ACTION_ACTIVATION_USER
+                              if new_actif
+                              else audit.ACTION_DESACTIVATION_USER)
                 audit.log(
-                    action,
+                    action_log,
                     utilisateur_id=self.current_user_id,
                     cible_type="Utilisateur",
                     cible_id=self.user_id,

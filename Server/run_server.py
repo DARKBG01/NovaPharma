@@ -31,7 +31,7 @@ def main():
     setup_logging()
     logger = logging.getLogger("server")
 
-    host = cfg.get("server_host") or "0.0.0.0"
+    host = "0.0.0.0"
     port = int(cfg.get("server_port") or 5001)
 
     logger.info("→ Démarrage du serveur sur %s:%d", host, port)

@@ -148,13 +148,22 @@ class Setting_main_window(QtWidgets.QMainWindow, Ui_MainWindow):
         self._is_developer = False
         if self.user_id:
             try:
-                row = db.query_one(
-                    "SELECT is_owner, is_developer, role FROM Utilisateur "
-                    "WHERE id = ? LIMIT 1",
-                    (self.user_id,))
-                if row:
-                    self._is_owner = bool(row["is_owner"])
-                    self._is_developer = bool(row["is_developer"])
+                if is_client_mode():
+                    from Client.api_singleton import get_api
+                    api = get_api()
+                    if api:
+                        user_data = api.me()
+                        self._is_owner = bool(user_data.get("is_owner"))
+                        self._is_developer = bool(user_data.get("is_developer"))
+                        self.role = (user_data.get("role") or self.role).upper()
+                else:
+                    row = db.query_one(
+                        "SELECT is_owner, is_developer, role FROM Utilisateur "
+                        "WHERE id = ? LIMIT 1",
+                        (self.user_id,))
+                    if row:
+                        self._is_owner = bool(row["is_owner"])
+                        self._is_developer = bool(row["is_developer"])
 
                     if not self._is_owner and not self._is_developer:
                         try:
@@ -303,9 +312,11 @@ class Setting_main_window(QtWidgets.QMainWindow, Ui_MainWindow):
         # ---------- Vues ----------
         self.View_fournisseur()
 
-        # ---------- Notifications de démarrage ----------
+        # ─── Notifications de démarrage ───
         QtCore.QTimer.singleShot(800, self._welcome_notify)
         QtCore.QTimer.singleShot(1500, self._check_low_stock_notify)
+        QtCore.QTimer.singleShot(2000, self._check_startup_alerts)
+        QtCore.QTimer.singleShot(2500, self._notify_trial_status)  # ← AJOUT
 
         # ─── Raccourci Ctrl+Alt+P : config imprimante ───
         try:
@@ -393,6 +404,153 @@ class Setting_main_window(QtWidgets.QMainWindow, Ui_MainWindow):
                 self._splash.set_progress(value)
             except Exception:
                 pass
+
+    def _check_startup_alerts(self):
+        """Vérifie les alertes au démarrage (stock, backup, mot de passe, serveur)."""
+        from Notification_manager import notify
+        from Client.api_singleton import is_client_mode, get_api
+
+        # ═══════════════════════════════════════════════════════════
+        # 1. Mode client : Vérifier la connexion serveur
+        # ═══════════════════════════════════════════════════════════
+        if is_client_mode():
+            api = get_api()
+            if api is not None:
+                try:
+                    api.sante()  # test de connexion
+                except Exception:
+                    notify.error(
+                        "Le serveur est actuellement injoignable. "
+                        "Certaines fonctions peuvent être indisponibles.",
+                        duration=8000
+                    )
+
+        # ═══════════════════════════════════════════════════════════
+        # 2. Ruptures de stock
+        # ═══════════════════════════════════════════════════════════
+        try:
+            seuil = int(db.get_config("seuil_stock", 20))
+            if is_client_mode():
+                # En client, on interroge l'API (via le dashboard ou les produits)
+                api = get_api()
+                if api:
+                    res = api.list_produits(page=1, per_page=1, rupture=True)
+                    n_rupture = int(res.get("total", 0))
+                else:
+                    n_rupture = 0
+            else:
+                # En local
+                row = db.query_one(
+                    "SELECT COUNT(*) AS n FROM produits "
+                    "WHERE actif = 1 AND Quantite <= ?", (seuil,))
+                n_rupture = int(row["n"] or 0) if row else 0
+
+            if n_rupture > 0:
+                notify.warning(
+                    f"Attention : {n_rupture} produit(s) sont en rupture de stock "
+                    f"(seuil ≤ {seuil}). Pensez à réapprovisionner.",
+                    duration=6000
+                )
+        except Exception:
+            logger.exception("Erreur check stock startup")
+
+        # ═══════════════════════════════════════════════════════════
+        # 3. Sauvegarde ancienne
+        # ═══════════════════════════════════════════════════════════
+        try:
+            if is_client_mode():
+                # En client, la config publique contient le last_daily
+                from Client.api_singleton import get_config
+                last = get_config("backup_last_daily", "")
+            else:
+                last = db.get_config("backup_last_daily", "")
+
+            if not last:
+                notify.warning(
+                    "Aucune sauvegarde de sécurité n'a été effectuée. "
+                    "Pensez à configurer les sauvegardes automatiques.",
+                    duration=6000
+                )
+            else:
+                from datetime import datetime as _dt
+                last_dt = _dt.fromisoformat(last)
+                jours = (_dt.now() - last_dt).days
+                if jours > 7:
+                    notify.warning(
+                        f"La dernière sauvegarde date de {jours} jours. "
+                        "Il est recommandé de sauvegarder la base.",
+                        duration=6000
+                    )
+        except Exception:
+            pass  # Silencieux si erreur de date
+
+        # ═══════════════════════════════════════════════════════════
+        # 4. Mot de passe temporaire
+        # ═══════════════════════════════════════════════════════════
+        try:
+            need_change = False
+            if is_client_mode():
+                # L'info est dans api.me()
+                api = get_api()
+                if api and api.user:
+                    need_change = bool(api.user.get("must_change_password"))
+            else:
+                row = db.query_one(
+                    "SELECT must_change_password FROM Utilisateur WHERE id = ?",
+                    (self.user_id,))
+                if row:
+                    need_change = bool(row["must_change_password"])
+
+            if need_change:
+                notify.info(
+                    "Vous utilisez un mot de passe temporaire. "
+                    "Veuillez le modifier dans les paramètres de votre profil.",
+                    duration=8000
+                )
+        except Exception:
+            pass
+
+    def _notify_trial_status(self):
+        """Affiche une notification 10s sur l'état de l'essai / licence."""
+        from Notification_manager import notify
+
+        try:
+            from Core.license_manager import get_trial_days_left
+            days = get_trial_days_left()
+        except Exception:
+            return
+
+        # Licence valide → pas de notification
+        if days == -1:
+            return
+
+        # Erreur (horloge / fichier)
+        if days == -2:
+            return
+
+        # Essai expiré → on ne devrait pas arriver ici (bloqué avant)
+        if days == 0:
+            return
+
+        # Essai en cours
+        if days > 7:
+            notify.info(
+                f"💡 Essai gratuit : {days} jour(s) restant(s). "
+                f"Activez votre licence dans Paramètres → Licence.",
+                duration=10000
+            )
+        elif days > 1:
+            notify.warning(
+                f"⏰ Attention : votre essai expire dans {days} jour(s). "
+                f"Pensez à activer votre licence.",
+                duration=10000
+            )
+        else:
+            notify.warning(
+                f"⚠️ DERNIER JOUR D'ESSAI ! "
+                f"Activez votre licence pour continuer à utiliser Nova Pharma.",
+                duration=10000
+            )
 
     # ══════════════════════════════════════════════════════════════
     # Helpers permissions
@@ -1112,6 +1270,31 @@ class Setting_main_window(QtWidgets.QMainWindow, Ui_MainWindow):
                 else:
                     layout.addWidget(self.server_badge)
 
+            # ─── Cloche de notifications ───
+            self.btn_notif = QtWidgets.QPushButton()
+            self.btn_notif.setFixedSize(36, 36)
+            self.btn_notif.setCursor(QtCore.Qt.PointingHandCursor)
+            self.btn_notif.setStyleSheet("""
+                QPushButton {
+                    background: #ffffff;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 10px;
+                }
+                QPushButton:hover { background: #f8fafc; border-color: #cbd5e1; }
+            """)
+            self.btn_notif.setIcon(QtGui.QIcon(":/Icon/Icons/bell.svg"))
+            self.btn_notif.setIconSize(QtCore.QSize(18, 18))
+            self.btn_notif.clicked.connect(self._show_notifications_center)
+
+            if layout is not None:
+                layout.insertWidget(idx if idx >= 0 else layout.count(), self.btn_notif)
+
+            # ─── Vérifier les nouvelles notifs ───
+            self._notif_timer = QtCore.QTimer(self)
+            self._notif_timer.timeout.connect(self._check_unread_notifs)
+            self._notif_timer.start(10000)  # 10 s
+            self._check_unread_notifs()
+
             # ─── Premier rendu ───
             self._refresh_server_badge()
 
@@ -1124,6 +1307,75 @@ class Setting_main_window(QtWidgets.QMainWindow, Ui_MainWindow):
 
         except Exception:
             logger.exception("Erreur installation indicateur serveur")
+
+        def _check_unread_notifs(self):
+            """Vérifie s'il y a des notifications non lues et met à jour la cloche."""
+            try:
+                if not hasattr(self, "btn_notif"):
+                    return
+
+                if is_client_mode():
+                    unread = 0
+                else:
+                    row = db.query_one("SELECT COUNT(*) AS n FROM Notification WHERE lu = 0")
+                    unread = int(row["n"] or 0) if row else 0
+
+                if unread > 0:
+                    # Icône + badge texte si non-lu
+                    self.btn_notif.setText(f" {unread} ")
+                    self.btn_notif.setIcon(QtGui.QIcon(":/Icon/Icons/bell_white.svg"))
+                    self.btn_notif.setStyleSheet("""
+                        QPushButton {
+                            background: #dc2626;
+                            color: #ffffff;
+                            border: 1px solid #b91c1c;
+                            border-radius: 10px;
+                            font-size: 11px;
+                            font-weight: 800;
+                        }
+                    """)
+                else:
+                    # Icône seule si tout est lu
+                    self.btn_notif.setText("")
+                    self.btn_notif.setIcon(QtGui.QIcon(":/Icon/Icons/bell.svg"))
+                    self.btn_notif.setStyleSheet("""
+                        QPushButton {
+                            background: #ffffff;
+                            border: 1px solid #e2e8f0;
+                            border-radius: 10px;
+                        }
+                        QPushButton:hover { background: #f8fafc; border-color: #cbd5e1; }
+                    """)
+            except Exception:
+                pass
+
+        def _show_notifications_center(self):
+            """Ouvre le panneau des notifications."""
+            try:
+                # Pour l'instant, simple QMessageBox avec les dernières notifs.
+                # Plus tard, on fera un vrai dialog UI.
+                rows = db.query("SELECT * FROM Notification ORDER BY created_at DESC LIMIT 20")
+
+                if not rows:
+                    from Notification_manager import notify
+                    notify.info("Aucune notification pour le moment.")
+                    return
+
+                html = "<h3>Notifications récentes</h3><ul>"
+                for r in rows:
+                    dt = str(r["created_at"])[11:16]
+                    html += f"<li><b>[{dt}] {r['title']}</b> : {r['message']}</li>"
+                html += "</ul>"
+
+                # Marquer comme lu
+                db.execute("UPDATE Notification SET lu = 1")
+                self._check_unread_notifs()
+
+                QtWidgets.QMessageBox.information(
+                    self, "Centre de notifications", html
+                )
+            except Exception as e:
+                logger.exception("Erreur ouverture notifs")
 
     def _open_printer_config(self):
         try:
@@ -1484,22 +1736,52 @@ class Setting_main_window(QtWidgets.QMainWindow, Ui_MainWindow):
             logger.exception("Erreur seed.run()")
 
         try:
-            self.df_produits = pd.read_sql(
-                "SELECT * FROM produits WHERE actif = 1 ORDER BY Nom ASC",
-                db.get_conn())
-            if not self.df_produits.empty:
-                self.df_produits["Quantite"] = pd.to_numeric(
-                    self.df_produits["Quantite"],
-                    errors="coerce").fillna(0).astype(int)
-                self.df_produits["Prix_achat"] = pd.to_numeric(
-                    self.df_produits["Prix_achat"], errors="coerce").fillna(0)
-                self.df_produits["Prix_vente"] = pd.to_numeric(
-                    self.df_produits["Prix_vente"], errors="coerce").fillna(0)
+            if is_client_mode():
+                from Client.api_singleton import get_api
+                api = get_api()
+                if api:
+                    # ─── Produits ───
+                    all_items = []
+                    page = 1
+                    while True:
+                        data = api.list_produits(page=page, per_page=200, actif=1)
+                        items = data.get("items", [])
+                        all_items.extend(items)
+                        if len(items) < 200:
+                            break
+                        page += 1
+                    self.df_produits = pd.DataFrame(all_items)
 
-            self.df_client = pd.read_sql(
-                "SELECT * FROM Client WHERE actif = 1 "
-                "ORDER BY COALESCE(C_name, nom) ASC",
-                db.get_conn())
+                    if not self.df_produits.empty:
+                        self.df_produits["Quantite"] = pd.to_numeric(
+                            self.df_produits["Quantite"],
+                            errors="coerce").fillna(0).astype(int)
+                        self.df_produits["Prix_achat"] = pd.to_numeric(
+                            self.df_produits["Prix_achat"], errors="coerce").fillna(0)
+                        self.df_produits["Prix_vente"] = pd.to_numeric(
+                            self.df_produits["Prix_vente"], errors="coerce").fillna(0)
+
+                    self.df_client = pd.DataFrame()
+                else:
+                    self.df_produits = pd.DataFrame()
+                    self.df_client = pd.DataFrame()
+            else:
+                self.df_produits = pd.read_sql(
+                    "SELECT * FROM produits WHERE actif = 1 ORDER BY Nom ASC",
+                    db.get_conn())
+                if not self.df_produits.empty:
+                    self.df_produits["Quantite"] = pd.to_numeric(
+                        self.df_produits["Quantite"],
+                        errors="coerce").fillna(0).astype(int)
+                    self.df_produits["Prix_achat"] = pd.to_numeric(
+                        self.df_produits["Prix_achat"], errors="coerce").fillna(0)
+                    self.df_produits["Prix_vente"] = pd.to_numeric(
+                        self.df_produits["Prix_vente"], errors="coerce").fillna(0)
+
+                self.df_client = pd.read_sql(
+                    "SELECT * FROM Client WHERE actif = 1 "
+                    "ORDER BY COALESCE(C_name, nom) ASC",
+                    db.get_conn())
             if (not self.df_client.empty
                     and "Montant_total" in self.df_client.columns):
                 self.df_client["Montant_total"] = pd.to_numeric(
@@ -2969,13 +3251,11 @@ class Setting_main_window(QtWidgets.QMainWindow, Ui_MainWindow):
             nom_client = nom_client_saisi
             num_client = num_client_saisi
 
-        # ─── 3. Total ───
+        # ─── 3. Total (calcul depuis le panier, plus fiable que le label) ───
         try:
-            total_str = self.lbl_totale_calc.text().replace(self.devise, "")
-            total_str = total_str.strip().replace(" ", "").replace(",", "")
-            total_general = float(total_str)
+            total_general = sum(float(item["total"]) for item in panier)
         except Exception:
-            logger.exception("Erreur calcul total")
+            logger.exception("Erreur calcul total depuis le panier")
             QtWidgets.QMessageBox.critical(
                 self, "Erreur", "Impossible de calculer le total général.")
             return

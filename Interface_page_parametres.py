@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'Interface_page_parametresXvhgMq.ui'
+## Form generated from reading UI file 'Interface_page_parametressIYJDy.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.12.0
 ##
@@ -15,11 +15,12 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractSpinBox, QApplication, QCheckBox, QComboBox,
-    QDoubleSpinBox, QFrame, QGridLayout, QHBoxLayout,
-    QLabel, QLineEdit, QPlainTextEdit, QPushButton,
-    QScrollArea, QSizePolicy, QSpacerItem, QSpinBox,
-    QTabWidget, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QAbstractSpinBox, QApplication, QCheckBox,
+    QComboBox, QDoubleSpinBox, QFrame, QGridLayout,
+    QHBoxLayout, QHeaderView, QLabel, QLineEdit,
+    QPlainTextEdit, QPushButton, QScrollArea, QSizePolicy,
+    QSpacerItem, QSpinBox, QTabWidget, QTableWidget,
+    QTableWidgetItem, QVBoxLayout, QWidget)
 import Icon_rc
 
 class Ui_PageParametres(object):
@@ -27,36 +28,589 @@ class Ui_PageParametres(object):
         if not PageParametres.objectName():
             PageParametres.setObjectName(u"PageParametres")
         PageParametres.resize(1100, 891)
-        PageParametres.setStyleSheet(u"/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 BASE \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */ QWidget#PageParametres { background: #f0f4f8; } QWidget#PageParametres QLabel { background: transparent; } /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 CARTE PRINCIPALE \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */ QFrame#card { background: #ffffff; border: 1px solid #e6ebf2; border-radius: 20px; } /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 HEADER \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */ QFrame#header_frame { background: #ffffff; border-top-left-radius: 20px; border-top-right-radius: 20px; border: none; } QLabel#header_icon { background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0077B6, stop:1 #00B4D8); border-radius:"
-                        " 14px; padding: 12px; } QLabel#page_title { color: #0f172a; font-size: 22px; font-weight: 800; letter-spacing: -0.3px; } QLabel#page_subtitle { color: #64748b; font-size: 12px; } QLabel#version_badge { background: #eff6ff; color: #023E8A; border: 1px solid #bfdbfe; border-radius: 10px; padding: 6px 12px; font-size: 10px; font-weight: 800; letter-spacing: 1px; } /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 TABS (style pill) \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */ QTabWidget::pane { background: transparent; border: none; top: 0; } QTabBar { background: transparent; qproperty-drawBase: 0; qproperty-expanding: 1; } QTabBar::tab { background: transparent; color: #64748b; padding: 9px 18px; margin-right: 6px; border-radius: 10px; font-size: 12px; font-weight: 700; border: 1px solid transparent; } QTabBar::tab:selected { background: #023E8A; color: #ffffff; border-color: #023E8A; } QTabBar::tab:hover:!selected { bac"
-                        "kground: #eff6ff; color: #0077B6; border-color: #dbeafe; } /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 SECTIONS (cartes blanches) \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */ QFrame#section_card { background: #ffffff; border: 1px solid #e6ebf2; border-radius: 14px; } QFrame#section_sep { background: #eef2f7; border: none; max-height: 1px; min-height: 1px; } QLabel#section_icon { background: #e0f2fe; color: #023E8A; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; } QLabel#section_title { color: #0f172a; font-size: 14px; font-weight: 800; letter-spacing: -0.1px; } QLabel#section_hint { color: #94a3b8; font-size: 11px; font-style: italic; } /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 CHAMPS \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */ QLabel[fieldLabel=\"true\"] { color: #475569; font-size: 11px; f"
-                        "ont-weight: 700; letter-spacing: 0.2px; } QLabel[fieldHint=\"true\"] { color: #94a3b8; font-size: 10px; } QLineEdit, QComboBox, QSpinBox, QDoubleSpinBox, QPlainTextEdit { background: #ffffff; border: 1.5px solid #dbe3ec; border-radius: 10px; padding: 10px 14px; color: #0f172a; font-size: 13px; font-weight: 500; min-height: 22px; } QLineEdit:hover, QComboBox:hover, QSpinBox:hover, QDoubleSpinBox:hover, QPlainTextEdit:hover { border-color: #b9c6d8; } QLineEdit:focus, QComboBox:focus, QSpinBox:focus, QDoubleSpinBox:focus, QPlainTextEdit:focus { background: #ffffff; border: 1.5px solid #0077B6; } QComboBox::drop-down { border: none; width: 26px; } QComboBox QAbstractItemView { background: #ffffff; border: 1px solid #e6ebf2; border-radius: 10px; padding: 6px; selection-background-color: #eff6ff; selection-color: #0077B6; outline: none; } /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 CHECKBOX \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550"
-                        "\u2550\u2550 */ QCheckBox { color: #334155; font-size: 12px; font-weight: 600; spacing: 10px; padding: 6px 0; background: transparent; } QCheckBox::indicator { width: 18px; height: 18px; border: 1.5px solid #cbd5e1; background: #ffffff; border-radius: 5px; } QCheckBox::indicator:hover { border-color: #0077B6; } QCheckBox::indicator:checked { background: #0077B6; border-color: #0077B6; image: url(:/Icon/Icons/check_white.svg); } /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 BOUTONS D'ACTION \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */ QPushButton#btn_save { background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #0077B6, stop:1 #00B4D8); color: #ffffff; border: none; border-radius: 11px; padding: 12px 28px; font-size: 13px; font-weight: 800; min-height: 44px; letter-spacing: 0.3px; } QPushButton#btn_save:hover { background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #023E8A, stop:1 #0077B6); } QPushButton#btn"
-                        "_save:pressed { background: #023E8A; } QPushButton#btn_reload { background: #ffffff; color: #475569; border: 1.5px solid #dbe3ec; border-radius: 11px; padding: 12px 22px; font-size: 13px; font-weight: 700; min-height: 44px; } QPushButton#btn_reload:hover { background: #f8fafc; border-color: #c3cedd; color: #0f172a; } QPushButton#btn_upload_logo { background: #eff6ff; color: #023E8A; border: 1.5px solid #bfdbfe; border-radius: 10px; padding: 10px 20px; font-size: 12px; font-weight: 700; min-height: 40px; } QPushButton#btn_upload_logo:hover { background: #dbeafe; border-color: #93c5fd; } QPushButton#btn_remove_logo { background: #ffffff; color: #dc2626; border: 1.5px solid #fecaca; border-radius: 10px; padding: 10px 20px; font-size: 12px; font-weight: 700; min-height: 40px; } QPushButton#btn_remove_logo:hover { background: #fef2f2; } QPushButton#btn_browse_save { background: #eff6ff; color: #023E8A; border: 1.5px solid #bfdbfe; border-radius: 10px; padding: 10px 20px; font-size: 12px; font-weight: 700; min-heigh"
-                        "t: 40px; } QPushButton#btn_browse_save:hover { background: #dbeafe; border-color: #93c5fd; } /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 DANGER ZONE \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */ QFrame#danger_card_info { background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; } QFrame#danger_card_warn { background: #ffffff; border: 1px solid #e6ebf2; border-radius: 12px; } QFrame#danger_card_danger { background: #fef2f2; border: 1px solid #fecaca; border-radius: 12px; } QLabel#danger_icon_info { background: #fde68a; color: #92400e; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; } QLabel#danger_icon_warn { background: #dbeafe; color: #023E8A; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; } QLabel#danger_icon_danger { background: #fecaca; color: #b91c1c; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; } QLabel#danger_title { color: #0f172"
-                        "a; font-size: 13px; font-weight: 800; } QLabel#danger_title_red { color: #b91c1c; font-size: 13px; font-weight: 800; } QLabel#danger_desc { color: #64748b; font-size: 11px; } QLabel#danger_desc_red { color: #991b1b; font-size: 11px; } QPushButton#btn_export_db { background: #eff6ff; color: #023E8A; border: 1.5px solid #bfdbfe; border-radius: 10px; padding: 10px 22px; font-size: 12px; font-weight: 700; min-height: 42px; } QPushButton#btn_export_db:hover { background: #dbeafe; } QPushButton#btn_restore_db { background: #fef3c7; color: #92400e; border: 1.5px solid #fcd34d; border-radius: 10px; padding: 10px 22px; font-size: 12px; font-weight: 700; min-height: 42px; } QPushButton#btn_restore_db:hover { background: #fde68a; } QPushButton#btn_reset_all { background: #dc2626; color: #ffffff; border: none; border-radius: 10px; padding: 10px 22px; font-size: 12px; font-weight: 800; min-height: 42px; } QPushButton#btn_reset_all:hover { background: #b91c1c; } QPushButton#btn_reset_all:pressed { background: #991b1b; } /* "
-                        "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 FOOTER \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */ QFrame#footer_frame { background: #f8fafc; border-top: 1px solid #eef2f7; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; border: none; } QLabel#lbl_status { color: #94a3b8; font-size: 11px; font-weight: 600; } QLabel#lbl_status[status=\"ok\"] { color: #16A34A; font-weight: 700; } QLabel#lbl_status[status=\"warn\"] { color: #b45309; font-weight: 700; } /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 SCROLLBARS \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */ QScrollArea { background: transparent; border: none; } QScrollArea > QWidget > QWidget { background: transparent; } QScrollBar:vertical { border: none; background: transparent; width: 10px; margin: 2px; } QScrollBar::handle:vertical { background: #cbd5e1; min-"
-                        "height: 32px; border-radius: 5px; } QScrollBar::handle:vertical:hover { background: #94a3b8; } QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; } QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: transparent; } /* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 LIGNES DE S\u00c9PARATION \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */ QFrame[isSep=\"true\"] { background: #eef2f7; border: none; max-height: 1px; min-height: 1px; }\n"
-"\n"
-"QSpinBox::down-arrow {\n"
-"    image: url(:/Icon/Icons/chevron-down.svg);\n"
-"    width: 12px; height: 12px;\n"
+        PageParametres.setStyleSheet(u"/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 BASE \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */\n"
+"QWidget#PageParametres {\n"
+"    background: #f0f4f8;\n"
 "}\n"
 "\n"
-"QSpinBox::up-arrow {\n"
+"QWidget#PageParametres QLabel {\n"
+"    background: transparent;\n"
+"}\n"
+"\n"
+"/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 CARTE PRINCIPALE \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */\n"
+"QFrame#card {\n"
+"    background: #ffffff;\n"
+"    border: 1px solid #e6ebf2;\n"
+"    border-radius: 20px;\n"
+"}\n"
+"\n"
+"/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 HEADER \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */\n"
+"QFrame#header_frame {\n"
+"    background: #ffffff;\n"
+"    border-top-left-radius: 20px;\n"
+"    border-top-right-radius: 20px;\n"
+"    border: none;"
+                        "\n"
+"}\n"
+"\n"
+"QLabel#header_icon {\n"
+"    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,\n"
+"        stop:0 #0077B6, stop:1 #00B4D8);\n"
+"    border-radius: 14px;\n"
+"    padding: 12px;\n"
+"}\n"
+"\n"
+"QLabel#page_title {\n"
+"    color: #0f172a;\n"
+"    font-size: 22px;\n"
+"    font-weight: 800;\n"
+"    letter-spacing: -0.3px;\n"
+"}\n"
+"\n"
+"QLabel#page_subtitle {\n"
+"    color: #64748b;\n"
+"    font-size: 12px;\n"
+"}\n"
+"\n"
+"QLabel#version_badge {\n"
+"    background: #eff6ff;\n"
+"    color: #023E8A;\n"
+"    border: 1px solid #bfdbfe;\n"
+"    border-radius: 10px;\n"
+"    padding: 6px 12px;\n"
+"    font-size: 10px;\n"
+"    font-weight: 800;\n"
+"    letter-spacing: 1px;\n"
+"}\n"
+"\n"
+"/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 TABS (style pill) \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */\n"
+"QTabWidget::pane {\n"
+"    background: transparent;\n"
+"    border: none;\n"
+"    top: 0;\n"
+"}\n"
+"\n"
+"QTabBar {\n"
+""
+                        "    background: transparent;\n"
+"    qproperty-drawBase: 0;\n"
+"    qproperty-expanding: 1;\n"
+"}\n"
+"\n"
+"QTabBar::tab {\n"
+"    background: transparent;\n"
+"    color: #64748b;\n"
+"    padding: 9px 18px;\n"
+"    margin-right: 6px;\n"
+"    border-radius: 10px;\n"
+"    font-size: 12px;\n"
+"    font-weight: 700;\n"
+"    border: 1px solid transparent;\n"
+"}\n"
+"\n"
+"QTabBar::tab:selected {\n"
+"    background: #023E8A;\n"
+"    color: #ffffff;\n"
+"    border-color: #023E8A;\n"
+"}\n"
+"\n"
+"QTabBar::tab:hover:!selected {\n"
+"    background: #eff6ff;\n"
+"    color: #0077B6;\n"
+"    border-color: #dbeafe;\n"
+"}\n"
+"\n"
+"/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 SECTIONS (cartes blanches) \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */\n"
+"QFrame#section_card {\n"
+"    background: #ffffff;\n"
+"    border: 1px solid #e6ebf2;\n"
+"    border-radius: 14px;\n"
+"}\n"
+"\n"
+"QFrame#section_sep {\n"
+"    background: #eef2f7;\n"
+"  "
+                        "  border: none;\n"
+"    max-height: 1px;\n"
+"    min-height: 1px;\n"
+"}\n"
+"\n"
+"QLabel#section_icon {\n"
+"    background: #e0f2fe;\n"
+"    color: #023E8A;\n"
+"    border-radius: 8px;\n"
+"    padding: 6px;\n"
+"    font-size: 12px;\n"
+"    font-weight: 800;\n"
+"}\n"
+"\n"
+"QLabel#section_title {\n"
+"    color: #0f172a;\n"
+"    font-size: 14px;\n"
+"    font-weight: 800;\n"
+"    letter-spacing: -0.1px;\n"
+"}\n"
+"\n"
+"QLabel#section_hint {\n"
+"    color: #94a3b8;\n"
+"    font-size: 11px;\n"
+"    font-style: italic;\n"
+"}\n"
+"\n"
+"/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 LABELS DE CHAMPS \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */ QLabel[fieldLabel=\"true\"] {\n"
+"    color: #475569;\n"
+"    font-size: 11px;\n"
+"    font-weight: 700;\n"
+"    letter-spacing: 0.2px; } QLabel[fieldHint=\"true\"] {\n"
+"    color: #94a3b8;\n"
+"    font-size: 10px;\n"
+"}\n"
+"\n"
+"/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550"
+                        "\u2550\u2550\u2550\u2550\u2550 CHAMPS DE SAISIE \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */\n"
+"QLineEdit,\n"
+"QComboBox,\n"
+"QSpinBox,\n"
+"QDoubleSpinBox,\n"
+"QPlainTextEdit {\n"
+"    background: #ffffff;\n"
+"    border: 1.5px solid #dbe3ec;\n"
+"    border-radius: 10px;\n"
+"    padding: 10px 14px;\n"
+"    color: #0f172a;\n"
+"    font-size: 13px;\n"
+"    font-weight: 500;\n"
+"    min-height: 22px;\n"
+"}\n"
+"\n"
+"/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 SPINBOX \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */\n"
+"/* Note : l'alignement du texte est g\u00e9r\u00e9 en Python via\n"
+"   _fix_spinbox_alignment() \u2014 qproperty-alignment ne marche\n"
+"   PAS sur QSpinBox en Qt6 (bug connu). */\n"
+"QSpinBox,\n"
+"QDoubleSpinBox {\n"
+"    padding-right: 26px;\n"
+"}\n"
+"\n"
+"QSpinBox::up-button,\n"
+"QDoubleSpinBox::up-button {\n"
+"    subcontrol-origin: border;\n"
+"    sub"
+                        "control-position: top right;\n"
+"    width: 20px;\n"
+"    border: none;\n"
+"    border-top-right-radius: 8px;\n"
+"    background: transparent;\n"
+"}\n"
+"\n"
+"QSpinBox::down-button,\n"
+"QDoubleSpinBox::down-button {\n"
+"    subcontrol-origin: border;\n"
+"    subcontrol-position: bottom right;\n"
+"    width: 20px;\n"
+"    border: none;\n"
+"    border-bottom-right-radius: 8px;\n"
+"    background: transparent;\n"
+"}\n"
+"\n"
+"QSpinBox::up-button:hover,\n"
+"QDoubleSpinBox::up-button:hover,\n"
+"QSpinBox::down-button:hover,\n"
+"QDoubleSpinBox::down-button:hover {\n"
+"    background: #eff6ff;\n"
+"}\n"
+"\n"
+"QSpinBox::up-arrow,\n"
+"QDoubleSpinBox::up-arrow {\n"
 "    image: url(:/Icon/Icons/chevron-up.svg);\n"
-"    width: 12px; height: 12px;\n"
+"    width: 10px;\n"
+"    height: 10px;\n"
 "}\n"
 "\n"
-"QSpinBox QAbstractItemView {\n"
-"    background-color: #ffffff;\n"
+"QSpinBox::down-arrow,\n"
+"QDoubleSpinBox::down-arrow {\n"
+"    image: url(:/Icon/Icons/chevron-down.svg);\n"
+"    width: 10px;\n"
+"    height: 10px;\n"
+"}\n"
+"\n"
+"/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 COM"
+                        "BOBOX \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */\n"
+"QComboBox::drop-down {\n"
+"    subcontrol-origin: padding;\n"
+"    subcontrol-position: top right;\n"
+"    width: 26px;\n"
+"    border: none;\n"
+"}\n"
+"\n"
+"QComboBox::down-arrow {\n"
+"    image: url(:/Icon/Icons/chevron-down.svg);\n"
+"    width: 12px;\n"
+"    height: 12px;\n"
+"}\n"
+"\n"
+"QComboBox QAbstractItemView {\n"
+"    background: #ffffff;\n"
 "    border: 1px solid #e6ebf2;\n"
 "    border-radius: 10px;\n"
 "    padding: 6px;\n"
 "    selection-background-color: #eff6ff;\n"
-"  "
-                        "  selection-color: #0077B6;\n"
+"    selection-color: #0077B6;\n"
 "    outline: none;\n"
+"}\n"
+"\n"
+"/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 HOVER \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */\n"
+"QLineEdit:hover,\n"
+"QComboBox:hover,\n"
+"QSpinBox:hover,\n"
+"QDoubleSpinBox:hover,\n"
+"QPlainTextEdit:hover {\n"
+"    border-color: #b9c6d8;\n"
+"}\n"
+"\n"
+"/* \u2550\u2550"
+                        "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 FOCUS \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */\n"
+"QLineEdit:focus,\n"
+"QComboBox:focus,\n"
+"QSpinBox:focus,\n"
+"QDoubleSpinBox:focus,\n"
+"QPlainTextEdit:focus {\n"
+"    background: #ffffff;\n"
+"    border: 1.5px solid #0077B6;\n"
+"}\n"
+"\n"
+"/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 CHECKBOX \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */\n"
+"QCheckBox {\n"
+"    color: #334155;\n"
+"    font-size: 12px;\n"
+"    font-weight: 600;\n"
+"    spacing: 10px;\n"
+"    padding: 6px 0;\n"
+"    background: transparent;\n"
+"}\n"
+"\n"
+"QCheckBox::indicator {\n"
+"    width: 18px;\n"
+"    height: 18px;\n"
+"    border: 1.5px solid #cbd5e1;\n"
+"    background: #ffffff;\n"
+"    border-radius: 5px;\n"
+"}\n"
+"\n"
+"QCheckBox::indicator:hover {\n"
+"    border-color: #0077B6;\n"
+"}\n"
+"\n"
+"QCheckBox::indica"
+                        "tor:checked {\n"
+"    background: #0077B6;\n"
+"    border-color: #0077B6;\n"
+"    image: url(:/Icon/Icons/check_white.svg);\n"
+"}\n"
+"\n"
+"/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 BOUTONS D'ACTION \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */\n"
+"QPushButton#btn_save {\n"
+"    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,\n"
+"        stop:0 #0077B6, stop:1 #00B4D8);\n"
+"    color: #ffffff;\n"
+"    border: none;\n"
+"    border-radius: 11px;\n"
+"    padding: 12px 28px;\n"
+"    font-size: 13px;\n"
+"    font-weight: 800;\n"
+"    min-height: 44px;\n"
+"    letter-spacing: 0.3px;\n"
+"}\n"
+"\n"
+"QPushButton#btn_save:hover {\n"
+"    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,\n"
+"        stop:0 #023E8A, stop:1 #0077B6);\n"
+"}\n"
+"\n"
+"QPushButton#btn_save:pressed {\n"
+"    background: #023E8A;\n"
+"}\n"
+"\n"
+"QPushButton#btn_reload {\n"
+"    background: #ffffff;\n"
+"    color: #475569;\n"
+"    border: 1.5px"
+                        " solid #dbe3ec;\n"
+"    border-radius: 11px;\n"
+"    padding: 12px 22px;\n"
+"    font-size: 13px;\n"
+"    font-weight: 700;\n"
+"    min-height: 44px;\n"
+"}\n"
+"\n"
+"QPushButton#btn_reload:hover {\n"
+"    background: #f8fafc;\n"
+"    border-color: #c3cedd;\n"
+"    color: #0f172a;\n"
+"}\n"
+"\n"
+"QPushButton#btn_upload_logo {\n"
+"    background: #eff6ff;\n"
+"    color: #023E8A;\n"
+"    border: 1.5px solid #bfdbfe;\n"
+"    border-radius: 10px;\n"
+"    padding: 10px 20px;\n"
+"    font-size: 12px;\n"
+"    font-weight: 700;\n"
+"    min-height: 40px;\n"
+"}\n"
+"\n"
+"QPushButton#btn_upload_logo:hover {\n"
+"    background: #dbeafe;\n"
+"    border-color: #93c5fd;\n"
+"}\n"
+"\n"
+"QPushButton#btn_remove_logo {\n"
+"    background: #ffffff;\n"
+"    color: #dc2626;\n"
+"    border: 1.5px solid #fecaca;\n"
+"    border-radius: 10px;\n"
+"    padding: 10px 20px;\n"
+"    font-size: 12px;\n"
+"    font-weight: 700;\n"
+"    min-height: 40px;\n"
+"}\n"
+"\n"
+"QPushButton#btn_remove_logo:hover {\n"
+"    background: #fef2f2;\n"
+"}\n"
+"\n"
+"Q"
+                        "PushButton#btn_browse_save {\n"
+"    background: #eff6ff;\n"
+"    color: #023E8A;\n"
+"    border: 1.5px solid #bfdbfe;\n"
+"    border-radius: 10px;\n"
+"    padding: 10px 20px;\n"
+"    font-size: 12px;\n"
+"    font-weight: 700;\n"
+"    min-height: 40px;\n"
+"}\n"
+"\n"
+"QPushButton#btn_browse_save:hover {\n"
+"    background: #dbeafe;\n"
+"    border-color: #93c5fd;\n"
+"}\n"
+"\n"
+"/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 DANGER ZONE \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */\n"
+"QFrame#danger_card_info {\n"
+"    background: #fffbeb;\n"
+"    border: 1px solid #fde68a;\n"
+"    border-radius: 12px;\n"
+"}\n"
+"\n"
+"QFrame#danger_card_warn {\n"
+"    background: #ffffff;\n"
+"    border: 1px solid #e6ebf2;\n"
+"    border-radius: 12px;\n"
+"}\n"
+"\n"
+"QFrame#danger_card_danger {\n"
+"    background: #fef2f2;\n"
+"    border: 1px solid #fecaca;\n"
+"    border-radius: 12px;\n"
+"}\n"
+"\n"
+"QLabel#danger_icon_info {\n"
+"    back"
+                        "ground: #fde68a;\n"
+"    color: #92400e;\n"
+"    border-radius: 8px;\n"
+"    padding: 6px;\n"
+"    font-size: 12px;\n"
+"    font-weight: 800;\n"
+"}\n"
+"\n"
+"QLabel#danger_icon_warn {\n"
+"    background: #dbeafe;\n"
+"    color: #023E8A;\n"
+"    border-radius: 8px;\n"
+"    padding: 6px;\n"
+"    font-size: 12px;\n"
+"    font-weight: 800;\n"
+"}\n"
+"\n"
+"QLabel#danger_icon_danger {\n"
+"    background: #fecaca;\n"
+"    color: #b91c1c;\n"
+"    border-radius: 8px;\n"
+"    padding: 6px;\n"
+"    font-size: 12px;\n"
+"    font-weight: 800;\n"
+"}\n"
+"\n"
+"QLabel#danger_title {\n"
+"    color: #0f172a;\n"
+"    font-size: 13px;\n"
+"    font-weight: 800;\n"
+"}\n"
+"\n"
+"QLabel#danger_title_red {\n"
+"    color: #b91c1c;\n"
+"    font-size: 13px;\n"
+"    font-weight: 800;\n"
+"}\n"
+"\n"
+"QLabel#danger_desc {\n"
+"    color: #64748b;\n"
+"    font-size: 11px;\n"
+"}\n"
+"\n"
+"QLabel#danger_desc_red {\n"
+"    color: #991b1b;\n"
+"    font-size: 11px;\n"
+"}\n"
+"\n"
+"QPushButton#btn_export_db {\n"
+"    background: #eff6ff;\n"
+"    color: #0"
+                        "23E8A;\n"
+"    border: 1.5px solid #bfdbfe;\n"
+"    border-radius: 10px;\n"
+"    padding: 10px 22px;\n"
+"    font-size: 12px;\n"
+"    font-weight: 700;\n"
+"    min-height: 42px;\n"
+"}\n"
+"\n"
+"QPushButton#btn_export_db:hover {\n"
+"    background: #dbeafe;\n"
+"}\n"
+"\n"
+"QPushButton#btn_restore_db {\n"
+"    background: #fef3c7;\n"
+"    color: #92400e;\n"
+"    border: 1.5px solid #fcd34d;\n"
+"    border-radius: 10px;\n"
+"    padding: 10px 22px;\n"
+"    font-size: 12px;\n"
+"    font-weight: 700;\n"
+"    min-height: 42px;\n"
+"}\n"
+"\n"
+"QPushButton#btn_restore_db:hover {\n"
+"    background: #fde68a;\n"
+"}\n"
+"\n"
+"QPushButton#btn_reset_all {\n"
+"    background: #dc2626;\n"
+"    color: #ffffff;\n"
+"    border: none;\n"
+"    border-radius: 10px;\n"
+"    padding: 10px 22px;\n"
+"    font-size: 12px;\n"
+"    font-weight: 800;\n"
+"    min-height: 42px;\n"
+"}\n"
+"\n"
+"QPushButton#btn_reset_all:hover {\n"
+"    background: #b91c1c;\n"
+"}\n"
+"\n"
+"QPushButton#btn_reset_all:pressed {\n"
+"    background: #991b1b;\n"
+"}\n"
+"\n"
+""
+                        "/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 FOOTER \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */\n"
+"QFrame#footer_frame {\n"
+"    background: #f8fafc;\n"
+"    border-top: 1px solid #eef2f7;\n"
+"    border-bottom-left-radius: 20px;\n"
+"    border-bottom-right-radius: 20px;\n"
+"    border: none;\n"
+"}\n"
+"\n"
+"QLabel#lbl_status {\n"
+"    color: #94a3b8;\n"
+"    font-size: 11px;\n"
+"    font-weight: 600; } QLabel#lbl_status[status=\"ok\"] {\n"
+"    color: #16A34A;\n"
+"    font-weight: 700; } QLabel#lbl_status[status=\"warn\"] {\n"
+"    color: #b45309;\n"
+"    font-weight: 700;\n"
+"}\n"
+"\n"
+"/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 SCROLLBARS \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */\n"
+"QScrollArea {\n"
+"    background: transparent;\n"
+"    border: none;\n"
+"}\n"
+"\n"
+"QScrollArea > QWidget > QWidget {\n"
+"    b"
+                        "ackground: transparent;\n"
+"}\n"
+"\n"
+"QScrollBar:vertical {\n"
+"    border: none;\n"
+"    background: transparent;\n"
+"    width: 10px;\n"
+"    margin: 2px;\n"
+"}\n"
+"\n"
+"QScrollBar::handle:vertical {\n"
+"    background: #cbd5e1;\n"
+"    min-height: 32px;\n"
+"    border-radius: 5px;\n"
+"}\n"
+"\n"
+"QScrollBar::handle:vertical:hover {\n"
+"    background: #94a3b8;\n"
+"}\n"
+"\n"
+"QScrollBar::add-line:vertical,\n"
+"QScrollBar::sub-line:vertical {\n"
+"    height: 0;\n"
+"}\n"
+"\n"
+"QScrollBar::add-page:vertical,\n"
+"QScrollBar::sub-page:vertical {\n"
+"    background: transparent;\n"
+"}\n"
+"\n"
+"/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 S\u00c9PARATEURS \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */ QFrame[isSep=\"true\"] {\n"
+"    background: #eef2f7;\n"
+"    border: none;\n"
+"    max-height: 1px;\n"
+"    min-height: 1px;\n"
+"}\n"
+"\n"
+"/* \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550"
+                        "\u2550 TABLE MONITORING \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */\n"
+"QTableWidget#table_monitoring {\n"
+"    background: #ffffff;\n"
+"    border: 1px solid #e2e8f0;\n"
+"    border-radius: 10px;\n"
+"    gridline-color: transparent;\n"
+"    alternate-background-color: #f8fafc;\n"
+"}\n"
+"\n"
+"QTableWidget#table_monitoring::item {\n"
+"    padding: 8px;\n"
+"    color: #0f172a;\n"
+"    border-bottom: 1px solid #f1f5f9;\n"
+"}\n"
+"\n"
+"QTableWidget#table_monitoring::item:selected {\n"
+"    background: #e0f2fe;\n"
+"    color: #0f172a;\n"
+"}\n"
+"\n"
+"QTableWidget#table_monitoring QHeaderView::section {\n"
+"    background: #f8fafc;\n"
+"    color: #64748b;\n"
+"    padding: 8px;\n"
+"    border: none;\n"
+"    border-bottom: 1px solid #e2e8f0;\n"
+"    font-size: 10px;\n"
+"    font-weight: 800;\n"
+"    letter-spacing: 1px;\n"
 "}")
         self.root_layout = QVBoxLayout(PageParametres)
         self.root_layout.setSpacing(0)
@@ -433,7 +987,7 @@ class Ui_PageParametres(object):
         self.scrollVente.setWidgetResizable(True)
         self.scrollVenteContent = QWidget()
         self.scrollVenteContent.setObjectName(u"scrollVenteContent")
-        self.scrollVenteContent.setGeometry(QRect(0, 0, 1000, 592))
+        self.scrollVenteContent.setGeometry(QRect(0, 0, 458, 634))
         self.scrollVenteLayout = QVBoxLayout(self.scrollVenteContent)
         self.scrollVenteLayout.setSpacing(16)
         self.scrollVenteLayout.setObjectName(u"scrollVenteLayout")
@@ -506,7 +1060,7 @@ class Ui_PageParametres(object):
 
         self.spin_max_postes = QSpinBox(self.section_card3)
         self.spin_max_postes.setObjectName(u"spin_max_postes")
-        self.spin_max_postes.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
+        self.spin_max_postes.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.UpDownArrows)
         self.spin_max_postes.setMinimum(1)
         self.spin_max_postes.setMaximum(500)
         self.spin_max_postes.setValue(100)
@@ -521,6 +1075,7 @@ class Ui_PageParametres(object):
 
         self.spin_taux_change = QDoubleSpinBox(self.section_card3)
         self.spin_taux_change.setObjectName(u"spin_taux_change")
+        self.spin_taux_change.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.UpDownArrows)
         self.spin_taux_change.setDecimals(2)
         self.spin_taux_change.setMinimum(1.000000000000000)
         self.spin_taux_change.setMaximum(999999.989999999990687)
@@ -578,7 +1133,7 @@ class Ui_PageParametres(object):
 
         self.spin_marge = QDoubleSpinBox(self.section_card3)
         self.spin_marge.setObjectName(u"spin_marge")
-        self.spin_marge.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
+        self.spin_marge.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.UpDownArrows)
         self.spin_marge.setDecimals(1)
         self.spin_marge.setMaximum(200.000000000000000)
         self.spin_marge.setValue(30.000000000000000)
@@ -632,7 +1187,7 @@ class Ui_PageParametres(object):
         self.scrollFacturation.setWidgetResizable(True)
         self.scrollFacturationContent = QWidget()
         self.scrollFacturationContent.setObjectName(u"scrollFacturationContent")
-        self.scrollFacturationContent.setGeometry(QRect(0, 0, 1010, 591))
+        self.scrollFacturationContent.setGeometry(QRect(0, 0, 433, 388))
         self.scrollFacturationLayout = QVBoxLayout(self.scrollFacturationContent)
         self.scrollFacturationLayout.setSpacing(16)
         self.scrollFacturationLayout.setObjectName(u"scrollFacturationLayout")
@@ -768,7 +1323,7 @@ class Ui_PageParametres(object):
         self.scrollSauvegarde.setWidgetResizable(True)
         self.scrollSauvegardeContent = QWidget()
         self.scrollSauvegardeContent.setObjectName(u"scrollSauvegardeContent")
-        self.scrollSauvegardeContent.setGeometry(QRect(0, 0, 1000, 742))
+        self.scrollSauvegardeContent.setGeometry(QRect(0, 0, 455, 784))
         self.scrollSauvegardeLayout = QVBoxLayout(self.scrollSauvegardeContent)
         self.scrollSauvegardeLayout.setSpacing(16)
         self.scrollSauvegardeLayout.setObjectName(u"scrollSauvegardeLayout")
@@ -994,7 +1549,7 @@ class Ui_PageParametres(object):
         self.scrollSecurite.setWidgetResizable(True)
         self.scrollSecuriteContent = QWidget()
         self.scrollSecuriteContent.setObjectName(u"scrollSecuriteContent")
-        self.scrollSecuriteContent.setGeometry(QRect(0, 0, 1010, 591))
+        self.scrollSecuriteContent.setGeometry(QRect(0, 0, 700, 963))
         self.scrollSecuriteLayout = QVBoxLayout(self.scrollSecuriteContent)
         self.scrollSecuriteLayout.setSpacing(16)
         self.scrollSecuriteLayout.setObjectName(u"scrollSecuriteLayout")
@@ -1149,6 +1704,140 @@ class Ui_PageParametres(object):
 
         self.scrollSecuriteLayout.addWidget(self.section_card8)
 
+        self.section_card9 = QFrame(self.scrollSecuriteContent)
+        self.section_card9.setObjectName(u"section_card9")
+        self.secMonitoringLayout = QVBoxLayout(self.section_card9)
+        self.secMonitoringLayout.setSpacing(14)
+        self.secMonitoringLayout.setObjectName(u"secMonitoringLayout")
+        self.secMonitoringLayout.setContentsMargins(22, 20, 22, 20)
+        self.secMonitoringHeader = QHBoxLayout()
+        self.secMonitoringHeader.setSpacing(10)
+        self.secMonitoringHeader.setObjectName(u"secMonitoringHeader")
+        self.secMonitoringIcon = QLabel(self.section_card9)
+        self.secMonitoringIcon.setObjectName(u"secMonitoringIcon")
+        self.secMonitoringIcon.setMinimumSize(QSize(32, 32))
+        self.secMonitoringIcon.setMaximumSize(QSize(32, 32))
+        self.secMonitoringIcon.setStyleSheet(u"QLabel#section_icon { background: #e0f2fe; color: #023E8A; border-radius: 8px; padding: 6px; font-size: 12px; font-weight: 800; }")
+        self.secMonitoringIcon.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.secMonitoringHeader.addWidget(self.secMonitoringIcon)
+
+        self.secMonitoringTitle = QLabel(self.section_card9)
+        self.secMonitoringTitle.setObjectName(u"secMonitoringTitle")
+        self.secMonitoringTitle.setStyleSheet(u"color: #0f172a; font-size: 14px; font-weight: 800;")
+
+        self.secMonitoringHeader.addWidget(self.secMonitoringTitle)
+
+        self.secMonitoringSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.secMonitoringHeader.addItem(self.secMonitoringSpacer)
+
+        self.monitoring_count_badge = QLabel(self.section_card9)
+        self.monitoring_count_badge.setObjectName(u"monitoring_count_badge")
+        self.monitoring_count_badge.setStyleSheet(u"background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; border-radius: 10px; padding: 4px 14px; font-size: 11px; font-weight: 800;")
+
+        self.secMonitoringHeader.addWidget(self.monitoring_count_badge)
+
+
+        self.secMonitoringLayout.addLayout(self.secMonitoringHeader)
+
+        self.sepMon = QFrame(self.section_card9)
+        self.sepMon.setObjectName(u"sepMon")
+        self.sepMon.setMaximumSize(QSize(16777215, 1))
+        self.sepMon.setStyleSheet(u"QFrame#sepMon { background: #eef2f7; border: none; max-height: 1px; }")
+        self.sepMon.setFrameShape(QFrame.Shape.HLine)
+        self.sepMon.setFrameShadow(QFrame.Shadow.Plain)
+
+        self.secMonitoringLayout.addWidget(self.sepMon)
+
+        self.monitoring_client_info = QLabel(self.section_card9)
+        self.monitoring_client_info.setObjectName(u"monitoring_client_info")
+        self.monitoring_client_info.setVisible(False)
+        self.monitoring_client_info.setStyleSheet(u"color: #92400e; font-size: 11px; font-weight: 600; background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; padding: 10px 14px;")
+        self.monitoring_client_info.setWordWrap(True)
+
+        self.secMonitoringLayout.addWidget(self.monitoring_client_info)
+
+        self.monitoring_add_bar = QWidget(self.section_card9)
+        self.monitoring_add_bar.setObjectName(u"monitoring_add_bar")
+        self.monitoringAddBarLayout = QHBoxLayout(self.monitoring_add_bar)
+        self.monitoringAddBarLayout.setSpacing(10)
+        self.monitoringAddBarLayout.setObjectName(u"monitoringAddBarLayout")
+        self.monitoringAddBarLayout.setContentsMargins(0, 0, 0, 0)
+        self.lbl_monitoring_role = QLabel(self.monitoring_add_bar)
+        self.lbl_monitoring_role.setObjectName(u"lbl_monitoring_role")
+        self.lbl_monitoring_role.setStyleSheet(u"color: #475569; font-size: 11px; font-weight: 700;")
+
+        self.monitoringAddBarLayout.addWidget(self.lbl_monitoring_role)
+
+        self.combo_monitoring_role = QComboBox(self.monitoring_add_bar)
+        self.combo_monitoring_role.addItem("")
+        self.combo_monitoring_role.addItem("")
+        self.combo_monitoring_role.addItem("")
+        self.combo_monitoring_role.addItem("")
+        self.combo_monitoring_role.setObjectName(u"combo_monitoring_role")
+        self.combo_monitoring_role.setMinimumSize(QSize(220, 46))
+
+        self.monitoringAddBarLayout.addWidget(self.combo_monitoring_role)
+
+        self.btn_add_monitoring = QPushButton(self.monitoring_add_bar)
+        self.btn_add_monitoring.setObjectName(u"btn_add_monitoring")
+        self.btn_add_monitoring.setMinimumSize(QSize(0, 40))
+        self.btn_add_monitoring.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.btn_add_monitoring.setStyleSheet(u"QPushButton { background: #0077B6; color: #ffffff; border: none; border-radius: 10px; padding: 8px 20px; font-size: 12px; font-weight: 700; } QPushButton:hover { background: #023E8A; } QPushButton:disabled { background: #cbd5e1; color: #64748b; }")
+
+        self.monitoringAddBarLayout.addWidget(self.btn_add_monitoring)
+
+        self.monitoringAddSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.monitoringAddBarLayout.addItem(self.monitoringAddSpacer)
+
+        self.btn_refresh_monitoring = QPushButton(self.monitoring_add_bar)
+        self.btn_refresh_monitoring.setObjectName(u"btn_refresh_monitoring")
+        self.btn_refresh_monitoring.setMinimumSize(QSize(0, 40))
+        self.btn_refresh_monitoring.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
+        self.btn_refresh_monitoring.setStyleSheet(u"QPushButton { background: #f8fafc; color: #475569; border: 1.5px solid #dbe3ec; border-radius: 10px; padding: 8px 16px; font-size: 12px; font-weight: 700; } QPushButton:hover { background: #f1f5f9; }")
+
+        self.monitoringAddBarLayout.addWidget(self.btn_refresh_monitoring)
+
+
+        self.secMonitoringLayout.addWidget(self.monitoring_add_bar)
+
+        self.table_monitoring = QTableWidget(self.section_card9)
+        if (self.table_monitoring.columnCount() < 5):
+            self.table_monitoring.setColumnCount(5)
+        __qtablewidgetitem = QTableWidgetItem()
+        self.table_monitoring.setHorizontalHeaderItem(0, __qtablewidgetitem)
+        __qtablewidgetitem1 = QTableWidgetItem()
+        self.table_monitoring.setHorizontalHeaderItem(1, __qtablewidgetitem1)
+        __qtablewidgetitem2 = QTableWidgetItem()
+        self.table_monitoring.setHorizontalHeaderItem(2, __qtablewidgetitem2)
+        __qtablewidgetitem3 = QTableWidgetItem()
+        self.table_monitoring.setHorizontalHeaderItem(3, __qtablewidgetitem3)
+        __qtablewidgetitem4 = QTableWidgetItem()
+        self.table_monitoring.setHorizontalHeaderItem(4, __qtablewidgetitem4)
+        self.table_monitoring.setObjectName(u"table_monitoring")
+        self.table_monitoring.setMinimumSize(QSize(0, 200))
+        self.table_monitoring.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.table_monitoring.setAlternatingRowColors(True)
+        self.table_monitoring.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.table_monitoring.setShowGrid(False)
+        self.table_monitoring.setColumnCount(5)
+
+        self.secMonitoringLayout.addWidget(self.table_monitoring)
+
+        self.lbl_monitoring_empty = QLabel(self.section_card9)
+        self.lbl_monitoring_empty.setObjectName(u"lbl_monitoring_empty")
+        self.lbl_monitoring_empty.setVisible(False)
+        self.lbl_monitoring_empty.setStyleSheet(u"color: #94a3b8; font-size: 11px; font-style: italic; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 20px;")
+        self.lbl_monitoring_empty.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.lbl_monitoring_empty.setWordWrap(True)
+
+        self.secMonitoringLayout.addWidget(self.lbl_monitoring_empty)
+
+
+        self.scrollSecuriteLayout.addWidget(self.section_card9)
+
         self.spacerSecu = QSpacerItem(20, 20, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
         self.scrollSecuriteLayout.addItem(self.spacerSecu)
@@ -1170,21 +1859,21 @@ class Ui_PageParametres(object):
         self.scrollImprimantes.setWidgetResizable(True)
         self.scrollImprimantesContent = QWidget()
         self.scrollImprimantesContent.setObjectName(u"scrollImprimantesContent")
-        self.scrollImprimantesContent.setGeometry(QRect(0, 0, 1000, 640))
+        self.scrollImprimantesContent.setGeometry(QRect(0, 0, 497, 668))
         self.scrollImprimantesLayout = QVBoxLayout(self.scrollImprimantesContent)
         self.scrollImprimantesLayout.setSpacing(16)
         self.scrollImprimantesLayout.setObjectName(u"scrollImprimantesLayout")
         self.scrollImprimantesLayout.setContentsMargins(0, 0, 0, 0)
-        self.section_card9 = QFrame(self.scrollImprimantesContent)
-        self.section_card9.setObjectName(u"section_card9")
-        self.secPrinterTicketLayout = QVBoxLayout(self.section_card9)
+        self.section_card10 = QFrame(self.scrollImprimantesContent)
+        self.section_card10.setObjectName(u"section_card10")
+        self.secPrinterTicketLayout = QVBoxLayout(self.section_card10)
         self.secPrinterTicketLayout.setSpacing(14)
         self.secPrinterTicketLayout.setObjectName(u"secPrinterTicketLayout")
         self.secPrinterTicketLayout.setContentsMargins(22, 20, 22, 20)
         self.secPrinterTicketHeader = QHBoxLayout()
         self.secPrinterTicketHeader.setSpacing(10)
         self.secPrinterTicketHeader.setObjectName(u"secPrinterTicketHeader")
-        self.secPrinterTicketIcon = QLabel(self.section_card9)
+        self.secPrinterTicketIcon = QLabel(self.section_card10)
         self.secPrinterTicketIcon.setObjectName(u"secPrinterTicketIcon")
         self.secPrinterTicketIcon.setMinimumSize(QSize(32, 32))
         self.secPrinterTicketIcon.setMaximumSize(QSize(32, 32))
@@ -1193,7 +1882,7 @@ class Ui_PageParametres(object):
 
         self.secPrinterTicketHeader.addWidget(self.secPrinterTicketIcon)
 
-        self.secPrinterTicketTitle = QLabel(self.section_card9)
+        self.secPrinterTicketTitle = QLabel(self.section_card10)
         self.secPrinterTicketTitle.setObjectName(u"secPrinterTicketTitle")
         self.secPrinterTicketTitle.setStyleSheet(u"color: #0f172a; font-size: 14px; font-weight: 800;")
 
@@ -1206,7 +1895,7 @@ class Ui_PageParametres(object):
 
         self.secPrinterTicketLayout.addLayout(self.secPrinterTicketHeader)
 
-        self.lbl_printer_ticket_desc = QLabel(self.section_card9)
+        self.lbl_printer_ticket_desc = QLabel(self.section_card10)
         self.lbl_printer_ticket_desc.setObjectName(u"lbl_printer_ticket_desc")
         self.lbl_printer_ticket_desc.setStyleSheet(u"color: #64748b; font-size: 11px;")
         self.lbl_printer_ticket_desc.setWordWrap(True)
@@ -1216,13 +1905,13 @@ class Ui_PageParametres(object):
         self.printerTicketRow = QHBoxLayout()
         self.printerTicketRow.setSpacing(10)
         self.printerTicketRow.setObjectName(u"printerTicketRow")
-        self.combo_printer_ticket = QComboBox(self.section_card9)
+        self.combo_printer_ticket = QComboBox(self.section_card10)
         self.combo_printer_ticket.setObjectName(u"combo_printer_ticket")
         self.combo_printer_ticket.setMinimumSize(QSize(0, 46))
 
         self.printerTicketRow.addWidget(self.combo_printer_ticket)
 
-        self.btn_refresh_printers_ticket = QPushButton(self.section_card9)
+        self.btn_refresh_printers_ticket = QPushButton(self.section_card10)
         self.btn_refresh_printers_ticket.setObjectName(u"btn_refresh_printers_ticket")
         self.btn_refresh_printers_ticket.setMinimumSize(QSize(0, 44))
         self.btn_refresh_printers_ticket.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
@@ -1231,7 +1920,7 @@ class Ui_PageParametres(object):
 
         self.printerTicketRow.addWidget(self.btn_refresh_printers_ticket)
 
-        self.btn_test_print_ticket = QPushButton(self.section_card9)
+        self.btn_test_print_ticket = QPushButton(self.section_card10)
         self.btn_test_print_ticket.setObjectName(u"btn_test_print_ticket")
         self.btn_test_print_ticket.setMinimumSize(QSize(0, 44))
         self.btn_test_print_ticket.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
@@ -1244,18 +1933,18 @@ class Ui_PageParametres(object):
         self.secPrinterTicketLayout.addLayout(self.printerTicketRow)
 
 
-        self.scrollImprimantesLayout.addWidget(self.section_card9)
+        self.scrollImprimantesLayout.addWidget(self.section_card10)
 
-        self.section_card10 = QFrame(self.scrollImprimantesContent)
-        self.section_card10.setObjectName(u"section_card10")
-        self.secPrinterReportLayout = QVBoxLayout(self.section_card10)
+        self.section_card11 = QFrame(self.scrollImprimantesContent)
+        self.section_card11.setObjectName(u"section_card11")
+        self.secPrinterReportLayout = QVBoxLayout(self.section_card11)
         self.secPrinterReportLayout.setSpacing(14)
         self.secPrinterReportLayout.setObjectName(u"secPrinterReportLayout")
         self.secPrinterReportLayout.setContentsMargins(22, 20, 22, 20)
         self.secPrinterReportHeader = QHBoxLayout()
         self.secPrinterReportHeader.setSpacing(10)
         self.secPrinterReportHeader.setObjectName(u"secPrinterReportHeader")
-        self.secPrinterReportIcon = QLabel(self.section_card10)
+        self.secPrinterReportIcon = QLabel(self.section_card11)
         self.secPrinterReportIcon.setObjectName(u"secPrinterReportIcon")
         self.secPrinterReportIcon.setMinimumSize(QSize(32, 32))
         self.secPrinterReportIcon.setMaximumSize(QSize(32, 32))
@@ -1264,7 +1953,7 @@ class Ui_PageParametres(object):
 
         self.secPrinterReportHeader.addWidget(self.secPrinterReportIcon)
 
-        self.secPrinterReportTitle = QLabel(self.section_card10)
+        self.secPrinterReportTitle = QLabel(self.section_card11)
         self.secPrinterReportTitle.setObjectName(u"secPrinterReportTitle")
         self.secPrinterReportTitle.setStyleSheet(u"color: #0f172a; font-size: 14px; font-weight: 800;")
 
@@ -1277,7 +1966,7 @@ class Ui_PageParametres(object):
 
         self.secPrinterReportLayout.addLayout(self.secPrinterReportHeader)
 
-        self.lbl_printer_report_desc = QLabel(self.section_card10)
+        self.lbl_printer_report_desc = QLabel(self.section_card11)
         self.lbl_printer_report_desc.setObjectName(u"lbl_printer_report_desc")
         self.lbl_printer_report_desc.setStyleSheet(u"color: #64748b; font-size: 11px;")
         self.lbl_printer_report_desc.setWordWrap(True)
@@ -1287,13 +1976,13 @@ class Ui_PageParametres(object):
         self.printerReportRow = QHBoxLayout()
         self.printerReportRow.setSpacing(10)
         self.printerReportRow.setObjectName(u"printerReportRow")
-        self.combo_printer_report = QComboBox(self.section_card10)
+        self.combo_printer_report = QComboBox(self.section_card11)
         self.combo_printer_report.setObjectName(u"combo_printer_report")
         self.combo_printer_report.setMinimumSize(QSize(0, 46))
 
         self.printerReportRow.addWidget(self.combo_printer_report)
 
-        self.btn_test_print_report = QPushButton(self.section_card10)
+        self.btn_test_print_report = QPushButton(self.section_card11)
         self.btn_test_print_report.setObjectName(u"btn_test_print_report")
         self.btn_test_print_report.setMinimumSize(QSize(0, 44))
         self.btn_test_print_report.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
@@ -1306,18 +1995,18 @@ class Ui_PageParametres(object):
         self.secPrinterReportLayout.addLayout(self.printerReportRow)
 
 
-        self.scrollImprimantesLayout.addWidget(self.section_card10)
+        self.scrollImprimantesLayout.addWidget(self.section_card11)
 
-        self.section_card11 = QFrame(self.scrollImprimantesContent)
-        self.section_card11.setObjectName(u"section_card11")
-        self.secPrintAutoLayout = QVBoxLayout(self.section_card11)
+        self.section_card12 = QFrame(self.scrollImprimantesContent)
+        self.section_card12.setObjectName(u"section_card12")
+        self.secPrintAutoLayout = QVBoxLayout(self.section_card12)
         self.secPrintAutoLayout.setSpacing(14)
         self.secPrintAutoLayout.setObjectName(u"secPrintAutoLayout")
         self.secPrintAutoLayout.setContentsMargins(22, 20, 22, 20)
         self.secPrintAutoHeader = QHBoxLayout()
         self.secPrintAutoHeader.setSpacing(10)
         self.secPrintAutoHeader.setObjectName(u"secPrintAutoHeader")
-        self.secPrintAutoIcon = QLabel(self.section_card11)
+        self.secPrintAutoIcon = QLabel(self.section_card12)
         self.secPrintAutoIcon.setObjectName(u"secPrintAutoIcon")
         self.secPrintAutoIcon.setMinimumSize(QSize(32, 32))
         self.secPrintAutoIcon.setMaximumSize(QSize(32, 32))
@@ -1326,7 +2015,7 @@ class Ui_PageParametres(object):
 
         self.secPrintAutoHeader.addWidget(self.secPrintAutoIcon)
 
-        self.secPrintAutoTitle = QLabel(self.section_card11)
+        self.secPrintAutoTitle = QLabel(self.section_card12)
         self.secPrintAutoTitle.setObjectName(u"secPrintAutoTitle")
         self.secPrintAutoTitle.setStyleSheet(u"color: #0f172a; font-size: 14px; font-weight: 800;")
 
@@ -1335,24 +2024,24 @@ class Ui_PageParametres(object):
 
         self.secPrintAutoLayout.addLayout(self.secPrintAutoHeader)
 
-        self.chk_auto_print = QCheckBox(self.section_card11)
+        self.chk_auto_print = QCheckBox(self.section_card12)
         self.chk_auto_print.setObjectName(u"chk_auto_print")
 
         self.secPrintAutoLayout.addWidget(self.chk_auto_print)
 
-        self.chk_auto_print_report = QCheckBox(self.section_card11)
+        self.chk_auto_print_report = QCheckBox(self.section_card12)
         self.chk_auto_print_report.setObjectName(u"chk_auto_print_report")
 
         self.secPrintAutoLayout.addWidget(self.chk_auto_print_report)
 
-        self.chk_auto_open_pdf = QCheckBox(self.section_card11)
+        self.chk_auto_open_pdf = QCheckBox(self.section_card12)
         self.chk_auto_open_pdf.setObjectName(u"chk_auto_open_pdf")
         self.chk_auto_open_pdf.setChecked(True)
 
         self.secPrintAutoLayout.addWidget(self.chk_auto_open_pdf)
 
 
-        self.scrollImprimantesLayout.addWidget(self.section_card11)
+        self.scrollImprimantesLayout.addWidget(self.section_card12)
 
         self.spacerPrinters = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
@@ -1375,7 +2064,7 @@ class Ui_PageParametres(object):
         self.scrollDanger.setWidgetResizable(True)
         self.scrollDangerContent = QWidget()
         self.scrollDangerContent.setObjectName(u"scrollDangerContent")
-        self.scrollDangerContent.setGeometry(QRect(0, 0, 1010, 591))
+        self.scrollDangerContent.setGeometry(QRect(0, 0, 409, 495))
         self.scrollDangerLayout = QVBoxLayout(self.scrollDangerContent)
         self.scrollDangerLayout.setSpacing(14)
         self.scrollDangerLayout.setObjectName(u"scrollDangerLayout")
@@ -1608,7 +2297,7 @@ class Ui_PageParametres(object):
         self.header_icon.setText("")
         self.page_title.setText(QCoreApplication.translate("PageParametres", u"Param\u00e8tres", None))
         self.page_subtitle.setText(QCoreApplication.translate("PageParametres", u"Configurez le comportement de l'application, la facturation et la s\u00e9curit\u00e9.", None))
-        self.version_badge.setText(QCoreApplication.translate("PageParametres", u"NOVA PHARMA v2.0", None))
+        self.version_badge.setText(QCoreApplication.translate("PageParametres", u"NOVA PHARMA v2.0.0", None))
         self.secIdIcon.setText(QCoreApplication.translate("PageParametres", u"01", None))
         self.secIdTitle.setText(QCoreApplication.translate("PageParametres", u"Identit\u00e9 de l'officine", None))
         self.secIdHint.setText(QCoreApplication.translate("PageParametres", u"Ces informations apparaissent sur les factures", None))
@@ -1644,7 +2333,7 @@ class Ui_PageParametres(object):
         self.combo_devise.setItemText(2, QCoreApplication.translate("PageParametres", u"USD", None))
         self.combo_devise.setItemText(3, QCoreApplication.translate("PageParametres", u"EUR", None))
 
-        self.spin_max_postes.setSuffix(QCoreApplication.translate("PageParametres", u"postes", None))
+        self.spin_max_postes.setSuffix(QCoreApplication.translate("PageParametres", u" postes", None))
         self.lbl_taux_change.setText(QCoreApplication.translate("PageParametres", u"TAUX DE CHANGE (1 USD =)", None))
 #if QT_CONFIG(tooltip)
         self.spin_taux_change.setToolTip(QCoreApplication.translate("PageParametres", u"Modifiable uniquement par un administrateur", None))
@@ -1703,6 +2392,29 @@ class Ui_PageParametres(object):
         self.lbl_seuil_title_4.setText(QCoreApplication.translate("PageParametres", u"S\u00c9CURIT\u00c9 RENFORC\u00c9E", None))
         self.chk_backup_urgence.setText(QCoreApplication.translate("PageParametres", u"Cr\u00e9er une sauvegarde d'urgence automatique avant chaque action critique", None))
         self.chk_allow_admin_client.setText(QCoreApplication.translate("PageParametres", u"Autoriser les connexions ADMIN/OWNER/DEV depuis un poste client (recommand\u00e9 : D\u00c9SACTIV\u00c9 en production)", None))
+        self.secMonitoringIcon.setText(QCoreApplication.translate("PageParametres", u"02", None))
+        self.secMonitoringTitle.setText(QCoreApplication.translate("PageParametres", u"PC de monitoring", None))
+        self.monitoring_count_badge.setText(QCoreApplication.translate("PageParametres", u"0 / 3", None))
+        self.monitoring_client_info.setText(QCoreApplication.translate("PageParametres", u"La whitelist ne peut \u00eatre modifi\u00e9e que depuis le serveur physique.", None))
+        self.lbl_monitoring_role.setText(QCoreApplication.translate("PageParametres", u"R\u00f4le autoris\u00e9 :", None))
+        self.combo_monitoring_role.setItemText(0, QCoreApplication.translate("PageParametres", u"Tous (OWNER + ADMIN + DEV)", None))
+        self.combo_monitoring_role.setItemText(1, QCoreApplication.translate("PageParametres", u"OWNER uniquement", None))
+        self.combo_monitoring_role.setItemText(2, QCoreApplication.translate("PageParametres", u"ADMIN uniquement", None))
+        self.combo_monitoring_role.setItemText(3, QCoreApplication.translate("PageParametres", u"DEV uniquement", None))
+
+        self.btn_add_monitoring.setText(QCoreApplication.translate("PageParametres", u"Ajouter ce PC", None))
+        self.btn_refresh_monitoring.setText(QCoreApplication.translate("PageParametres", u"Actualiser", None))
+        ___qtablewidgetitem = self.table_monitoring.horizontalHeaderItem(0)
+        ___qtablewidgetitem.setText(QCoreApplication.translate("PageParametres", u"Machine ID", None))
+        ___qtablewidgetitem1 = self.table_monitoring.horizontalHeaderItem(1)
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("PageParametres", u"Hostname", None))
+        ___qtablewidgetitem2 = self.table_monitoring.horizontalHeaderItem(2)
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("PageParametres", u"R\u00f4le autoris\u00e9", None))
+        ___qtablewidgetitem3 = self.table_monitoring.horizontalHeaderItem(3)
+        ___qtablewidgetitem3.setText(QCoreApplication.translate("PageParametres", u"Ajout\u00e9e le", None))
+        ___qtablewidgetitem4 = self.table_monitoring.horizontalHeaderItem(4)
+        ___qtablewidgetitem4.setText(QCoreApplication.translate("PageParametres", u"Statut", None))
+        self.lbl_monitoring_empty.setText(QCoreApplication.translate("PageParametres", u"Aucun PC autoris\u00e9. Cliquez sur \u00ab Ajouter ce PC \u00bb pour whitelister cette machine.", None))
         self.tabs.setTabText(self.tabs.indexOf(self.tab_securite), QCoreApplication.translate("PageParametres", u"S\u00e9curit\u00e9", None))
         self.secPrinterTicketIcon.setText(QCoreApplication.translate("PageParametres", u"01", None))
         self.secPrinterTicketTitle.setText(QCoreApplication.translate("PageParametres", u"Imprimante TICKET (factures)", None))

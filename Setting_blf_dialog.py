@@ -276,24 +276,34 @@ class Setting_blf_dialog(QtWidgets.QDialog, Ui_Dialog):
     # ══════════════════════════════════════════════════════════════
     def _load_produits(self):
         try:
-            rows = db.query("""
-                SELECT Code_reference, Nom, Quantite, Prix_achat, Prix_vente
-                FROM produits WHERE actif = 1 ORDER BY Nom ASC
-            """)
-            self._produits_cache = [dict(r) for r in rows]
+            produits = []
+            if is_client_mode():
+                from Client.api_singleton import get_api
+                api = get_api()
+                if api:
+                    data = api.list_produits(page=1, per_page=200, actif=1)
+                    produits = data.get("items", [])
+            else:
+                rows = db.query("""
+                    SELECT Code_reference, Nom, Quantite, Prix_achat, Prix_vente
+                    FROM produits WHERE actif = 1 ORDER BY Nom ASC
+                """)
+                produits = [dict(r) for r in rows]
 
-            self.table_produits.setRowCount(len(self._produits_cache))
-            for i, p in enumerate(self._produits_cache):
-                item0 = QtWidgets.QTableWidgetItem(p["Code_reference"])
+            self._produits_cache = produits
+            self.table_produits.setRowCount(len(produits))
+
+            for i, p in enumerate(produits):
+                item0 = QtWidgets.QTableWidgetItem(str(p.get("Code_reference", "")))
                 item0.setFont(QtGui.QFont("Courier New", 9))
                 item0.setForeground(QtGui.QColor("#94a3b8"))
                 self.table_produits.setItem(i, 0, item0)
 
-                item1 = QtWidgets.QTableWidgetItem(p["Nom"])
+                item1 = QtWidgets.QTableWidgetItem(str(p.get("Nom", "")))
                 item1.setFont(QtGui.QFont("Segoe UI", 10, QtGui.QFont.Bold))
                 self.table_produits.setItem(i, 1, item1)
 
-                q = int(p["Quantite"] or 0)
+                q = int(p.get("Quantite") or 0)
                 item2 = QtWidgets.QTableWidgetItem(str(q))
                 color = "#16A34A" if q > 50 else "#F4A261" if q > 20 else "#DC2626"
                 item2.setForeground(QtGui.QColor(color))
@@ -302,7 +312,7 @@ class Setting_blf_dialog(QtWidgets.QDialog, Ui_Dialog):
                 self.table_produits.setItem(i, 2, item2)
 
                 item3 = QtWidgets.QTableWidgetItem(
-                    f"{float(p['Prix_achat'] or 0):.0f} FC")
+                    f"{float(p.get('Prix_achat') or 0):.0f} FC")
                 item3.setForeground(QtGui.QColor("#0f172a"))
                 item3.setTextAlignment(Qt.AlignCenter)
                 self.table_produits.setItem(i, 3, item3)
@@ -317,13 +327,24 @@ class Setting_blf_dialog(QtWidgets.QDialog, Ui_Dialog):
             self.combo_fournisseur.clear()
             self.combo_fournisseur.addItem("Sans fournisseur", None)
 
-            rows = db.query("""
-                SELECT Id_fournisseur, Entreprise
-                FROM Fournisseur ORDER BY Entreprise ASC
-            """)
-            for r in rows:
+            fournisseurs = []
+            if is_client_mode():
+                from Client.api_singleton import get_api
+                api = get_api()
+                if api:
+                    data = api.list_fournisseurs(per_page=200, actif=1)
+                    fournisseurs = data.get("items", [])
+            else:
+                rows = db.query("""
+                    SELECT Id_fournisseur, Entreprise
+                    FROM Fournisseur WHERE actif = 1 ORDER BY Entreprise ASC
+                """)
+                fournisseurs = [dict(r) for r in rows]
+
+            for r in fournisseurs:
                 self.combo_fournisseur.addItem(
-                    r["Entreprise"], r["Id_fournisseur"])
+                    r.get("Entreprise", "—"),
+                    r.get("Id_fournisseur"))
         except Exception:
             logger.exception("Erreur chargement fournisseurs")
 

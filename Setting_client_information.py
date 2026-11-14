@@ -18,6 +18,7 @@ import logging
 
 from PySide6 import QtWidgets, QtGui, QtCore
 
+from Client.api_singleton import is_client_mode, get_api
 from Database import db
 from Interface_client_information import Ui_Dialog
 
@@ -67,8 +68,31 @@ class ClientInfoDialog(QtWidgets.QDialog, Ui_Dialog):
     # Chargement
     # ------------------------------------------------------------------
     def _load_client(self):
-        """Charge les données du client."""
+        """Charge les données du client (API ou DB locale)."""
         try:
+            if is_client_mode():
+                api = get_api()
+                if api is None:
+                    self._client = None
+                    return
+                data = api.get_client(self.client_id)
+                # L'API renvoie déjà nb_visites / derniere_visite / historique
+                self._client = {
+                    "id": data.get("id"),
+                    "nom": data.get("nom") or "—",
+                    "numero": data.get("numero") or "",
+                    "sexe": data.get("sexe") or "M",
+                    "montant_total": float(data.get("Montant_total") or 0),
+                    "adresse": data.get("adresse"),
+                    "email": data.get("email"),
+                    "notes": data.get("notes"),
+                    "actif": int(data.get("actif") or 0),
+                    "_api_nb_visites": int(data.get("nb_visites") or 0),
+                    "_api_last_visit": data.get("derniere_visite"),
+                    "_api_historique": data.get("historique", []),
+                }
+                return
+            # ─── Mode local ───
             row = db.query_one(
                 """SELECT id,
                           COALESCE(C_name, nom) AS nom,
@@ -83,10 +107,15 @@ class ClientInfoDialog(QtWidgets.QDialog, Ui_Dialog):
             self._client = None
 
     def _load_stats(self):
-        """Calcule les statistiques du client (visites, dernière visite)."""
         if not self._client:
             return 0, None
 
+        # ─── Mode client : déjà chargé via get_client() ───
+        if "_api_nb_visites" in self._client:
+            return (self._client["_api_nb_visites"],
+                    self._client.get("_api_last_visit"))
+
+        # ─── Mode local ───
         nom = self._client.get("nom") or ""
         numero = self._client.get("numero") or ""
         exact_name = f"{nom} {numero}".strip() if numero else nom
@@ -108,11 +137,18 @@ class ClientInfoDialog(QtWidgets.QDialog, Ui_Dialog):
         return n_visits, last_visit
 
     def _load_history(self):
-        """Charge l'historique des achats (tableau pur)."""
         if not self._client:
             self._fill_empty_history()
             return
 
+        # ─── Mode client : historique fourni par get_client() ───
+        if "_api_historique" in self._client:
+            hist = self._client["_api_historique"] or []
+            # Normalise : les clés sont déjà Date_vent, Num_fact, etc.
+            self._populate_history(hist)
+            return
+
+        # ─── Mode local ───
         nom = self._client.get("nom") or ""
         numero = self._client.get("numero") or ""
         exact_name = f"{nom} {numero}".strip() if numero else nom
@@ -379,6 +415,28 @@ class ClientInfoDialog(QtWidgets.QDialog, Ui_Dialog):
         if rep != QtWidgets.QMessageBox.Yes:
             return
 
+        # ─── MODE CLIENT → API ───
+        if is_client_mode():
+            try:
+                api = get_api()
+                if api is None:
+                    return
+                api.delete_client(self.client_id)
+                logger.info("Client supprimé (API) : %s", self.client_id)
+                QtWidgets.QMessageBox.information(
+                    self, "Client désactivé",
+                    f"Le client « {nom} » a été désactivé.")
+                self.client_deleted.emit(self.client_id)
+                self.accept()
+                return
+            except Exception as e:
+                logger.exception("Erreur suppression client (API)")
+                QtWidgets.QMessageBox.critical(
+                    self, "Erreur",
+                    f"Impossible de désactiver le client :\n{e}")
+                return
+
+        # ─── MODE LOCAL (code existant) ───
         try:
             with db.transaction():
                 if has_sales:

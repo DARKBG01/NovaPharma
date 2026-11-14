@@ -75,6 +75,7 @@ ICONS: Dict[str, str] = {
     "close": '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
     "sidebar": '<rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/>',
 
+
     # ═══ 2. Actions Principales ═══════════════════════════════
     "plus": '<path d="M12 5v14"/><path d="M5 12h14"/>',
     "minus": '<path d="M5 12h14"/>',
@@ -127,6 +128,7 @@ ICONS: Dict[str, str] = {
     "calendar-check": '<rect x="3" y="5" width="18" height="16" rx="2"/><line x1="16" y1="3" x2="16" y2="7"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="3" y1="11" x2="21" y2="11"/><path d="m9 16 2 2 4-4"/>',
     "history": '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3.5 2"/>',
     "alert-triangle": '<path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+    "bell": '<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>',  # ← AJOUT
     "info": '<circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/>',
 
     # ═══ 8. Graphiques & Système ══════════════════════════════
@@ -150,7 +152,7 @@ WHITE_VARIANTS = {
     "tag", "receipt", "invoice", "barcode", "scan", "calculator",
     "file-text", "folder", "clipboard-check",
     "calendar", "calendar-check", "history", "alert-triangle", "info",
-    "chart-pie", "chart-line", "settings", "log-out"
+    "chart-pie", "chart-line", "settings", "log-out", "bell"
 }
 
 

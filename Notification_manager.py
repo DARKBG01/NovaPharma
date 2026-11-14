@@ -1,254 +1,142 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Notification_manager.py — Système de notifications internes.
-=============================================================
-Permet d'envoyer des notifications à l'utilisateur via un bandeau
-en haut de la fenêtre principale.
-
-Usage :
-    from Notification_manager import notify
-    notify.info("Produit ajouté")
-    notify.warning("Stock faible pour Doliprane")
-    notify.danger("Erreur d'enregistrement")
-    notify.success("Vente enregistrée")
+Notification_manager.py — Système de notifications global.
+===========================================================
+- Toasts flottants (coins haut-droit) avec icônes SVG
+- Centre de notifications (historique DB)
 """
 
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from PySide6 import QtWidgets, QtGui, QtCore
 from PySide6.QtCore import Qt, QTimer
+
+from Database import db
 
 logger = logging.getLogger(__name__)
 
 
 # ══════════════════════════════════════════════════════════════════
-# Types de notification
+# Toast (Popup animé)
 # ══════════════════════════════════════════════════════════════════
-STYLE_INFO = {
-    "bg": "#eff6ff", "border": "#bfdbfe",
-    "fg": "#1e40af", "icon": "info",
-}
-STYLE_SUCCESS = {
-    "bg": "#f0fdf4", "border": "#bbf7d0",
-    "fg": "#15803d", "icon": "check-circle",
-}
-STYLE_WARNING = {
-    "bg": "#fef3c7", "border": "#fde68a",
-    "fg": "#b45309", "icon": "alert-triangle",
-}
-STYLE_DANGER = {
-    "bg": "#fef2f2", "border": "#fecaca",
-    "fg": "#b91c1c", "icon": "x-circle",
-}
-
-STYLES = {
-    "info":    STYLE_INFO,
-    "success": STYLE_SUCCESS,
-    "warning": STYLE_WARNING,
-    "danger":  STYLE_DANGER,
-}
-
-
-# ══════════════════════════════════════════════════════════════════
-# Widget bandeau
-# ══════════════════════════════════════════════════════════════════
-class NotificationBanner(QtWidgets.QFrame):
-    """Un bandeau de notification individuel."""
-
-    closed = QtCore.Signal(object)  # self
-
-    def __init__(self, message: str, level: str = "info",
-                 duration_ms: int = 5000, parent=None):
+class Toast(QtWidgets.QFrame):
+    def __init__(self, message: str, type_: str, parent, duration=4000):
         super().__init__(parent)
-        self.level = level
-        self.duration_ms = duration_ms
-        self._build_ui(message)
-        self._apply_style()
-        self._start_timer()
+        self.setObjectName("toast")
+        self.setWindowFlags(Qt.FramelessWindowHint | Qt.SubWindow)
+        self.setAttribute(Qt.WA_TransparentForMouseEvents)
 
-    def _build_ui(self, message: str):
-        self.setObjectName("notification_banner")
-        h = QtWidgets.QHBoxLayout(self)
-        h.setContentsMargins(14, 10, 10, 10)
-        h.setSpacing(10)
+        # Style et icônes par type
+        configs = {
+            "success": ("#dcfce7", "#15803d", "#bbf7d0", "check-circle"),
+            "danger": ("#fee2e2", "#b91c1c", "#fecaca", "x-circle"),
+            "warning": ("#fef3c7", "#b45309", "#fde68a", "alert-triangle"),
+            "info": ("#dbeafe", "#1e40af", "#bfdbfe", "info")
+        }
+        bg, fg, border, icon_name = configs.get(type_, configs["info"])
 
-        # Icône
-        self.icon = QtWidgets.QLabel()
-        self.icon.setFixedSize(18, 18)
-        h.addWidget(self.icon)
-
-        # Message
-        self.label = QtWidgets.QLabel(message)
-        self.label.setWordWrap(True)
-        self.label.setStyleSheet(
-            "background: transparent; font-size: 12px; font-weight: 600;")
-        h.addWidget(self.label, 1)
-
-        # Bouton fermer
-        self.btn_close = QtWidgets.QPushButton()
-        self.btn_close.setFixedSize(24, 24)
-        self.btn_close.setCursor(Qt.PointingHandCursor)
-        self.btn_close.setIcon(QtGui.QIcon(":/Icon/Icons/close.svg"))
-        self.btn_close.setIconSize(QtCore.QSize(12, 12))
-        self.btn_close.setStyleSheet(
-            "QPushButton { background: transparent; border: none; }"
-            "QPushButton:hover { background: rgba(0,0,0,0.06); "
-            "border-radius: 6px; }")
-        self.btn_close.clicked.connect(self._close)
-        h.addWidget(self.btn_close)
-
-    def _apply_style(self):
-        style = STYLES.get(self.level, STYLE_INFO)
         self.setStyleSheet(f"""
-            QFrame#notification_banner {{
-                background: {style['bg']};
-                border: 1px solid {style['border']};
+            QFrame#toast {{
+                background: {bg};
+                border: 1px solid {border};
                 border-radius: 10px;
             }}
-            QLabel {{ background: transparent; color: {style['fg']}; }}
+            QLabel {{ background: transparent; color: {fg}; font-weight: 600; }}
         """)
-        self.label.setStyleSheet(
-            f"color: {style['fg']}; font-size: 12px; font-weight: 600; "
-            f"background: transparent;")
 
-        # Icône SVG
-        pix = QtGui.QPixmap(f":/Icon/Icons/{style['icon']}.svg")
+        layout = QtWidgets.QHBoxLayout(self)
+        layout.setContentsMargins(16, 12, 16, 12)
+
+        # Icône SVG (au lieu du caractère)
+        icon_lbl = QtWidgets.QLabel()
+        icon_lbl.setFixedSize(20, 20)
+        pix = QtGui.QPixmap(f":/Icon/Icons/{icon_name}.svg")
         if not pix.isNull():
-            self.icon.setPixmap(pix.scaled(
-                16, 16, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+            # On colorie le pixmap avec la couleur du texte (fg)
+            colored_pix = QtGui.QPixmap(pix.size())
+            colored_pix.fill(Qt.transparent)
+            painter = QtGui.QPainter(colored_pix)
+            painter.drawPixmap(0, 0, pix)
+            painter.setCompositionMode(QtGui.QPainter.CompositionMode_SourceIn)
+            painter.fillRect(colored_pix.rect(), QtGui.QColor(fg))
+            painter.end()
 
-    def _start_timer(self):
-        if self.duration_ms > 0:
-            QTimer.singleShot(self.duration_ms, self._close)
+            icon_lbl.setPixmap(colored_pix.scaled(
+                20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation))
 
-    def _close(self):
-        self.closed.emit(self)
-        try:
-            self.setParent(None)
-            self.deleteLater()
-        except Exception:
-            pass
+        layout.addWidget(icon_lbl)
+
+        # Message
+        lbl = QtWidgets.QLabel(message)
+        lbl.setWordWrap(True)
+        layout.addWidget(lbl, 1)
+
+        # Auto-delete
+        QTimer.singleShot(duration, self.close)
 
 
 # ══════════════════════════════════════════════════════════════════
-# Gestionnaire
+# Manager
 # ══════════════════════════════════════════════════════════════════
-class NotificationManager(QtCore.QObject):
-
+class NotificationManager:
     def __init__(self):
-        super().__init__()
-        self._container = None
-        self._max_visible = 3
+        self._main_window = None
+        self._toasts = []
 
-    def attach(self, container: QtWidgets.QWidget):
-        """
-        Attache le gestionnaire à un conteneur (QVBoxLayout prêt à
-        accueillir les bandeaux). Appelé par Setting_main_window.
-        """
-        self._container = container
+    def attach_to_main(self, main_window):
+        self._main_window = main_window
 
-    def _emit(self, message: str, level: str, duration_ms: int):
-        if self._container is None:
-            logger.debug(
-                "[NOTIF %s] %s", level.upper(), message)
+    def _save_to_db(self, type_: str, title: str, message: str, action_url: str = None):
+        try:
+            with db.transaction():
+                db.execute("""
+                    INSERT INTO Notification (id, type, title, message, action_url)
+                    VALUES (?, ?, ?, ?, ?)
+                """, (db.new_id(), type_, title, message, action_url))
+        except Exception:
+            logger.exception("Erreur sauvegarde notification")
+
+    def _show_toast(self, message: str, type_: str, duration: int):
+        if not self._main_window:
             return
 
-        try:
-            banner = NotificationBanner(
-                message, level=level,
-                duration_ms=duration_ms,
-                parent=self._container)
-            banner.closed.connect(self._on_banner_closed)
+        toast = Toast(message, type_, self._main_window)
+        toast.adjustSize()
 
-            layout = self._container.layout()
-            if layout is None:
-                layout = QtWidgets.QVBoxLayout(self._container)
-                layout.setContentsMargins(0, 0, 0, 0)
-                layout.setSpacing(6)
+        # Placement (haut-droit)
+        x = self._main_window.width() - toast.width() - 20
+        y = 80 + (len(self._toasts) * (toast.height() + 10))
+        toast.move(x, y)
+        toast.show()
 
-            layout.addWidget(banner)
-            self._trim()
+        self._toasts.append(toast)
 
-        except Exception:
-            logger.exception("Erreur affichage notification")
+        # Nettoyage de la liste quand le toast se ferme
+        def _cleanup():
+            if toast in self._toasts:
+                self._toasts.remove(toast)
+            toast.deleteLater()
 
-    def _trim(self):
-        """Garde seulement N bandeaux visibles."""
-        try:
-            layout = self._container.layout()
-            if layout is None:
-                return
-            # Compte les bandeaux
-            banners = []
-            for i in range(layout.count()):
-                w = layout.itemAt(i).widget()
-                if isinstance(w, NotificationBanner):
-                    banners.append(w)
-            while len(banners) > self._max_visible:
-                old = banners.pop(0)
-                old._close()
-        except Exception:
-            pass
+        QTimer.singleShot(duration, _cleanup)
 
-    def _on_banner_closed(self, banner):
-        pass
+    # ─── API publique ───
+    def success(self, message: str, duration=3000):
+        self._show_toast(message, "success", duration)
 
-    # ── API publique ──
-    def info(self, message: str, duration_ms: int = 5000):
-        self._emit(message, "info", duration_ms)
+    def error(self, message: str, duration=5000):
+        self._show_toast(message, "danger", duration)
+        self._save_to_db("danger", "Erreur", message)
 
-    def success(self, message: str, duration_ms: int = 4000):
-        self._emit(message, "success", duration_ms)
+    def warning(self, message: str, duration=5000):
+        self._show_toast(message, "warning", duration)
+        self._save_to_db("warning", "Attention", message)
 
-    def warning(self, message: str, duration_ms: int = 7000):
-        self._emit(message, "warning", duration_ms)
-
-    def danger(self, message: str, duration_ms: int = 9000):
-        self._emit(message, "danger", duration_ms)
-    
-    def attach_to_main(self, main_window):
-        """
-        Attache les notifications à une fenêtre principale qui n'a
-        pas de conteneur dédié. Crée un conteneur flottant en haut à droite.
-        """
-        try:
-            self._container = QtWidgets.QWidget(main_window)
-            self._container.setStyleSheet("background: transparent;")
-
-            # ═══ CRUCIAL : le container ne doit PAS intercepter les clics ═══
-            self._container.setAttribute(
-                QtCore.Qt.WA_TransparentForMouseEvents, True)
-            self._container.setAttribute(
-                QtCore.Qt.WA_NoSystemBackground, True)
-
-            layout = QtWidgets.QVBoxLayout(self._container)
-            layout.setContentsMargins(0, 0, 0, 0)
-            layout.setSpacing(6)
-
-            # Positionne en haut à droite
-            geo = main_window.geometry()
-            self._container.setGeometry(
-                geo.width() - 420, 100, 400, 300)
-
-            # Repositionner si la fenêtre bouge
-            def _reposition():
-                try:
-                    g = main_window.geometry()
-                    self._container.setGeometry(
-                        g.width() - 420, 100, 400, 300)
-                    self._container.raise_()
-                except Exception:
-                    pass
-
-            self._container.raise_()
-            self._container.show()
-        except Exception:
-            logger.exception("Erreur attach_to_main")
+    def info(self, message: str, duration=3000):
+        self._show_toast(message, "info", duration)
+        self._save_to_db("info", "Information", message)
 
 
-# ══════════════════════════════════════════════════════════════════
 # Singleton
-# ══════════════════════════════════════════════════════════════════
 notify = NotificationManager()

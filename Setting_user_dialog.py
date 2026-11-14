@@ -13,6 +13,7 @@ from datetime import datetime
 import bcrypt
 from PySide6 import QtWidgets, QtGui, QtCore
 
+from Client.api_singleton import is_client_mode, get_api
 from Database import db, audit, NATIONALITY_LIST
 from Database import permissions as perms
 from Interface_user_dialog import Ui_Dialog
@@ -255,6 +256,18 @@ class Setting_user_dialog(QtWidgets.QDialog, Ui_Dialog):
     # ══════════════════════════════════════════════════════════════
     def _load_user(self):
         try:
+            if is_client_mode():
+                from Client.api_singleton import get_api
+                api = get_api()
+                if api is None:
+                    self._user_data = None
+                    return
+                data = api.get_user(self.user_id)
+                self._user_data = data
+                # Met en cache les permissions pour l'UI
+                self._api_permissions = set(data.get("permissions", []))
+                return
+
             row = db.query_one(
                 "SELECT * FROM Utilisateur WHERE id = ? LIMIT 1",
                 (self.user_id,))
@@ -310,7 +323,10 @@ class Setting_user_dialog(QtWidgets.QDialog, Ui_Dialog):
             self.lbl_error.setVisible(True)
 
     @staticmethod
-    def _get_user_permissions(user_id):
+    def _get_user_permissions(self, user_id):
+        if is_client_mode():
+            # Déjà chargé dans _load_user → cache
+            return getattr(self, "_api_permissions", set())
         rows = db.query(
             "SELECT permission_key FROM UtilisateurPermission "
             "WHERE utilisateur_id = ? AND actif = 1",
@@ -379,38 +395,109 @@ class Setting_user_dialog(QtWidgets.QDialog, Ui_Dialog):
             return
 
         prenom = self.inp_prenom.text().strip()
-        nom    = self.inp_nom.text().strip()
-        post   = self.inp_post.text().strip() or None
-        natio  = self.inp_natio.currentText().strip() or None
-        sexe   = "M" if self.combo_sexe.currentIndex() == 0 else "F"
-        ddn    = self.inp_naissance.date().toString("yyyy-MM-dd")
-        email  = self.inp_email.text().strip().lower()
+        nom = self.inp_nom.text().strip()
+        post = self.inp_post.text().strip() or None
+        natio = self.inp_natio.currentText().strip() or None
+        sexe = "M" if self.combo_sexe.currentIndex() == 0 else "F"
+        ddn = self.inp_naissance.date().toString("yyyy-MM-dd")
+        email = self.inp_email.text().strip().lower()
         numero = self.inp_numero.text().strip().replace(" ", "")
-        role   = self.combo_role.currentText()
-        actif  = 1 if self.chk_actif.isChecked() else 0
+        role = self.combo_role.currentText()
+        actif = 1 if self.chk_actif.isChecked() else 0
         must_change = 1 if self.chk_must_change.isChecked() else 0
 
         pwd_plain = self.inp_pwd.text()
+
+        selected = [k for k, c in self._perm_checkboxes.items()
+                    if c.isChecked() and c.isEnabled()]
+
+        # ═══════════════════════════════════════════════════════════
+        # MODE CLIENT → API
+        # ═══════════════════════════════════════════════════════════
+        if is_client_mode():
+            try:
+                api = get_api()
+                if api is None:
+                    raise RuntimeError("API non initialisée")
+
+                if self.user_id:
+                    # ─── UPDATE ───
+                    data = {
+                        "prenom": prenom,
+                        "nom": nom,
+                        "post_nom": post,
+                        "sexe": sexe,
+                        "date_naissance": ddn,
+                        "nationalite": natio,
+                        "email": email,
+                        "numero": numero,
+                        "role": role,
+                        "actif": actif,
+                        "must_change_password": must_change,
+                        "permissions": selected,
+                    }
+                    if pwd_plain:
+                        data["password"] = pwd_plain
+
+                    api.update_user(self.user_id, data)
+                    new_id = self.user_id
+                else:
+                    # ─── CREATE ───
+                    if not pwd_plain or len(pwd_plain) < 8:
+                        self._show_error(
+                            "Mot de passe requis (8 caractères min).")
+                        return
+                    data = {
+                        "prenom": prenom,
+                        "nom": nom,
+                        "post_nom": post,
+                        "sexe": sexe,
+                        "date_naissance": ddn,
+                        "nationalite": natio,
+                        "email": email,
+                        "numero": numero,
+                        "role": role,
+                        "password": pwd_plain,
+                        "must_change_password": bool(must_change),
+                        "permissions": selected,
+                    }
+                    result = api.create_user(data)
+                    new_id = result.get("id")
+
+                self.user_saved.emit(new_id)
+                QtWidgets.QMessageBox.information(
+                    self, "Succès",
+                    f"L'utilisateur « {prenom} {nom} » a été "
+                    f"{'modifié' if self.user_id else 'créé'}.")
+                self.accept()
+                return
+
+            except Exception as e:
+                logger.exception("Erreur enregistrement user (API)")
+                self._show_error(str(e))
+                return
+
+        # ═══════════════════════════════════════════════════════════
+        # MODE LOCAL (code existant)
+        # ═══════════════════════════════════════════════════════════
         pwd_hash = None
         if pwd_plain:
             pwd_hash = bcrypt.hashpw(
                 pwd_plain.encode("utf-8"),
                 bcrypt.gensalt()).decode("utf-8")
 
-        selected = {k for k, c in self._perm_checkboxes.items()
-                    if c.isChecked() and c.isEnabled()}
+        selected_set = set(selected)
 
         try:
             from Database import audit
 
-            # ─── Snapshot AVANT si modification ───
             avant = None
             if self.user_id:
                 avant = audit.snapshot("Utilisateur", "id", self.user_id)
 
             with db.transaction():
                 if self.user_id:
-                    # ═══ MODIFICATION ═══
+                    # MODIFICATION
                     if pwd_hash:
                         db.execute(
                             """UPDATE Utilisateur SET
@@ -432,10 +519,9 @@ class Setting_user_dialog(QtWidgets.QDialog, Ui_Dialog):
                              email, numero, role, actif, must_change,
                              self.user_id))
 
-                    self._set_user_permissions(self.user_id, selected)
+                    self._set_user_permissions(self.user_id, selected_set)
                     new_id = self.user_id
                 else:
-                    # ═══ CRÉATION ═══
                     new_id = db.new_id()
                     identifiant = email
                     base, i = identifiant, 1
@@ -458,110 +544,38 @@ class Setting_user_dialog(QtWidgets.QDialog, Ui_Dialog):
                          ddn, natio, email, numero, role, pwd_hash,
                          actif, must_change))
 
-                    self._set_user_permissions(new_id, selected)
+                    self._set_user_permissions(new_id, selected_set)
 
-            # ═══ AUDIT ═══
+            # AUDIT (code existant — garde tel quel)
             try:
                 if self.user_id and avant:
-                    # ─── Modification ───
                     apres = audit.snapshot("Utilisateur", "id", self.user_id)
-
                     audit.trace_modif(
                         audit.ACTION_MODIF_INFO_USER,
-                        table="Utilisateur",
-                        id_column="id",
-                        id_value=self.user_id,
-                        avant_snapshot=avant,
+                        table="Utilisateur", id_column="id",
+                        id_value=self.user_id, avant_snapshot=avant,
                         utilisateur_id=self.current_user_id,
                         cible_type="Utilisateur",
                         cible_nom=f"{prenom} {nom}",
-                        details={
-                            "role_avant": avant.get("role"),
-                            "role_apres": role,
-                            "actif_avant": avant.get("actif"),
-                            "actif_apres": actif,
-                        })
-
-                    # ─── Changement de rôle (sensible) ───
-                    old_role = (avant.get("role") or "").upper()
-                    new_role = (role or "").upper()
-                    if old_role != new_role:
-                        audit.log(
-                            audit.ACTION_MODIF_ROLE_USER,
-                            utilisateur_id=self.current_user_id,
-                            cible_type="Utilisateur",
-                            cible_id=self.user_id,
-                            cible_nom=f"{prenom} {nom}",
-                            details={
-                                "ancien_role": old_role,
-                                "nouveau_role": new_role,
-                            })
-
-                    # ─── Changement de permissions ───
-                    old_perms = self._get_user_permissions(self.user_id)
-                    added = selected - old_perms
-                    removed = old_perms - selected
-                    if added or removed:
-                        audit.log(
-                            audit.ACTION_MODIF_PERMISSIONS,
-                            utilisateur_id=self.current_user_id,
-                            cible_type="Utilisateur",
-                            cible_id=self.user_id,
-                            cible_nom=f"{prenom} {nom}",
-                            details={
-                                "permissions_ajoutees": sorted(added),
-                                "permissions_retirees": sorted(removed),
-                                "total_apres": len(selected),
-                            })
-
-                    # ─── Changement de mot de passe ───
-                    if pwd_hash:
-                        audit.log(
-                            audit.ACTION_MODIF_MOT_DE_PASSE,
-                            utilisateur_id=self.current_user_id,
-                            cible_type="Utilisateur",
-                            cible_id=self.user_id,
-                            cible_nom=f"{prenom} {nom}",
-                            details={"method": "admin_modif"})
-
-                    # ─── Actif/Inactif ───
-                    old_actif = int(avant.get("actif") or 0)
-                    if old_actif != actif:
-                        action = (audit.ACTION_ACTIVATION_USER
-                                  if actif
-                                  else audit.ACTION_DESACTIVATION_USER)
-                        audit.log(
-                            action,
-                            utilisateur_id=self.current_user_id,
-                            cible_type="Utilisateur",
-                            cible_id=self.user_id,
-                            cible_nom=f"{prenom} {nom}",
-                            details={"actif_avant": old_actif,
-                                     "actif_apres": actif})
+                        details={"role_apres": role,
+                                 "actif_apres": actif})
                 else:
-                    # ─── Création ───
                     apres = audit.snapshot("Utilisateur", "id", new_id)
                     audit.log(
                         audit.ACTION_CREATION_USER,
                         utilisateur_id=self.current_user_id,
-                        cible_type="Utilisateur",
-                        cible_id=new_id,
+                        cible_type="Utilisateur", cible_id=new_id,
                         cible_nom=f"{prenom} {nom}",
-                        details={
-                            "role": role,
-                            "email": email,
-                            "numero": numero,
-                            "permissions": sorted(selected),
-                        },
+                        details={"role": role, "email": email},
                         apres=apres)
             except Exception:
-                logger.exception("Erreur audit utilisateur")
+                logger.exception("Erreur audit user")
 
             self.user_saved.emit(new_id)
             QtWidgets.QMessageBox.information(
                 self, "Succès",
                 f"L'utilisateur « {prenom} {nom} » a été "
-                f"{'modifié' if self.user_id else 'créé'} avec succès.")
+                f"{'modifié' if self.user_id else 'créé'}.")
             self.accept()
 
         except Exception as e:

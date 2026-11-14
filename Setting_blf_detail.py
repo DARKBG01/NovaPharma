@@ -12,6 +12,7 @@ from datetime import datetime
 from PySide6 import QtWidgets, QtGui, QtCore
 from PySide6.QtCore import Qt
 
+from Client.api_singleton import get_api, is_client_mode
 from Database import db
 from Interface_blf_detail import Ui_Dialog
 from Ui_helpers import setup_blf_detail_table
@@ -51,6 +52,16 @@ class Setting_blf_detail(QtWidgets.QDialog, Ui_Dialog):
     # ══════════════════════════════════════════════════════════════
     def _load_data(self):
         try:
+            if is_client_mode():
+                api = get_api()
+                if api is None:
+                    self._blf = None
+                    return
+                data = api.get_blf(self.blf_id)
+                self._blf = data
+                self._lignes = data.get("lignes", []) or []
+                return
+            # ─── Mode local ───
             row = db.query_one(
                 "SELECT * FROM BonLivraison WHERE id = ? LIMIT 1",
                 (self.blf_id,))
@@ -246,9 +257,35 @@ class Setting_blf_detail(QtWidgets.QDialog, Ui_Dialog):
         if rep != QtWidgets.QMessageBox.Yes:
             return
 
+        # ═══════════════════════════════════════════════════════════
+        # MODE CLIENT → API
+        # ═══════════════════════════════════════════════════════════
+        if is_client_mode():
+            try:
+                api = get_api()
+                if api is None:
+                    raise RuntimeError("API non initialisée")
+
+                api.valider_blf(self.blf_id)
+                logger.info(
+                    "BLF validé (API) : %s",
+                    self._blf["numero_blf"])
+                QtWidgets.QMessageBox.information(
+                    self, "BLF validé",
+                    "Le BLF a été validé et le stock mis à jour.")
+                self.blf_updated.emit(self.blf_id)
+                self._load_data()
+                self._refresh()
+                return
+            except Exception as e:
+                logger.exception("Erreur validation BLF (API)")
+                QtWidgets.QMessageBox.critical(
+                    self, "Erreur",
+                    f"Impossible de valider le BLF :\n{e}")
+                return
+
         # ═══ MODE AUTONOME / SERVEUR → DB locale ═══
         from Database import audit
-
         try:
             # ─── Snapshot avant validation ───
             avant_blf = audit.snapshot(
@@ -399,9 +436,35 @@ class Setting_blf_detail(QtWidgets.QDialog, Ui_Dialog):
         if rep != QtWidgets.QMessageBox.Yes:
             return
 
+        # ═══════════════════════════════════════════════════════════
+        # MODE CLIENT → API
+        # ═══════════════════════════════════════════════════════════
+        if is_client_mode():
+            try:
+                api = get_api()
+                if api is None:
+                    raise RuntimeError("API non initialisée")
+
+                api.annuler_blf(self.blf_id, motif)
+                logger.info(
+                    "BLF annulé (API) : %s — motif : %s",
+                    self._blf["numero_blf"], motif)
+                QtWidgets.QMessageBox.information(
+                    self, "BLF annulé",
+                    "Le BLF a été annulé et le stock a été restauré.")
+                self.blf_updated.emit(self.blf_id)
+                self._load_data()
+                self._refresh()
+                return
+            except Exception as e:
+                logger.exception("Erreur annulation BLF (API)")
+                QtWidgets.QMessageBox.critical(
+                    self, "Erreur",
+                    f"Impossible d'annuler le BLF :\n{e}")
+                return
+
         # ═══ MODE AUTONOME / SERVEUR → DB locale ═══
         from Database import audit
-
         try:
             # ─── Snapshot avant annulation ───
             avant_blf = audit.snapshot(

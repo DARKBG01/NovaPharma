@@ -34,7 +34,7 @@ from PySide6.QtCharts import (
 )
 from PySide6.QtCore import Qt, QMargins, QPointF, QSize
 from PySide6.QtGui import (
-    QPainter, QColor, QFont, QPen, QBrush, QLinearGradient, QIcon,
+    QPainter, QColor, QFont, QPen, QBrush, QLinearGradient, QIcon, QPixmap,
 )
 from PySide6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QFrame, QLabel, QSizePolicy,
@@ -497,14 +497,111 @@ class ChartCard(QFrame):
             self._chart_view = None
         self.chart_container.addWidget(lbl)
 
+    # ─── Localisation : après la classe ChartCard, AVANT chart_revenue_line ───
+
+
+
+# ══════════════════════════════════════════════════════════════════
+# Placeholder mode client (fonction module-level)
+# ══════════════════════════════════════════════════════════════════
+def _make_client_placeholder(title: str, sub: str = "") -> ChartCard:
+    """Carte placeholder pour mode client (pas de graphiques locaux)."""
+    card = ChartCard(title, sub)
+    card.setMinimumHeight(260)
+    card.setStyleSheet("""
+        QFrame {
+            background: #ffffff;
+            border: 1px solid #e6ebf2;
+            border-radius: 18px;
+        }
+    """)
+
+    # ─── Conteneur interne ───
+    container = QWidget()
+    container.setStyleSheet("background: transparent;")
+    v = QVBoxLayout(container)
+    v.setContentsMargins(20, 20, 20, 20)
+    v.setSpacing(12)
+    v.setAlignment(Qt.AlignCenter)
+
+    # ─── Icône (fallback sur plusieurs noms) ───
+    icon = QLabel()
+    icon.setFixedSize(56, 56)
+    icon.setAlignment(Qt.AlignCenter)
+    icon.setStyleSheet("""
+        QLabel {
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            border-radius: 14px;
+            padding: 14px;
+        }
+    """)
+    for icon_name in ("chart-pie", "chart-line", "activity", "info"):
+        pix = QPixmap(f":/Icon/Icons/{icon_name}.svg")
+        if not pix.isNull():
+            icon.setPixmap(pix.scaled(
+                28, 28, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+            break
+    v.addWidget(icon, alignment=Qt.AlignCenter)
+
+    # ─── Message ───
+    msg = QLabel(
+        "Les graphiques détaillés\n"
+        "sont disponibles dans la page Rapports.")
+    msg.setAlignment(Qt.AlignCenter)
+    msg.setStyleSheet(
+        "color: #64748b; font-size: 12px; font-weight: 600; "
+        "background: transparent; line-height: 1.5;")
+    v.addWidget(msg)
+
+    # ─── Bouton ───
+    btn = QPushButton("  Voir les rapports")
+    btn.setCursor(Qt.PointingHandCursor)
+    btn.setMinimumHeight(36)
+    btn.setStyleSheet("""
+        QPushButton {
+            background: #0077B6;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        QPushButton:hover { background: #023E8A; }
+    """)
+
+    def _go_to_reports():
+        try:
+            w = card.parent()
+            while w is not None:
+                if hasattr(w, "_goto_name"):
+                    w._goto_name("btn_onglet_rapport")
+                    return
+                w = w.parent()
+        except Exception:
+            logger.exception("Erreur navigation vers Rapports")
+
+    btn.clicked.connect(_go_to_reports)
+    v.addWidget(btn, alignment=Qt.AlignCenter)
+
+    # ─── Ajout au ChartCard ───
+    card.chart_container.addWidget(container)
+    return card
+
 
 # ══════════════════════════════════════════════════════════════════
 # Générateurs de graphiques
 # ══════════════════════════════════════════════════════════════════
 
 # ─── 1. Flux de revenus (ligne) ───
-def chart_revenue_line(days: int = 7) -> QChart:
-    labels, ca, _ = ChartData.get_revenue_by_day(days)
+def chart_revenue_line(days: int = 7, data: dict = None) -> QChart:
+    # ─── Données : API (data) ou DB (ChartData) ───
+    if data is not None:
+        labels = data.get("labels", [])
+        ca = data.get("ca", [])
+    else:
+        labels, ca, _ = ChartData.get_revenue_by_day(days)
 
     chart = _base_chart("Revenus")
     if not ca or sum(ca) == 0:
@@ -546,8 +643,12 @@ def chart_revenue_line(days: int = 7) -> QChart:
 
 
 # ─── 2. CA par mois (bar) ───
-def chart_revenue_monthly(months: int = 12) -> QChart:
-    labels, ca = ChartData.get_revenue_by_month(months)
+def chart_revenue_monthly(months: int = 12, data: dict = None) -> QChart:
+    if data is not None:
+        labels = data.get("labels", [])
+        ca = data.get("ca", [])
+    else:
+        labels, ca = ChartData.get_revenue_by_month(months)
 
     chart = _base_chart("CA mensuel")
     if not ca or sum(ca) == 0:
@@ -653,8 +754,18 @@ def chart_sales_count_line(days: int = 30) -> QChart:
 
 
 # ─── 5. Top médicaments (bar horizontal) ───
-def chart_top_products(mode: str = "quantity", limit: int = 10) -> QChart:
-    labels, values = ChartData.get_top_products(limit=limit, mode=mode)
+def chart_top_products(mode: str = "quantity", limit: int = 10,
+                       data: list = None) -> QChart:
+    if data is not None:
+        # data = [{nom, qte, ca}, ...]
+        key = "qte" if mode == "quantity" else "ca"
+        sorted_items = sorted(
+            data, key=lambda x: x.get(key, 0), reverse=True)[:limit]
+        labels = [x.get("nom", "—") for x in sorted_items]
+        values = [x.get(key, 0) for x in sorted_items]
+    else:
+        labels, values = ChartData.get_top_products(
+            limit=limit, mode=mode)
 
     chart = _base_chart()
     if not values:
@@ -692,18 +803,25 @@ def chart_top_products(mode: str = "quantity", limit: int = 10) -> QChart:
 
 
 # ─── 7. Répartition catégories (donut) ───
-def chart_categories_donut() -> QChart:
-    data = ChartData.get_sales_by_category()
+def chart_categories_donut(data: list = None) -> QChart:
+    if data is not None:
+        # data = [{cat, ca}, ...]
+        cat_dict = {
+            d.get("cat", "—"): float(d.get("ca", 0))
+            for d in data if (d.get("ca") or 0) > 0
+        }
+    else:
+        cat_dict = ChartData.get_sales_by_category()
 
     chart = _base_chart()
-    if not data:
+    if not cat_dict:
         return chart
 
     series = QPieSeries()
     series.setHoleSize(0.45)
     series.setPieSize(0.75)
 
-    for i, (cat, ca) in enumerate(data.items()):
+    for i, (cat, ca) in enumerate(cat_dict.items()):
         slice_ = QPieSlice(cat, ca)
         color = QColor(CHART_PALETTE[i % len(CHART_PALETTE)])
         slice_.setBrush(QBrush(color))
@@ -717,8 +835,7 @@ def chart_categories_donut() -> QChart:
     chart.legend().setVisible(True)
     chart.legend().setAlignment(Qt.AlignRight)
 
-    # Affiche le total au centre via titre
-    total = sum(data.values())
+    total = sum(cat_dict.values())
     chart.setTitle(f"Total : {total:,.0f} FC".replace(",", " "))
     chart.setTitleFont(QFont("Segoe UI", 10, QFont.Bold))
     chart.setTitleBrush(QBrush(QColor(DARK_COLOR)))
@@ -986,7 +1103,8 @@ def install_dashboard_charts(main_window) -> None:
     """
     Installe le dashboard dans `page_2` :
       - Header avec bouton "Voir tous les graphiques"
-      - 2 x 2 graphiques importants
+      - 2 x 2 cartes (graphiques en serveur, placeholders en client)
+    Version robuste : chaque carte dans un try/except.
     """
     try:
         page_2 = getattr(main_window, "page_2", None)
@@ -994,7 +1112,7 @@ def install_dashboard_charts(main_window) -> None:
             logger.warning("page_2 introuvable pour installer les graphiques")
             return
 
-        # ─── Détache l'ancien layout ───
+        # ─── Nettoie complètement l'ancien layout ───
         old = page_2.layout()
         if old is None:
             old = QVBoxLayout(page_2)
@@ -1003,64 +1121,173 @@ def install_dashboard_charts(main_window) -> None:
                 item = old.takeAt(0)
                 w = item.widget()
                 if w:
+                    w.setParent(None)
                     w.deleteLater()
             old.setContentsMargins(0, 0, 0, 0)
             old.setSpacing(0)
 
-        # ─── Crée le conteneur ───
+        # ─── Conteneur racine ───
         container = QWidget()
-        container.setStyleSheet("background: transparent;")
+        container.setObjectName("dashboard_container")
+        container.setStyleSheet(
+            "QWidget#dashboard_container { background: transparent; }")
         vbox = QVBoxLayout(container)
         vbox.setContentsMargins(20, 20, 20, 20)
         vbox.setSpacing(16)
 
-        # Header
-        vbox.addWidget(_make_dashboard_header(main_window))
+        # ─── Header ───
+        try:
+            vbox.addWidget(_make_dashboard_header(main_window))
+        except Exception:
+            logger.exception("Erreur header dashboard")
 
-        # ─── 2 x 2 grid ───
+        # ─── Détection mode ───
+        is_client = False
+        try:
+            from Client.api_singleton import is_client_mode
+            is_client = is_client_mode()
+        except Exception:
+            logger.exception("Erreur détection is_client_mode")
+
+        logger.info(
+            "install_dashboard_charts : is_client=%s", is_client)
+
+        # ─── Grille 2x2 ───
         grid = QGridLayout()
         grid.setSpacing(16)
 
-        charts_def = [
-            ("Revenus des 7 derniers jours", "CA quotidien",
-             lambda: chart_revenue_line(7)),
-            ("Chiffre d'affaires mensuel", "12 derniers mois",
-             lambda: chart_revenue_monthly(12)),
-            ("Top 10 médicaments", "Par quantité vendue",
-             lambda: chart_top_products("quantity", 10)),
-            ("Répartition par catégorie", "CA par catégorie",
-             chart_categories_donut),
-        ]
+        # ═══ MODE CLIENT : graphiques via API ═══
+        if is_client:
+            try:
+                from Client.api_singleton import get_api
+                api = get_api()
+                if api is None:
+                    raise RuntimeError("API non initialisée")
 
-        for i, (title, sub, fn) in enumerate(charts_def):
-            card = ChartCard(title, sub)
-            chart = fn()
-            if chart.series():
-                card.set_chart(chart)
-            else:
-                card.set_empty()
-            card.setMinimumHeight(260)
-            grid.addWidget(card, i // 2, i % 2)
+                api_data = api.get_dashboard_charts()
+                logger.info(
+                    "Données dashboard chargées via API : "
+                    "%d jours, %d mois, %d top, %d cat",
+                    len(api_data.get("revenue_7days", {}).get("labels", [])),
+                    len(api_data.get("revenue_12months", {}).get("labels", [])),
+                    len(api_data.get("top_products", [])),
+                    len(api_data.get("categories", []))
+                )
+
+                charts_def = [
+                    ("Revenus des 7 derniers jours", "CA quotidien",
+                     lambda: chart_revenue_line(
+                         7, data=api_data.get("revenue_7days"))),
+                    ("Chiffre d'affaires mensuel", "12 derniers mois",
+                     lambda: chart_revenue_monthly(
+                         12, data=api_data.get("revenue_12months"))),
+                    ("Top 10 médicaments", "Par quantité vendue",
+                     lambda: chart_top_products(
+                         "quantity", 10,
+                         data=api_data.get("top_products"))),
+                    ("Répartition par catégorie", "CA par catégorie",
+                     lambda: chart_categories_donut(
+                         data=api_data.get("categories"))),
+                ]
+
+                for i, (title, sub, fn) in enumerate(charts_def):
+                    try:
+                        card = ChartCard(title, sub)
+                        chart = fn()
+                        if chart is not None and chart.series():
+                            card.set_chart(chart)
+                        else:
+                            card.set_empty()
+                        card.setMinimumHeight(260)
+                        grid.addWidget(card, i // 2, i % 2)
+                        logger.info(
+                            "Carte graphique (API) ajoutée : %s", title)
+                    except Exception:
+                        logger.exception(
+                            "Erreur carte graphique API %d (%s)", i, title)
+
+            except Exception:
+                logger.exception(
+                    "Erreur fetch dashboard API → fallback placeholders")
+                # ─── Fallback : placeholders ───
+                charts_def = [
+                    ("Revenus", "Serveur indisponible"),
+                    ("Chiffre d'affaires mensuel", "Serveur indisponible"),
+                    ("Top 10 médicaments", "Serveur indisponible"),
+                    ("Répartition par catégorie", "Serveur indisponible"),
+                ]
+                for i, (title, sub) in enumerate(charts_def):
+                    try:
+                        card = _make_client_placeholder(title, sub)
+                        card.setMinimumHeight(260)
+                        grid.addWidget(card, i // 2, i % 2)
+                    except Exception:
+                        logger.exception(
+                            "Erreur fallback placeholder %d", i)
+
+        # ═══ MODE LOCAL : graphiques directs (inchangé) ═══
+        else:
+            charts_def = [
+                ("Revenus des 7 derniers jours", "CA quotidien",
+                 lambda: chart_revenue_line(7)),
+                ("Chiffre d'affaires mensuel", "12 derniers mois",
+                 lambda: chart_revenue_monthly(12)),
+                ("Top 10 médicaments", "Par quantité vendue",
+                 lambda: chart_top_products("quantity", 10)),
+                ("Répartition par catégorie", "CA par catégorie",
+                 chart_categories_donut),
+            ]
+            for i, (title, sub, fn) in enumerate(charts_def):
+                try:
+                    card = ChartCard(title, sub)
+                    chart = fn()
+                    if chart is not None and chart.series():
+                        card.set_chart(chart)
+                    else:
+                        card.set_empty()
+                    card.setMinimumHeight(260)
+                    grid.addWidget(card, i // 2, i % 2)
+                except Exception:
+                    logger.exception(
+                        "Erreur carte graphique %d (%s)", i, title)
 
         vbox.addLayout(grid, 1)
-
         old.addWidget(container)
 
-        logger.info("Graphiques dashboard installés (4 charts + bouton)")
+        logger.info(
+            "Dashboard installé (%s) — %d cartes",
+            "client placeholders" if is_client else "graphiques locaux",
+            len(charts_def))
 
     except Exception:
-        logger.exception("Erreur installation graphiques dashboard")
+        logger.exception(
+            "ERREUR FATALE install_dashboard_charts")
+        # ─── Fallback visible ───
+        try:
+            page_2 = getattr(main_window, "page_2", None)
+            if page_2 is not None:
+                layout = page_2.layout()
+                if layout is None:
+                    layout = QVBoxLayout(page_2)
+                err_lbl = QLabel(
+                    "⚠️  Impossible d'installer le tableau de bord.\n\n"
+                    "Vérifiez les logs pour plus de détails.")
+                err_lbl.setAlignment(Qt.AlignCenter)
+                err_lbl.setStyleSheet(
+                    "color: #dc2626; font-size: 13px; "
+                    "font-weight: 600; "
+                    "padding: 40px; background: #fef2f2; "
+                    "border: 1px solid #fecaca; border-radius: 12px;")
+                layout.addWidget(err_lbl)
+        except Exception:
+            pass
 
 
 def install_reports_charts(main_window) -> None:
     """
     Installe les graphiques de la page Rapports dans `page_7`.
-    Structure :
-      - Ligne 1 : CA mensuel (12 mois)
-      - Ligne 2 : Comparaison année N vs N-1
-      - Ligne 3 : CA par heure + Ventes par jour (30j)
-      - Ligne 4 : Top clients + Nouveaux clients (6 mois)
-      - Ligne 5 : Produits en rupture
+    En mode client : placeholders (les graphiques sont déjà dans les
+    3 onglets Rapports de la page).
     """
     try:
         page_7 = getattr(main_window, "page_7", None)
@@ -1068,16 +1295,23 @@ def install_reports_charts(main_window) -> None:
             logger.warning("page_7 introuvable pour installer les graphiques")
             return
 
+        # Mode client : ne rien installer (page Rapports gère déjà)
+        try:
+            from Client.api_singleton import is_client_mode
+            if is_client_mode():
+                logger.info(
+                    "Mode client : graphiques Rapports gérés par la page")
+                return
+        except Exception:
+            pass
+
         layout = page_7.layout()
         if layout is None:
             layout = QVBoxLayout(page_7)
             layout.setContentsMargins(20, 20, 20, 20)
             layout.setSpacing(16)
 
-        # Ajoute les cartes à la fin du layout existant
-        # (au cas où la page contient déjà des éléments)
-
-        # ── CA mensuel ──
+        # ─── CA mensuel ───
         card_month = ChartCard("Chiffre d'affaires mensuel",
                                "12 derniers mois")
         chart_month = chart_revenue_monthly(months=12)
@@ -1087,7 +1321,7 @@ def install_reports_charts(main_window) -> None:
             card_month.set_empty()
         layout.addWidget(card_month, 1)
 
-        # ── Comparaison N vs N-1 ──
+        # ─── Comparaison N vs N-1 ───
         card_cmp = ChartCard("Comparaison annuelle",
                              "Année courante vs année précédente")
         chart_cmp = chart_year_comparison()
@@ -1097,7 +1331,7 @@ def install_reports_charts(main_window) -> None:
             card_cmp.set_empty()
         layout.addWidget(card_cmp, 1)
 
-        # ── CA par heure + Ventes par jour ──
+        # ─── CA par heure + Ventes par jour ───
         row = QHBoxLayout()
         row.setSpacing(16)
 
@@ -1119,7 +1353,7 @@ def install_reports_charts(main_window) -> None:
 
         layout.addLayout(row, 1)
 
-        # ── Top clients + Nouveaux clients ──
+        # ─── Top clients + Nouveaux clients ───
         row2 = QHBoxLayout()
         row2.setSpacing(16)
 
@@ -1141,7 +1375,7 @@ def install_reports_charts(main_window) -> None:
 
         layout.addLayout(row2, 1)
 
-        # ── Produits en rupture ──
+        # ─── Produits en rupture ───
         card_low = ChartCard("Produits en rupture",
                              "Stock ≤ 20 unités")
         chart_low = chart_low_stock(limit=10)
@@ -1151,7 +1385,7 @@ def install_reports_charts(main_window) -> None:
             card_low.set_empty()
         layout.addWidget(card_low, 1)
 
-        logger.info("Graphiques rapports installés")
+        logger.info("Graphiques rapports installés (mode local)")
 
     except Exception:
         logger.exception("Erreur installation graphiques rapports")
@@ -1162,7 +1396,8 @@ def install_reports_charts(main_window) -> None:
 # ══════════════════════════════════════════════════════════════════
 if __name__ == "__main__":
     import sys
-    from PySide6 import QtWidgets
+    from PySide6 import QtWidgets, QtGui
+
     logging.basicConfig(level=logging.INFO)
     db.get_conn()
 

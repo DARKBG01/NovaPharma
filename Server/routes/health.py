@@ -74,6 +74,7 @@ def get_public_config(request: Request):
             "seuil_stock": int(db.get_config("seuil_stock", 20)),
             "marge_benefice": float(db.get_config("marge_benefice", 30)),
             "taux_change": float(db.get_config("taux_change", 2800)),
+            "backup_last_daily": db.get_config("backup_last_daily", "") or "",
         }
     except Exception as e:
         raise HTTPException(500, str(e))

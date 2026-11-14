@@ -547,6 +547,22 @@ CREATE TABLE IF NOT EXISTS Historique_commande (
     Expiration TEXT, Entreprise TEXT,
     Date_commande TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+-- ─── MonitoringMachine (whitelist PC monitoring - Phase 1) ───
+CREATE TABLE IF NOT EXISTS MonitoringMachine (
+    id              TEXT PRIMARY KEY,
+    machine_id      TEXT NOT NULL UNIQUE,
+    hostname        TEXT,
+    role_autorise   TEXT NOT NULL DEFAULT 'ALL'
+                    CHECK(role_autorise IN ('OWNER','ADMIN','DEV','ALL')),
+    ajoute_par      TEXT,
+    ajoute_par_name TEXT,
+    ajoute_le       TEXT NOT NULL DEFAULT (datetime('now')),
+    actif           INTEGER NOT NULL DEFAULT 1
+);
+CREATE INDEX IF NOT EXISTS idx_monitoring_machine ON MonitoringMachine(machine_id);
+CREATE INDEX IF NOT EXISTS idx_monitoring_actif   ON MonitoringMachine(actif);
+
 -- ═══════════════════════════════════════════════════════════
---  FIN DU SCHÉMA v5.0
+--  FIN DU SCHÉMA v2.0.0
 -- ═══════════════════════════════════════════════════════════

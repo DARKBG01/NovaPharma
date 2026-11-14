@@ -501,6 +501,66 @@ def migrate_currency():
         db.set_config(cle, valeur, type_=type_, description=desc)
         print(f"  · Clé ajoutée : {cle} = {valeur}")
 
+
+def _apply_monitoring_machine():
+    """Crée la table MonitoringMachine si absente (whitelist PC monitoring)."""
+    try:
+        if db.query("SELECT name FROM sqlite_master "
+                    "WHERE type='table' AND name='MonitoringMachine'"):
+            return
+
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS MonitoringMachine (
+                id              TEXT PRIMARY KEY,
+                machine_id      TEXT NOT NULL UNIQUE,
+                hostname        TEXT,
+                role_autorise   TEXT NOT NULL DEFAULT 'ALL'
+                                CHECK(role_autorise IN ('OWNER','ADMIN','DEV','ALL')),
+                ajoute_par      TEXT,
+                ajoute_par_name TEXT,
+                ajoute_le       TEXT NOT NULL DEFAULT (datetime('now')),
+                actif           INTEGER NOT NULL DEFAULT 1
+            )
+        """)
+        db.execute(
+            "CREATE INDEX IF NOT EXISTS idx_monitoring_machine "
+            "ON MonitoringMachine(machine_id)")
+        db.execute(
+            "CREATE INDEX IF NOT EXISTS idx_monitoring_actif "
+            "ON MonitoringMachine(actif)")
+        logger.info("Table MonitoringMachine créée")
+        print("  · Table MonitoringMachine créée")
+    except Exception:
+        logger.exception("Erreur création MonitoringMachine")
+
+
+def _apply_notifications():
+    """Crée la table Notification pour le centre de notifications."""
+    try:
+        if db.query("SELECT name FROM sqlite_master "
+                    "WHERE type='table' AND name='Notification'"):
+            return
+
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS Notification (
+                id              TEXT PRIMARY KEY,
+                type            TEXT NOT NULL
+                                CHECK(type IN ('success','info','warning','danger')),
+                title           TEXT NOT NULL,
+                message         TEXT,
+                lu              INTEGER NOT NULL DEFAULT 0,
+                action_url      TEXT,
+                created_at      TEXT NOT NULL DEFAULT (datetime('now'))
+            )
+        """)
+        db.execute(
+            "CREATE INDEX IF NOT EXISTS idx_notif_lu "
+            "ON Notification(lu)")
+        logger.info("Table Notification créée")
+        print("  · Table Notification créée")
+    except Exception:
+        logger.exception("Erreur création Notification")
+
 # ══════════════════════════════════════════════════════════════════
 # RUN ALL
 # ══════════════════════════════════════════════════════════════════
@@ -533,7 +593,10 @@ def run_all():
     _apply_client_sexe_index()
 
     _apply_client_sessions()
+    _apply_monitoring_machine()          # ← AJOUT ICI
+    _apply_notifications()
     migrate_currency()
+
 
 
 # ─── Point d'entrée CLI uniquement ───

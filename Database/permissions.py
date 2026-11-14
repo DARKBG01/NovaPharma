@@ -74,13 +74,14 @@ PERMISSIONS_CATALOG = {
             ("exporter_rapport",        "Exporter les rapports"),
         ],
     },
-    "Utilisateurs": {
+        "Utilisateurs": {
         "icon": "settings",
         "items": [
             ("voir_utilisateurs",    "Voir les utilisateurs"),
             ("ajouter_user",         "Ajouter un utilisateur"),
             ("modifier_user",        "Modifier un utilisateur"),
             ("desactiver_user",      "Désactiver un utilisateur"),
+            ("creer_admin",          "Créer d'autres administrateurs", "owner"),   # ← AJOUT
             ("gerer_permissions",    "Gérer les permissions", "owner"),
         ],
     },
