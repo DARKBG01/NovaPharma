@@ -106,6 +106,26 @@ def validate_machine(payload: ValidateMachineRequest, request: Request):
 def login(req: LoginRequest, request: Request):
     """Authentifie un utilisateur et retourne un token."""
 
+    # ═══════════════════════════════════════════════════════════════
+    # VÉRIFICATION LICENCE SERVEUR (avant tout)
+    # Si la licence serveur est expirée, AUCUNE connexion n'est permise
+    # ═══════════════════════════════════════════════════════════════
+    try:
+        from Core.license_manager import check_license_and_trial
+        # On est sur le serveur → on force le check (pas de skip client)
+        # (is_client_mode() retourne False ici car le serveur n'importe pas le client_api)
+        ok, days, msg = check_license_and_trial()
+        if not ok:
+            logger.warning(
+                "Login refusé — licence serveur expirée : %s", msg)
+            raise HTTPException(402, msg)
+    except HTTPException:
+        raise
+    except Exception:
+        logger.exception("Erreur vérification licence serveur")
+        # Si l'erreur n'est pas bloquante (ex: import), on continue
+        # mais on log l'incident
+
     # ─── 1. Vérification Anti-Bruteforce ───
     client_ip = request.client.host if request.client else "unknown"
     now = time.time()

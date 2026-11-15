@@ -322,7 +322,6 @@ class Setting_user_dialog(QtWidgets.QDialog, Ui_Dialog):
                 "Vous ne pouvez pas modifier le compte PROPRIÉTAIRE.")
             self.lbl_error.setVisible(True)
 
-    @staticmethod
     def _get_user_permissions(self, user_id):
         if is_client_mode():
             # Déjà chargé dans _load_user → cache

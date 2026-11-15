@@ -26,7 +26,8 @@ class Setting_taux_change(QtWidgets.QDialog):
                  is_owner=False, is_developer=False):
         super().__init__(parent)
         self.setWindowTitle("Taux de change")
-        self.setMinimumWidth(480)
+        from Ui_helpers import make_dialog_responsive
+        make_dialog_responsive(self, 560, 520)
         self.setModal(True)
 
         self.user_id = user_id

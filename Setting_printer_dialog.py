@@ -22,7 +22,8 @@ class PrinterConfigDialog(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Imprimantes — Ce poste")
-        self.setMinimumSize(560, 480)
+        from Ui_helpers import make_dialog_responsive
+        make_dialog_responsive(self, 560, 520)
         self.setModal(True)
         self._build_ui()
         self._load()

@@ -279,6 +279,14 @@ def check_license_and_trial() -> tuple[bool, int, str]:
       - ok=True, days_left=-1 : licence valide (illimité)
       - ok=False : blocage (trial expiré / horloge suspecte / FRAUDE)
     """
+    # ═══ Garde-fou : en mode client, la licence est gérée par le serveur ═══
+    try:
+        from Client.api_singleton import is_client_mode
+        if is_client_mode():
+            return True, -1, "Licence gérée par le serveur"
+    except Exception:
+        pass  # Sur serveur, l'import échoue silencieusement → OK
+
     mid = machine_id.get_machine_id()
 
     # ═══ 1. Mode test (DEV uniquement) ═══

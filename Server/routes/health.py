@@ -33,6 +33,16 @@ def sante():
         "server_time_fr": now.strftime("%H:%M:%S"),  # ← AJOUT
     }
 
+    # ═══ Licence serveur ═══
+    try:
+        from Core.license_manager import check_license_and_trial
+        lic_ok, days, _ = check_license_and_trial()
+        info["license_ok"] = lic_ok
+        info["license_days_left"] = days
+    except Exception:
+        info["license_ok"] = None
+        info["license_days_left"] = 0
+
     # Info DB
     try:
         row = db.query_one(

@@ -203,15 +203,17 @@ def fix_all_tables(widget_root):
             pass
 
 
-def make_dialog_responsive(dialog, ideal_w: int = 600, ideal_h: int = 600):
+def make_dialog_responsive(dialog, ideal_w=600, ideal_h=600, min_pct=0.7):
     """
-    Rend un QDialog responsive :
-    - Taille par défaut : ideal_w x ideal_h
-    - Taille minimale : 70% de ideal
-    - Taille maximale : 90% de l'écran
+    Rend un QDialog responsive.
+    - Taille idéale : ideal_w x ideal_h
+    - Min : 70% de ideal
+    - Max : 90% de l'écran
     """
     from PySide6.QtWidgets import QApplication
-    from PySide6.QtCore import Qt
+
+    if dialog is None:
+        return
 
     screen = QApplication.primaryScreen()
     if screen is None:
@@ -221,14 +223,12 @@ def make_dialog_responsive(dialog, ideal_w: int = 600, ideal_h: int = 600):
     avail = screen.availableGeometry()
     max_w = int(avail.width() * 0.9)
     max_h = int(avail.height() * 0.9)
-    min_w = int(ideal_w * 0.7)
-    min_h = int(ideal_h * 0.7)
+    min_w = int(ideal_w * min_pct)
+    min_h = int(ideal_h * min_pct)
 
     dialog.setMinimumSize(min_w, min_h)
     dialog.setMaximumSize(max_w, max_h)
-    dialog.resize(
-        min(ideal_w, max_w),
-        min(ideal_h, max_h))
+    dialog.resize(min(ideal_w, max_w), min(ideal_h, max_h))
 
 
 

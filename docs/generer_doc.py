@@ -3,7 +3,7 @@
 """
 generer_doc.py — Générateur du guide utilisateur PDF Nova Pharma.
 ===================================================================
-Génère un guide complet de ~40 pages couvrant les 21 modules.
+Version 2.0.0 — Inclut Licence, Notifications, Monitoring, IA v2.0.
 
 Usage :
     python docs/generer_doc.py
@@ -56,6 +56,8 @@ OK_BG      = colors.HexColor("#dcfce7")
 OK_FG      = colors.HexColor("#15803d")
 DANGER_BG  = colors.HexColor("#fee2e2")
 DANGER_FG  = colors.HexColor("#b91c1c")
+PURPLE_BG  = colors.HexColor("#ede9fe")
+PURPLE_FG  = colors.HexColor("#6d28d9")
 
 APP_VERSION = "2.0.0"
 
@@ -132,7 +134,6 @@ def _make_styles() -> dict:
 def _box(text: str, styles: dict,
          bg: colors.Color = INFO_BG,
          border: colors.Color = INFO_FG) -> Table:
-    """Encadré coloré pour info / alerte."""
     p = Paragraph(text, styles["info"])
     t = Table([[p]], colWidths=[16 * cm])
     t.setStyle(TableStyle([
@@ -148,7 +149,6 @@ def _box(text: str, styles: dict,
 
 def _table(headers: list, rows: list,
            col_widths: list = None) -> Table:
-    """Tableau propre avec header bleu."""
     data = [headers] + rows
     if col_widths is None:
         col_widths = [16 * cm / len(headers)] * len(headers)
@@ -176,7 +176,6 @@ def _p(text: str, styles: dict) -> Paragraph:
 
 
 def _b(text: str, styles: dict) -> Paragraph:
-    """Bullet point."""
     return Paragraph(text, styles["bullet"], bulletText="•")
 
 
@@ -202,7 +201,8 @@ def _build_cover(styles: dict, nom_pharmacie: str) -> list:
     elements.append(Paragraph(
         "Développé par TEAM NOVA", styles["cover_meta"]))
     elements.append(Paragraph(
-        "teamnovaoff@gmail.com", styles["cover_meta"]))
+        "teamnovaoff@gmail.com  •  +243 808 775 085",
+        styles["cover_meta"]))
     return elements
 
 
@@ -228,9 +228,12 @@ def _build_sommaire(styles: dict) -> list:
         ("16", "Surveillance (OWNER / DEVELOPER)"),
         ("17", "Modes d'installation"),
         ("18", "Sauvegardes et restauration"),
-        ("19", "Questions fréquentes"),
-        ("20", "Dépannage"),
-        ("21", "Support et contact"),
+        ("19", "Licence et activation"),       # ← NOUVEAU
+        ("20", "Notifications"),                 # ← NOUVEAU
+        ("21", "Monitoring PC à distance"),      # ← NOUVEAU
+        ("22", "Questions fréquentes"),
+        ("23", "Dépannage"),
+        ("24", "Support et contact"),
     ]
 
     data = [[f"{n}.", title] for n, title in toc]
@@ -274,6 +277,7 @@ def _build_s1(styles: dict) -> list:
            styles),
         _b("✅ <b>Sécurité</b> — bcrypt + backups AES-256", styles),
         _b("✅ <b>Permissions granulaires</b> par utilisateur", styles),
+        _b("✅ <b>Licence à vie</b> — pas d'abonnement mensuel", styles),
 
         Paragraph("Configuration minimale", styles["h2"]),
         _table(
@@ -313,9 +317,9 @@ def _build_s2(styles: dict) -> list:
         Paragraph("Écran de connexion", styles["h2"]),
         _p("Saisissez votre <b>identifiant ou email</b>, puis votre "
            "<b>mot de passe</b>.", styles),
-        _b("👁 <b>Afficher/masquer le mot de passe</b> (icône œil)", styles),
-        _b("☑ <b>Se souvenir de moi</b> — pré-remplit l'identifiant", styles),
-        _b("🔗 <b>Mot de passe oublié</b> — instructions de réinitialisation",
+        _b("<b>Afficher/masquer le mot de passe</b> (icône œil)", styles),
+        _b("<b>Se souvenir de moi</b> — pré-remplit l'identifiant", styles),
+        _b("<b>Mot de passe oublié</b> — instructions de réinitialisation",
            styles),
 
         Paragraph("Sécurité anti-bruteforce", styles["h2"]),
@@ -344,7 +348,7 @@ def _build_s3(styles: dict) -> list:
         _table(
             ["Rôle", "Accès"],
             [
-                ["DEVELOPER",   "Accès technique complet (console SQL, logs)"],
+                ["DEVELOPER",   "Accès technique complet (interventions)"],
                 ["OWNER",       "Propriétaire — tout sauf fonctions dev"],
                 ["ADMIN",       "Administrateur — gestion complète"],
                 ["UTILISATEUR", "Droits définis individuellement"],
@@ -387,6 +391,12 @@ def _build_s3(styles: dict) -> list:
         _b("❌ Supprimer un produit", styles),
         _p("Les permissions sont gérées par le propriétaire ou un admin "
            "depuis la page <b>Utilisateurs</b>.", styles),
+
+        Paragraph("Permission spéciale : creer_admin", styles["h2"]),
+        _p("Seul le propriétaire peut, par défaut, créer d'autres "
+           "administrateurs. Il peut déléguer ce droit à un ADMIN de "
+           "confiance en cochant la permission <b>« Créer d'autres "
+           "administrateurs »</b>.", styles),
         PageBreak(),
     ]
 
@@ -527,6 +537,7 @@ def _build_s7(styles: dict) -> list:
         _b("<b>Nom</b> (2 à 120 caractères)", styles),
         _b("<b>Numéro</b> — format <code>+243XXXXXXXXX</code> ou "
            "<code>0XXXXXXXXX</code>", styles),
+        _b("<b>Sexe</b> (Masculin / Féminin)", styles),
         _b("<b>Email</b> (facultatif)", styles),
         _b("<b>Adresse</b> (facultatif)", styles),
         _b("<b>Notes</b> (facultatif)", styles),
@@ -583,7 +594,16 @@ def _build_s8(styles: dict) -> list:
         _b("Total général affiché en temps réel", styles),
         _b("Nombre total d'articles", styles),
 
-        Paragraph("4. Impression", styles["h3"]),
+        Paragraph("4. Encaissement", styles["h3"]),
+        _p("Cliquez sur <b>Imprimer & Valider</b>. Le dialogue "
+           "<b>Encaissement</b> s'ouvre :", styles),
+        _b("<b>Montant à payer</b> affiché en gros", styles),
+        _b("Saisir le <b>montant reçu</b> du client", styles),
+        _b("Choisir la <b>devise</b> (FC ou USD)", styles),
+        _b("Le <b>rendu</b> est calculé automatiquement", styles),
+        _b("Confirmer → vente enregistrée + ticket généré", styles),
+
+        Paragraph("5. Impression", styles["h3"]),
         _b("Cliquez sur <b>Imprimer la facture</b>", styles),
         _b("PDF généré dans <code>Factures/&lt;nom_client&gt;/</code>", styles),
         _b("Si impression auto activée → envoi direct à l'imprimante", styles),
@@ -601,6 +621,13 @@ def _build_s8(styles: dict) -> list:
         _b("Confirmer", styles),
         _b("Effets : vente annulée + <b>stock restitué</b> + "
            "<b>montant client diminué</b> + audit", styles),
+
+        Paragraph("Retour / Avoir", styles["h2"]),
+        _p("Pour retourner <b>partiellement</b> une facture :", styles),
+        _b("<b>Historique → clic droit → Retour / Avoir</b>", styles),
+        _b("Sélectionner les articles et quantités à retourner", styles),
+        _b("Choisir un motif", styles),
+        _b("Valider → PDF <b>Avoir</b> généré + stock restauré", styles),
 
         Paragraph("Réimprimer une facture", styles["h2"]),
         _p("<b>Historique → clic droit → Réimprimer (PDF)</b>", styles),
@@ -677,6 +704,7 @@ def _build_s10(styles: dict) -> list:
         _b("<b>Clic droit</b> → menu contextuel :", styles),
         _b("&nbsp;&nbsp;&nbsp;&nbsp;• Voir la facture", styles),
         _b("&nbsp;&nbsp;&nbsp;&nbsp;• Réimprimer (PDF)", styles),
+        _b("&nbsp;&nbsp;&nbsp;&nbsp;• Retour / Avoir", styles),
         _b("&nbsp;&nbsp;&nbsp;&nbsp;• Annuler la vente (ADMIN/OWNER/DEV)",
            styles),
         _b("<b>Export CSV</b> — exporte toutes les lignes filtrées", styles),
@@ -685,6 +713,7 @@ def _build_s10(styles: dict) -> list:
         _b("N° facture, date, client, caissier, statut", styles),
         _b("Tableau des lignes (article, quantité, PU, total)", styles),
         _b("<b>Total général</b>", styles),
+        _b("<b>Encaissement</b> (montant reçu, rendu)", styles),
         _b("Bouton <b>Réimprimer</b> (PDF)", styles),
         PageBreak(),
     ]
@@ -757,6 +786,16 @@ def _build_s12(styles: dict) -> list:
             ],
             col_widths=[3.5 * cm, 12.5 * cm],
         ),
+
+        Paragraph("Rapport Z (clôture de caisse)", styles["h2"]),
+        _p("Le <b>Rapport Z</b> est un document officiel de clôture de "
+           "caisse :", styles),
+        _b("Bouton <b>Rapport Z</b> dans la page Facturation", styles),
+        _b("Choisir la <b>caisse</b> et la <b>période</b>", styles),
+        _b("Saisir le <b>montant compté</b> dans la caisse physique", styles),
+        _b("Le système calcule l'<b>écart</b> (excédent / manque)", styles),
+        _b("Génère un PDF au format <b>ticket</b> ou <b>A4</b>", styles),
+        _b("Enregistre la clôture dans la base (traçabilité)", styles),
         PageBreak(),
     ]
 
@@ -810,8 +849,8 @@ def _build_s14(styles: dict) -> list:
         Paragraph("Liste des utilisateurs", styles["h2"]),
         _p("Colonnes : Utilisateur, Email, Téléphone, Rôle, Statut, "
            "Dernière connexion.", styles),
-        _p("Une <b>icône couronne 👑</b> signale le propriétaire, une "
-           "<b>icône clé 🔧</b> le développeur.", styles),
+        _p("Une <b>icône couronne</b> signale le propriétaire, une "
+           "<b>icône clé</b> le développeur.", styles),
 
         Paragraph("Créer un utilisateur", styles["h2"]),
         _p("<b>Nouvel utilisateur</b> — renseignez :", styles),
@@ -848,12 +887,12 @@ def _build_s14(styles: dict) -> list:
 
 
 # ══════════════════════════════════════════════════════════════════
-# SECTION 15 — Paramètres
+# SECTION 15 — Paramètres (avec Licence)
 # ══════════════════════════════════════════════════════════════════
 def _build_s15(styles: dict) -> list:
     return [
         Paragraph("15. Paramètres", styles["h1"]),
-        _p("<b>6 onglets + 1 onglet dynamique Réseau.</b>", styles),
+        _p("<b>8 onglets</b> organisés par thème.", styles),
 
         Paragraph("🏢 Entreprise", styles["h2"]),
         _b("Nom, type, téléphone, email, adresse", styles),
@@ -864,6 +903,8 @@ def _build_s15(styles: dict) -> list:
         _b("Période du chiffre d'affaires (Mois / Semaine)", styles),
         _b("Marge bénéfice par défaut (%)", styles),
         _b("Numéro de caisse", styles),
+        _b("<b>Taux de change</b> (FC ↔ USD)", styles),
+        _b("Nombre max de postes connectés", styles),
 
         Paragraph("🧾 Facturation", styles["h2"]),
         _b("Impression automatique (oui/non)", styles),
@@ -882,12 +923,22 @@ def _build_s15(styles: dict) -> list:
         _b("Expiration (jours)", styles),
         _b("Exigences : chiffre, majuscule, caractère spécial", styles),
         _b("<b>Seuil d'alerte stock</b>", styles),
+        _b("<b>Autoriser les connexions ADMIN/OWNER/DEV à distance</b> "
+           "(recommandé : DÉSACTIVÉ en production)", styles),
+        _b("<b>PC de monitoring</b> — gestion de la whitelist (OWNER/DEV)", styles),
 
         Paragraph("🖨 Impression", styles["h2"]),
         _b("Liste des imprimantes détectées", styles),
-        _b("Imprimante par défaut", styles),
+        _b("Imprimante <b>Ticket</b> (80 mm) et <b>Rapport</b> (A4)", styles),
         _b("Impression auto + Ouverture PDF auto", styles),
         _b("Bouton <b>Tester l'impression</b>", styles),
+
+        Paragraph("🔐 Licence", styles["h2"]),
+        _p("Onglet dédié à l'activation de la licence :", styles),
+        _b("<b>Machine ID</b> de ce PC (copiable)", styles),
+        _b("<b>Champ clé de licence</b> (activation)", styles),
+        _b("<b>Bouton Activer</b>", styles),
+        _b("Contacts directs : <b>WhatsApp, Email, Facebook</b>", styles),
 
         Paragraph("🌐 Réseau (dynamique)", styles["h2"]),
         _p("Voir la section 17 — Modes d'installation.", styles),
@@ -917,7 +968,7 @@ def _build_s16(styles: dict) -> list:
         ),
 
         Paragraph("Vérification de la chaîne d'audit", styles["h2"]),
-        _p("Bouton <b>🔒 Vérifier l'intégrité</b> — calcule tous les hashs "
+        _p("Bouton <b>Vérifier l'intégrité</b> — calcule tous les hashs "
            "et détecte toute falsification.", styles),
         _b("✅ Si OK → message de confirmation", styles),
         _b("🚨 Si rupture → <b>ALERTE FRAUDE</b> avec entrée corrompue",
@@ -926,13 +977,6 @@ def _build_s16(styles: dict) -> list:
         Paragraph("Liste temps réel", styles["h2"]),
         _p("Table des dernières actions : date, utilisateur, sévérité, "
            "action, cible, IP. Double-clic → détail complet.", styles),
-
-        Paragraph("Mode Développeur", styles["h2"]),
-        _p("Accessible uniquement au <b>DEVELOPER</b> :", styles),
-        _b("Infos système (DB, version, machine ID)", styles),
-        _b("<b>Logs récents</b>", styles),
-        _b("<b>Console SQL en lecture seule</b> (SELECT uniquement)", styles),
-        _b("Statistiques par table", styles),
         PageBreak(),
     ]
 
@@ -955,16 +999,20 @@ def _build_s17(styles: dict) -> list:
         _b("Un poste héberge la base <b>et</b> lance le serveur FastAPI", styles),
         _b("Les autres postes se connectent en réseau local", styles),
         _b("<b>Le serveur doit être allumé</b> pour les clients", styles),
-        _p("<b>Commande :</b> <code>python run_server.py</code>", styles),
         _b("Écoute par défaut sur <code>0.0.0.0:5001</code>", styles),
         _b("Plage horaire paramétrable (refus hors plage)", styles),
-        _b("Authentification par <b>token HMAC</b> (365 jours)", styles),
+        _b("Authentification par <b>token HMAC</b>", styles),
 
         Paragraph("💻 Mode Client", styles["h2"]),
         _b("Se connecte à un serveur distant", styles),
         _b("Saisissez l'<b>IP</b> et le <b>port</b>", styles),
         _b("Bouton <b>Tester la connexion</b>", styles),
         _p("<b>Usage :</b> plusieurs caisses dans une pharmacie.", styles),
+        _box("⚠️ En mode client, <b>aucune licence</b> n'est demandée sur "
+             "ce PC. La licence est gérée <b>uniquement par le serveur</b>. "
+             "Si la licence serveur expire, tous les postes clients sont "
+             "bloqués jusqu'au renouvellement.", styles,
+             bg=PURPLE_BG, border=PURPLE_FG),
 
         Paragraph("Configuration du mode", styles["h2"]),
         _p("<b>Paramètres → onglet Réseau → Configurer le réseau</b>", styles),
@@ -1032,11 +1080,212 @@ def _build_s18(styles: dict) -> list:
 
 
 # ══════════════════════════════════════════════════════════════════
-# SECTION 19 — FAQ
+# SECTION 19 — Licence et activation (NOUVEAU)
 # ══════════════════════════════════════════════════════════════════
 def _build_s19(styles: dict) -> list:
     return [
-        Paragraph("19. Questions fréquentes", styles["h1"]),
+        Paragraph("19. Licence et activation", styles["h1"]),
+        _p("Nova Pharma fonctionne avec un système de <b>licence à vie</b> "
+           "(paiement unique) — aucun abonnement mensuel.", styles),
+
+        Paragraph("Essai gratuit de 30 jours", styles["h2"]),
+        _p("À la première installation, vous bénéficiez d'un <b>essai "
+           "gratuit de 30 jours</b> avec toutes les fonctionnalités.", styles),
+        _b("Une notification vous rappelle le nombre de jours restants "
+           "à chaque démarrage", styles),
+        _b("Aucune limite fonctionnelle pendant l'essai", styles),
+        _b("À la fin de l'essai, l'application se bloque jusqu'à "
+           "l'activation d'une licence", styles),
+
+        Paragraph("Activer votre licence", styles["h2"]),
+        _p("Deux façons d'activer :", styles),
+
+        Paragraph("Méthode 1 — Depuis le dialogue au démarrage", styles["h3"]),
+        _b("Au démarrage, si l'essai est terminé, un dialogue s'affiche", styles),
+        _b("Votre <b>Machine ID</b> est affiché (bouton copier)", styles),
+        _b("Contactez TEAM NOVA via les boutons <b>WhatsApp</b>, <b>Email</b> "
+           "ou <b>Facebook</b>", styles),
+        _b("Collez la clé reçue et cliquez <b>Activer</b>", styles),
+
+        Paragraph("Méthode 2 — Depuis Paramètres", styles["h3"]),
+        _b("<b>Paramètres → onglet Licence</b>", styles),
+        _b("Copiez votre Machine ID", styles),
+        _b("Envoyez-le à TEAM NOVA", styles),
+        _b("Collez la clé reçue et cliquez <b>Activer</b>", styles),
+
+        Paragraph("Format de la clé de licence", styles["h2"]),
+        _p("Format : <code>NOVA-XXXXXXXX-X-XXXXXXXX-XXXXXX-XXXXXXXXXXXXXXXX</code>",
+           styles),
+        _b("<b>NOVA</b> : préfixe fixe", styles),
+        _b("La clé est <b>liée à votre Machine ID</b>", styles),
+        _b("Impossible à copier sur une autre machine", styles),
+
+        Paragraph("Type de licence", styles["h2"]),
+        _table(
+            ["Type", "Durée"],
+            [
+                ["À VIE",       "Illimitée (recommandé)"],
+                ["Temporaire",  "30 / 90 / 180 / 365 / 730 / 3650 jours"],
+            ],
+            col_widths=[4 * cm, 12 * cm],
+        ),
+
+        Paragraph("Où trouver votre Machine ID ?", styles["h2"]),
+        _b("<b>Paramètres → onglet Licence</b> : champ copiable", styles),
+        _b("Ou dans le dialogue d'activation au démarrage", styles),
+        _p("Le Machine ID est un <b>hash unique</b> de votre ordinateur. "
+           "Il ne change pas, sauf si vous changez de PC.", styles),
+
+        Paragraph("Protection anti-recul d'horloge", styles["h2"]),
+        _box("⚠️ Ne modifiez <b>jamais</b> la date de votre ordinateur "
+             "vers le passé. L'application détecte le recul et se bloque. "
+             "Corrigez la date système puis relancez.", styles,
+             bg=WARN_BG, border=WARN_FG),
+
+        Paragraph("En mode client (multi-postes)", styles["h2"]),
+        _box("En mode client, <b>aucune licence</b> n'est demandée sur "
+             "ce PC. La licence est gérée <b>uniquement par le serveur</b>. "
+             "Si le serveur est licencié, tous les clients fonctionnent. "
+             "Si la licence serveur expire, tous les postes sont bloqués.",
+             styles, bg=PURPLE_BG, border=PURPLE_FG),
+
+        Paragraph("Changement de PC", styles["h2"]),
+        _p("Si vous changez d'ordinateur (nouveau PC, disque grillé…), "
+           "votre Machine ID change. Contactez TEAM NOVA pour recevoir "
+           "une nouvelle clé de licence.", styles),
+        PageBreak(),
+    ]
+
+
+# ══════════════════════════════════════════════════════════════════
+# SECTION 20 — Notifications (NOUVEAU)
+# ══════════════════════════════════════════════════════════════════
+def _build_s20(styles: dict) -> list:
+    return [
+        Paragraph("20. Notifications", styles["h1"]),
+        _p("Nova Pharma dispose d'un système de notifications pour vous "
+           "informer en temps réel des événements importants.", styles),
+
+        Paragraph("Types de notifications", styles["h2"]),
+        _table(
+            ["Type", "Couleur", "Exemple"],
+            [
+                ["Succès",   "Vert",   "Vente enregistrée"],
+                ["Info",     "Bleu",   "Nouvelle version disponible"],
+                ["Warning",  "Orange", "3 produits en rupture"],
+                ["Erreur",   "Rouge",  "Imprimante inaccessible"],
+            ],
+            col_widths=[3 * cm, 3 * cm, 10 * cm],
+        ),
+
+        Paragraph("Toasts (popups)", styles["h2"]),
+        _b("Apparaissent en <b>haut à droite</b> de l'écran", styles),
+        _b("Disparaissent automatiquement après 3-5 secondes", styles),
+        _b("Empilables si plusieurs notifications", styles),
+
+        Paragraph("Cloche de notifications", styles["h2"]),
+        _p("Une <b>cloche</b> en haut à droite indique le nombre de "
+           "notifications non lues.", styles),
+        _b("Cliquez dessus pour ouvrir le <b>centre de notifications</b>", styles),
+        _b("Badge rouge avec compteur si non-lues", styles),
+        _b("Historique des 20 dernières notifications", styles),
+
+        Paragraph("Alertes automatiques", styles["h2"]),
+        _p("Le système vous alerte <b>automatiquement</b> :", styles),
+
+        Paragraph("À chaque démarrage :", styles["h3"]),
+        _b("⚠️ <b>Ruptures de stock</b> : « X produits sont en rupture »", styles),
+        _b("⚠️ <b>Sauvegarde ancienne</b> : « Dernière sauvegarde il y "
+           "a X jours »", styles),
+        _b("ℹ️ <b>Mot de passe temporaire</b> : « Veuillez changer votre "
+           "mot de passe »", styles),
+        _b("💡 <b>Essai/expiration</b> : « X jours restants »", styles),
+        _b("🔌 <b>Serveur injoignable</b> (mode client)", styles),
+
+        Paragraph("En cours d'utilisation :", styles["h3"]),
+        _b("✅ Vente enregistrée", styles),
+        _b("✅ Produit ajouté / modifié", styles),
+        _b("✅ Utilisateur créé", styles),
+        _b("⚠️ Impression échouée", styles),
+        _b("❌ Erreur d'enregistrement", styles),
+
+        Paragraph("Personnalisation", styles["h2"]),
+        _p("Les notifications sont <b>non-intrusives</b> : elles "
+           "n'interrompent pas votre travail, contrairement aux boîtes "
+           "de dialogue classiques.", styles),
+        PageBreak(),
+    ]
+
+
+# ══════════════════════════════════════════════════════════════════
+# SECTION 21 — Monitoring PC (NOUVEAU)
+# ══════════════════════════════════════════════════════════════════
+def _build_s21(styles: dict) -> list:
+    return [
+        Paragraph("21. Monitoring PC à distance", styles["h1"]),
+        _p("Nova Pharma permet à l'<b>OWNER</b> et au <b>DEVELOPER</b> de "
+           "se connecter en mode ADMIN/OWNER/DEV <b>depuis un autre PC</b> "
+           "(bureau, domicile) sans être physiquement sur le serveur.", styles),
+
+        Paragraph("Concept", styles["h2"]),
+        _b("Un PC <b>serveur physique</b> héberge la base de données", styles),
+        _b("Les <b>PC clients</b> (caisses) se connectent au serveur", styles),
+        _b("Le <b>PC monitoring</b> permet à l'OWNER/DEV de piloter à "
+           "distance depuis un autre lieu", styles),
+
+        Paragraph("Whitelist — 3 PC maximum", styles["h2"]),
+        _p("Pour des raisons de <b>sécurité</b>, seuls <b>3 PC maximum</b> "
+           "peuvent être autorisés à se connecter en ADMIN/OWNER/DEV à "
+           "distance.", styles),
+
+        _table(
+            ["Rôle", "PC physique", "PC client normal", "PC monitoring"],
+            [
+                ["OWNER",       "✅ Oui",     "⚠️ Config",     "✅ Oui"],
+                ["DEVELOPER",   "✅ Oui",     "⚠️ Config",     "✅ Oui"],
+                ["ADMIN",       "✅ Oui",     "⚠️ Config",     "✅ Oui"],
+                ["UTILISATEUR", "✅ Oui",     "✅ Oui",        "✅ Oui"],
+                ["CAISSIER",    "✅ Oui",     "✅ Oui",        "✅ Oui"],
+            ],
+            col_widths=[3 * cm, 3.5 * cm, 4 * cm, 3.5 * cm],
+        ),
+
+        Paragraph("Comment ajouter un PC monitoring ?", styles["h2"]),
+        _b("Seul TEAM NOVA peut ajouter/retirer un PC monitoring", styles),
+        _b("Contactez TEAM NOVA avec le <b>Machine ID</b> du PC à autoriser",
+           styles),
+        _b("Vous pouvez consulter la liste actuelle dans <b>Paramètres → "
+           "Sécurité → PC de monitoring</b>", styles),
+
+        Paragraph("Sécurité", styles["h2"]),
+        _box("🔒 Les connexions ADMIN/OWNER/DEV depuis un PC monitoring "
+             "sont <b>tracées dans l'audit</b> avec un niveau "
+             "<b>WARNING</b>. Toute tentative de connexion depuis un PC "
+             "non-whitelisté est <b>refusée</b> (403) et tracée en "
+             "<b>DANGER</b>.", styles, bg=WARN_BG, border=WARN_FG),
+
+        Paragraph("Mode dégradé (optionnel)", styles["h2"]),
+        _p("Une option <b>« Autoriser les connexions ADMIN/OWNER/DEV "
+           "depuis n'importe quel PC client »</b> existe dans Paramètres → "
+           "Sécurité. <b>Non recommandée</b> en production.", styles),
+
+        Paragraph("Postes connectés (Surveillance)", styles["h2"]),
+        _p("Sur le serveur physique, la page <b>Surveillance</b> affiche "
+           "en temps réel :", styles),
+        _b("Liste des postes connectés (hostname, IP, rôle)", styles),
+        _b("Dernière activité de chaque poste", styles),
+        _b("Possibilité de <b>bloquer/débloquer</b> un poste suspect", styles),
+        _b("Forcer la déconnexion d'un poste", styles),
+        PageBreak(),
+    ]
+
+
+# ══════════════════════════════════════════════════════════════════
+# SECTION 22 — FAQ
+# ══════════════════════════════════════════════════════════════════
+def _build_s22(styles: dict) -> list:
+    return [
+        Paragraph("22. Questions fréquentes", styles["h1"]),
 
         Paragraph("J'ai oublié mon mot de passe", styles["h3"]),
         _p("Contactez un <b>administrateur</b> ou le <b>propriétaire</b>. "
@@ -1044,6 +1293,16 @@ def _build_s19(styles: dict) -> list:
            "<b>Utilisateurs → Réinitialiser</b>, ce qui génère un mot de "
            "passe temporaire (avec QR code) à changer à la prochaine "
            "connexion.", styles),
+
+        Paragraph("Mon essai gratuit est terminé", styles["h3"]),
+        _p("Allez dans <b>Paramètres → Licence</b> : votre Machine ID est "
+           "affiché. Contactez TEAM NOVA (WhatsApp/Email/Facebook) pour "
+           "recevoir une clé de licence. Collez-la et activez.", styles),
+
+        Paragraph("Je change de PC, comment récupérer ma licence ?", styles["h3"]),
+        _p("La licence est liée au <b>Machine ID</b> du PC. Si vous changez "
+           "de PC, contactez TEAM NOVA avec votre nouveau Machine ID pour "
+           "recevoir une nouvelle clé.", styles),
 
         Paragraph("Le stock est faux", styles["h3"]),
         _p("Consultez <b>Articles → double-clic sur le produit</b> pour voir "
@@ -1057,11 +1316,6 @@ def _build_s19(styles: dict) -> list:
         _b("Vérifiez qu'elle est connectée et par défaut", styles),
         _b("<b>Paramètres → Impression → Tester l'impression</b>", styles),
         _b("Vérifiez la sélection dans la liste déroulante", styles),
-
-        Paragraph("Je vois des alertes mais je ne les comprends pas",
-                  styles["h3"]),
-        _p("Les alertes sont documentées dans la section 11. Cliquez sur "
-           "une carte pour accéder directement au problème.", styles),
 
         Paragraph("Comment ajouter un nouveau caissier ?", styles["h3"]),
         _p("<b>Utilisateurs → Nouvel utilisateur</b> → rôle = "
@@ -1078,16 +1332,21 @@ def _build_s19(styles: dict) -> list:
         Paragraph("Puis-je utiliser Nova Pharma sur plusieurs postes ?",
                   styles["h3"]),
         _p("Oui, en <b>mode serveur/client</b>. Voir la section 17.", styles),
+
+        Paragraph("Mon PC client demande une licence ?", styles["h3"]),
+        _p("Non. En mode client, <b>aucune licence n'est demandée</b>. "
+           "La licence est gérée par le serveur. Si le serveur est "
+           "licencié, tous les clients fonctionnent.", styles),
         PageBreak(),
     ]
 
 
 # ══════════════════════════════════════════════════════════════════
-# SECTION 20 — Dépannage
+# SECTION 23 — Dépannage
 # ══════════════════════════════════════════════════════════════════
-def _build_s20(styles: dict) -> list:
+def _build_s23(styles: dict) -> list:
     return [
-        Paragraph("20. Dépannage", styles["h1"]),
+        Paragraph("23. Dépannage", styles["h1"]),
 
         Paragraph("L'application ne démarre pas", styles["h3"]),
         _b("Vérifiez que la base existe : <code>Database/NovaPharma.db</code>",
@@ -1095,12 +1354,32 @@ def _build_s20(styles: dict) -> list:
         _b("Consultez les logs dans le terminal", styles),
         _b("En cas de corruption, restaurez une sauvegarde récente", styles),
 
+        Paragraph("« Licence expirée » au démarrage", styles["h3"]),
+        _b("Votre essai 30 jours est terminé", styles),
+        _b("Contactez TEAM NOVA pour obtenir votre clé", styles),
+        _b("Activez dans <b>Paramètres → Licence</b>", styles),
+
+        Paragraph("« L'heure de votre système a été reculée »", styles["h3"]),
+        _b("Vous avez modifié la date système vers le passé", styles),
+        _b("Corrigez la date et l'heure de votre PC", styles),
+        _b("Relancez l'application", styles),
+
         Paragraph("« Serveur injoignable » en mode client", styles["h3"]),
         _b("Vérifiez que le serveur est allumé", styles),
         _b("Testez la connexion depuis <b>Paramètres → Réseau</b>", styles),
         _b("Vérifiez que le port <b>5001</b> n'est pas bloqué par le pare-feu",
            styles),
         _b("Vérifiez la <b>plage horaire</b> configurée sur le serveur", styles),
+
+        Paragraph("« Ce poste n'est pas autorisé pour ce rôle »", styles["h3"]),
+        _b("Votre PC n'est pas dans la whitelist monitoring", styles),
+        _b("Contactez TEAM NOVA avec votre Machine ID", styles),
+        _b("Ou utilisez un rôle non-privilégié (CAISSIER/UTILISATEUR)", styles),
+
+        Paragraph("« Licence du serveur expirée » (PC client)", styles["h3"]),
+        _b("La licence du serveur physique a expiré", styles),
+        _b("Tous les PC clients sont bloqués", styles),
+        _b("Contactez TEAM NOVA pour renouveler", styles),
 
         Paragraph("Un produit n'apparaît pas dans la facturation",
                   styles["h3"]),
@@ -1110,40 +1389,37 @@ def _build_s20(styles: dict) -> list:
         Paragraph("« Mot de passe incorrect » alors que je suis sûr",
                   styles["h3"]),
         _b("Vérifiez que <b>Verr. Maj</b> n'est pas activé", styles),
-        _b("L'identifiant est insensible à la casse, "
-           "<b>mais pas le mot de passe</b>", styles),
         _b("Après 5 échecs, attendez 5 minutes", styles),
 
         Paragraph("Le chiffre d'affaires semble faux", styles["h3"]),
         _b("Vérifiez que les ventes <b>annulées</b> ne sont pas comptées",
            styles),
         _b("Vérifiez la <b>période sélectionnée</b>", styles),
-        _b("Vérifiez le <b>format des dates</b> (DD/MM/YYYY)", styles),
 
         Paragraph("La chaîne d'audit est rompue", styles["h3"]),
         _box("🚨 <b>Ne touchez plus à rien.</b> Une rupture signifie qu'une "
              "entrée a été modifiée manuellement dans la base. Contactez "
-             "immédiatement le <b>développeur</b> avec le message d'erreur "
-             "exact (numéro d'entrée et ID fournis).",
+             "immédiatement TEAM NOVA avec le message d'erreur exact.",
              styles, bg=DANGER_BG, border=DANGER_FG),
         PageBreak(),
     ]
 
 
 # ══════════════════════════════════════════════════════════════════
-# SECTION 21 — Contact
+# SECTION 24 — Support et contact
 # ══════════════════════════════════════════════════════════════════
-def _build_s21(styles: dict) -> list:
+def _build_s24(styles: dict) -> list:
     return [
-        Paragraph("21. Support et contact", styles["h1"]),
+        Paragraph("24. Support et contact", styles["h1"]),
         _p("<b>Support technique Nova Pharma</b>", styles),
         _table(
             ["Canal", "Coordonnées"],
             [
-                ["📧 Email",     "teamnovaoff@gmail.com"],
-                ["📞 Téléphone", "08 XX XX XX XX"],
-                ["🕐 Horaires",  "Lun – Ven, 08h00 – 18h00 (GMT+1)"],
-                ["🌐 Site",      "www.novapharma.cd"],
+                ["📱 WhatsApp",   "+243 808 775 085"],
+                ["📧 Email",      "teamnovaoff@gmail.com"],
+                ["📘 Facebook",   "Team Nova"],
+                ["🌐 Page FB",    "facebook.com/people/Team-Nova/61581757163137"],
+                ["🕐 Horaires",   "Lun – Ven, 08h00 – 18h00 (GMT+1)"],
             ],
             col_widths=[4 * cm, 12 * cm],
         ),
@@ -1152,6 +1428,13 @@ def _build_s21(styles: dict) -> list:
              f"<b>Version :</b> {APP_VERSION}<br/>"
              "<b>Licence :</b> Propriétaire — © 2026 TEAM NOVA.<br/>"
              "Tous droits réservés.", styles),
+        Spacer(1, 0.6 * cm),
+        _p("<b>Prise en charge maintenance :</b>", styles),
+        _b("Les <b>3 premiers mois</b> après l'installation sont "
+           "<b>gratuits</b> (bugs, ajustements)", styles),
+        _b("Après 3 mois : interventions <b>facturées</b> selon tarifs "
+           "en vigueur", styles),
+        _b("Voir le <b>Contrat de Maintenance</b> fourni séparément", styles),
         Spacer(1, 1.5 * cm),
         _p(f"<i>Document généré le "
            f"{datetime.now().strftime('%d/%m/%Y à %H:%M')} — "
@@ -1160,7 +1443,7 @@ def _build_s21(styles: dict) -> list:
 
 
 # ══════════════════════════════════════════════════════════════════
-# Rendu des pages (header / footer / cover)
+# Rendu des pages
 # ══════════════════════════════════════════════════════════════════
 def _make_cover_painter():
     def _draw(canvas, document):
@@ -1210,8 +1493,8 @@ def _make_page_painter():
 # Générateur principal
 # ══════════════════════════════════════════════════════════════════
 def generer_guide(output_path: str = "Guide_utilisateur_NovaPharma.pdf"):
-    """Génère le guide utilisateur PDF complet (~40 pages)."""
-    logger.info("Génération du guide complet")
+    """Génère le guide utilisateur PDF complet (~45 pages)."""
+    logger.info("Génération du guide complet v%s", APP_VERSION)
     styles = _make_styles()
 
     # ─── Nom de la pharmacie ───
@@ -1236,7 +1519,7 @@ def generer_guide(output_path: str = "Guide_utilisateur_NovaPharma.pdf"):
         bottomMargin=2 * cm,
         title="Guide utilisateur — Nova Pharma",
         author="TEAM NOVA",
-        subject="Documentation utilisateur",
+        subject="Documentation utilisateur v2.0.0",
     )
 
     frame_cover = Frame(
@@ -1268,7 +1551,7 @@ def generer_guide(output_path: str = "Guide_utilisateur_NovaPharma.pdf"):
     # Sommaire
     elements += _build_sommaire(styles)
 
-    # Sections 1 à 21
+    # Sections 1 à 24
     elements += _build_s1(styles)
     elements += _build_s2(styles)
     elements += _build_s3(styles)
@@ -1287,14 +1570,19 @@ def generer_guide(output_path: str = "Guide_utilisateur_NovaPharma.pdf"):
     elements += _build_s16(styles)
     elements += _build_s17(styles)
     elements += _build_s18(styles)
-    elements += _build_s19(styles)
-    elements += _build_s20(styles)
-    elements += _build_s21(styles)
+    elements += _build_s19(styles)   # Licence
+    elements += _build_s20(styles)   # Notifications
+    elements += _build_s21(styles)   # Monitoring
+    elements += _build_s22(styles)   # FAQ
+    elements += _build_s23(styles)   # Dépannage
+    elements += _build_s24(styles)   # Contact
 
     # ─── Build ───
     doc.build(elements)
     logger.info("Guide généré : %s", output_path)
     print(f"✅ Guide complet généré : {output_path}")
+    print(f"   Version : {APP_VERSION}")
+    print(f"   Sections : 24")
     return output_path
 
 
@@ -1305,7 +1593,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
 
     parser = argparse.ArgumentParser(
-        description="Génère le guide utilisateur PDF Nova Pharma")
+        description="Génère le guide utilisateur PDF Nova Pharma v2.0.0")
     parser.add_argument(
         "--output", "-o",
         default="Guide_utilisateur_NovaPharma.pdf",

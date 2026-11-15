@@ -32,7 +32,8 @@ class Setting_encaissement(QtWidgets.QDialog):
         self._result = None
 
         self.setWindowTitle("Encaissement")
-        self.setMinimumWidth(480)
+        from Ui_helpers import make_dialog_responsive
+        make_dialog_responsive(self, 560, 520)
         self.setModal(True)
         self._build_ui()
         self._recalc()

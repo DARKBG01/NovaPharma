@@ -259,16 +259,51 @@ class LoginDialog(QtWidgets.QDialog, Ui_LoginDialog):
                 user_api.get("identifiant"))
             self.accept()
 
+
         except Exception as e:
+
             self._set_loading(False)
+
             msg = str(e)
+
             low = msg.lower()
 
-            if "403" in msg or "autorisé" in low or "forbidden" in low:
-                self._show_error("Ce poste n'est pas autorisé pour ce rôle.\nContactez l'administrateur réseau.")
+            # ═══ 402 : LICENCE SERVEUR EXPIRÉE ═══
+
+            if "402" in msg or "licence" in low or "license" in low:
+                self._show_error(
+
+                    "⚠ La licence du serveur a expiré.\n\n"
+
+                    "Contactez l'administrateur ou TEAM NOVA pour "
+
+                    "la renouveler.\n\n"
+
+                    "WhatsApp : +243 808 775 085\n"
+
+                    "Email : teamnovaoff@gmail.com")
+
                 self.lineEdit_password.clear()
+
                 self.lineEdit_password.setFocus()
+
                 return
+
+            # ═══ 403 : poste non autorisé ═══
+
+            if "403" in msg or "autorisé" in low or "forbidden" in low:
+                self._show_error(
+
+                    "Ce poste n'est pas autorisé pour ce rôle.\n"
+
+                    "Contactez l'administrateur réseau.")
+
+                self.lineEdit_password.clear()
+
+                self.lineEdit_password.setFocus()
+
+                return
+
 
             self._register_failure()
 

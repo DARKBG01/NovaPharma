@@ -18,7 +18,8 @@ class LicenseDialog(QtWidgets.QDialog):
         super().__init__(parent)
         self.setWindowTitle("Nova Pharma — Activation")
         self.setModal(True)
-        self.setFixedSize(640, 820)
+        from Ui_helpers import make_dialog_responsive
+        make_dialog_responsive(self, 560, 520)
         self._build_ui(message)
 
     def _build_ui(self, message: str):

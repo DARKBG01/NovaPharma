@@ -163,16 +163,14 @@ def main() -> int:
     backup_timer.start(3600 * 1000)  # 1 h
     app.backup_timer = backup_timer  # garde la référence
 
-    # ═══ 1. Initialise la base ═══
+    # ═══════════════════════════════════════════════════════════
+    # 1. INITIALISE LA BASE
+    # ═══════════════════════════════════════════════════════════
     try:
         db.get_conn()
         seed.run()
-
-        # ═══ Migrations (idempotentes) ═══
         from Database import migrations
         migrations.run_all()
-
-        # ═══ NOUVEAU : backup auto en arrière-plan ═══
         try:
             from Database import backup_engine
             created, path = backup_engine.check_and_run_auto_backup()
@@ -180,7 +178,6 @@ def main() -> int:
                 logger.info("Backup auto créée au démarrage : %s", path)
         except Exception:
             logger.exception("Erreur backup auto au démarrage")
-
     except Exception as e:
         logger.exception("Impossible d'initialiser la base")
         QtWidgets.QMessageBox.critical(
@@ -188,31 +185,46 @@ def main() -> int:
             f"Impossible d'initialiser la base de données :\n{e}")
         return 1
 
-    # ═══ VÉRIFICATION LICENCE / ESSAI ═══
-    try:
-        if not check_license_before_start():
-            logger.info("Licence non valide — fermeture.")
-            return 0
-    except Exception:
-        logger.exception("Erreur vérification licence")
-        QtWidgets.QMessageBox.critical(
-            None, "Erreur",
-            "Impossible de vérifier la licence.")
-        return 1
-
-    # ═══ 1.5 Détecte le mode serveur/client ═══
-    try:
-        detect_and_init_mode()
-    except Exception:
-        logger.exception("Erreur détection mode serveur/client")
-        # On continue en autonome par défaut
-
-    # ═══ 2. Wizard si première fois ═══
+    # ═══════════════════════════════════════════════════════════
+    # 2. WIZARD SI PREMIÈRE FOIS
+    #    (le wizard définit server_mode = "serveur" ou "client")
+    # ═══════════════════════════════════════════════════════════
     if db.get_config("first_time", True):
         logger.info("→ Ouverture du wizard d'inscription")
         if not run_wizard():
             logger.info("Wizard annulé par l'utilisateur")
             return 0
+        logger.info("Wizard terminé avec succès")
+
+    # ═══════════════════════════════════════════════════════════
+    # 3. DÉTECTE LE MODE (maintenant que le wizard l'a défini)
+    # ═══════════════════════════════════════════════════════════
+    mode = "autonome"
+    try:
+        mode = detect_and_init_mode()
+    except Exception:
+        logger.exception("Erreur détection mode serveur/client")
+
+    # ═══════════════════════════════════════════════════════════
+    # 4. VÉRIFICATION LICENCE
+    #    → UNIQUEMENT si mode serveur/autonome
+    #    → En mode client : JAMAIS de demande locale
+    #      (c'est le serveur qui vérifie la sienne dans le login)
+    # ═══════════════════════════════════════════════════════════
+    if mode != "client":
+        try:
+            if not check_license_before_start():
+                logger.info("Licence non valide — fermeture.")
+                return 0
+        except Exception:
+            logger.exception("Erreur vérification licence")
+            QtWidgets.QMessageBox.critical(
+                None, "Erreur",
+                "Impossible de vérifier la licence.")
+            return 1
+    else:
+        logger.info(
+            "Mode client : licence gérée par le serveur (pas de check local)")
         logger.info("Wizard terminé avec succès")
 
     # ═══════════════════════════════════════════════════════════════
