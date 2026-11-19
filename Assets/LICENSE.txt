@@ -1,0 +1,170 @@
+Licence d'utilisation - Nova Pharma
+Version 2.0 - Edition 2026
+
+(c) 2026 TEAM NOVA. Tous droits reserves.
+
+-------------------------------------------------------------------------------
+
+1. OBJET
+
+Le present contrat (ci-apres "la Licence") regit l'utilisation du logiciel
+Nova Pharma v2.0.0 (ci-apres "le Logiciel"), developpe et distribue par
+TEAM NOVA (ci-apres "l'Editeur").
+
+En installant, activant ou utilisant le Logiciel, vous acceptez sans reserve
+l'integralite des termes de cette Licence. Si vous refusez, vous devez
+desinstaller le Logiciel.
+
+Le texte complet de la Licence (version PDF, 14 articles) est fourni avec
+le Logiciel dans le dossier Documentation. En cas de divergence entre ce
+resume et le PDF, le PDF fait foi.
+
+-------------------------------------------------------------------------------
+
+2. PROPRIETE INTELLECTUELLE
+
+Le Logiciel, son code source, son interface, sa documentation et tous ses
+composants sont la propriete exclusive de TEAM NOVA.
+
+Aucun droit de propriete n'est transfere. La Licence ne confere qu'un droit
+d'utilisation limite, non exclusif et non transferable.
+
+-------------------------------------------------------------------------------
+
+3. PERIODE D'ESSAI GRATUITE
+
+A la premiere installation, vous beneficiez d'une periode d'essai gratuite
+de 30 jours calendaires, toutes fonctionnalites accessibles.
+
+A l'issue de cette periode, le Logiciel se bloque automatiquement jusqu'a
+l'activation d'une Licence. L'essai est lie au Machine ID du poste.
+
+Toute tentative de contournement (reinstallation, recul d'horloge,
+falsification) entraine le blocage immediat du Logiciel.
+
+-------------------------------------------------------------------------------
+
+4. TYPES DE LICENCE
+
+Deux types de Licence sont proposes :
+
+  - Licence A VIE (recommandee) : paiement unique, utilisation illimitee
+    sur le poste active, 3 mois de maintenance gratuite inclus.
+
+  - Licence TEMPORAIRE : duree determinee (30 a 3650 jours), renouvelable.
+
+Chaque cle de Licence est signee cryptographiquement (HMAC-SHA256) et liee
+au Machine ID. Elle ne peut etre utilisee sur un autre poste.
+
+-------------------------------------------------------------------------------
+
+5. CONDITIONS D'UTILISATION
+
+Le Logiciel est destine a la gestion d'officines pharmaceutiques : vente au
+comptoir, gestion de stock, suivi client, reception de marchandises,
+rapports et journal d'audit.
+
+Toute utilisation illegale, non autorisee ou contraire a l'esprit de la
+presente Licence est strictement interdite.
+
+-------------------------------------------------------------------------------
+
+6. RESTRICTIONS
+
+Il est strictement interdit de :
+
+  1. Copier, modifier, traduire, decompiler ou tenter d'obtenir le code
+     source du Logiciel ;
+
+  2. Redistribuer, vendre, louer, preter ou transferer le Logiciel a un
+     tiers sans autorisation ecrite de TEAM NOVA ;
+
+  3. Utiliser le Logiciel pour creer un produit concurrent ou derive ;
+
+  4. Supprimer ou alterer les mentions de copyright et marques ;
+
+  5. Contourner les mecanismes de protection (Machine ID, whitelist
+     monitoring, cle USB NovaPharma Dev, signature des cles, detection
+     de recul d'horloge) ;
+
+  6. Partager ou revendre une cle de Licence a un tiers.
+
+-------------------------------------------------------------------------------
+
+7. DONNEES ET SAUVEGARDES
+
+Vos donnees (produits, clients, ventes, audit) restent votre propriete
+exclusive. TEAM NOVA n'y a aucun acces sans autorisation explicite.
+
+Vous etes seul responsable de la politique de sauvegarde. Le Logiciel
+propose des sauvegardes automatiques chiffrees (AES-256) activables dans
+les Parametres.
+
+Extraction IA anonymisee (facultatif, decoche par defaut) : vous pouvez
+autoriser l'export de statistiques agregees et strictement anonymisees
+pour l'amelioration du Logiciel. Aucune donnee personnelle n'est extraite.
+Ce consentement est revocable a tout moment.
+
+-------------------------------------------------------------------------------
+
+8. MAINTENANCE ET SUPPORT
+
+Toute Licence inclut 3 mois de maintenance gratuite (corrections de bugs,
+ajustements mineurs, assistance technique).
+
+Au-dela, les interventions sont facturees selon les tarifs TEAM NOVA. Un
+Contrat de Maintenance separe peut etre souscrit.
+
+Support : WhatsApp +243 808 775 085 (Lun-Ven, 8h-18h GMT+1)
+
+-------------------------------------------------------------------------------
+
+9. GARANTIE ET RESPONSABILITE
+
+Le Logiciel est fourni "tel quel", sans garantie explicite ou implicite.
+
+TEAM NOVA ne pourra etre tenue responsable des dommages directs ou
+indirects, pertes de donnees, pertes de chiffre d'affaires, erreurs de
+saisie, ou usages frauduleux par un tiers.
+
+La responsabilite globale de TEAM NOVA est limitee au montant effectivement
+paye pour la Licence.
+
+-------------------------------------------------------------------------------
+
+10. DUREE ET RESILIATION
+
+La Licence reste en vigueur jusqu'a sa resiliation.
+
+Elle est automatiquement resiliee en cas de non-respect des conditions,
+de contournement des protections, ou de non-paiement apres la periode
+d'essai ou temporaire.
+
+En cas de resiliation, vous devez cesser toute utilisation et detruire
+toutes les copies en votre possession. Aucun remboursement ne sera effectue.
+
+-------------------------------------------------------------------------------
+
+11. DROIT APPLICABLE
+
+La presente Licence est regie par le droit en vigueur en Republique
+Democratique du Congo.
+
+Tout litige sera soumis, a defaut d'accord amiable, a la juridiction
+competente de Kinshasa.
+
+-------------------------------------------------------------------------------
+
+12. CONTACT
+
+TEAM NOVA - Editeur de Nova Pharma
+Email     : teamnovaoff@gmail.com
+WhatsApp  : +243 808 775 085
+Facebook  : https://web.facebook.com/people/Team-Nova/61581757163137/
+
+-------------------------------------------------------------------------------
+
+En cliquant sur "J'accepte" ci-dessous, vous reconnaissez avoir lu, compris
+et accepte l'integralite de la presente Licence.
+
+Document version 2.0 - Edition 2026 - (c) 2026 TEAM NOVA. Tous droits reserves.

@@ -1,114 +1,210 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-license_manager.py — Gestion de la licence et de l'essai gratuit.
-====================================================================
-- Essai gratuit de 30 jours au premier lancement
-- Blocage à l'expiration
-- Vérification de la clé générée par NovaPharma Dev
-- Protection contre le recul d'horloge
+license_manager.py — Gestion des licences Nova Pharma (Ed25519).
+================================================================
+Vérifie les signatures Ed25519 avec la clé publique embarquée.
+NE PEUT PAS générer de licences (pas de clé privée ici).
+
+Format licence v2 :
+    NOVA2-{mid8}-{type}-{exp8}-{nonce6}-{sig_b64url}
+
+Payload signé (binaire UTF-8) :
+    v2|{mid8}|{type}|{exp8}|{nonce6}|{issued_at_iso}
 """
-
-import os
-import json
-import hmac
-import hashlib
-import platform
 import base64
+import hashlib
+import hmac
+import json
 import logging
+import os
+import time
 from datetime import datetime, timedelta
-import secrets
+from pathlib import Path
+from typing import Optional
 
-from Database import db, machine_id
+from cryptography.exceptions import InvalidSignature
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
+
+from Database import db
 
 logger = logging.getLogger(__name__)
 
-# ══════════════════════════════════════════════════════════════════
-# CONFIGURATION
-# ══════════════════════════════════════════════════════════════════
+APP_DIR = Path(__file__).resolve().parent.parent
+PUBLIC_KEY_PATH = APP_DIR / "Core" / "public.pem"
+
+# Configuration essai
 TRIAL_DAYS = 30
-MASTER_SECRET = b"NovaPharma-MASTER-2026-DEV-ONLY-CHANGE-ME-3.14159265358979323846"
-CLOCK_TOLERANCE_HOURS = 1
+TRIAL_FILE_MAIN = Path.home() / ".novapharma" / "trial.dat"
+TRIAL_FILE_BAK = APP_DIR / "Database" / ".trial.dat"
+CLOCK_TOLERANCE_SECONDS = 3600  # 1h de tolérance de recul
 
 
 # ══════════════════════════════════════════════════════════════════
-# Fichier de trial caché (invisible pour l'utilisateur)
+# Utilitaires base64url
 # ══════════════════════════════════════════════════════════════════
-def _get_trial_file_path() -> str:
-    """Retourne le chemin du fichier caché selon l'OS."""
-    if platform.system() == "Windows":
-        base = os.environ.get("APPDATA", os.path.expanduser("~"))
-    elif platform.system() == "Darwin":
-        base = os.path.expanduser("~/Library/Application Support")
-    else:
-        base = os.path.expanduser("~/.local/share")
-
-    folder = os.path.join(base, "NovaPharma")
-    os.makedirs(folder, exist_ok=True)
-    return os.path.join(folder, ".sys_cache.dat")
+def _b64url_encode(data: bytes) -> str:
+    return base64.urlsafe_b64encode(data).rstrip(b"=").decode("ascii")
 
 
-def _sign(data: dict, mid: str) -> str:
-    key = MASTER_SECRET + mid.encode()
-    payload = json.dumps(data, sort_keys=True).encode()
-    return hmac.new(key, payload, hashlib.sha256).hexdigest()
+def _b64url_decode(s: str) -> bytes:
+    pad = "=" * (4 - len(s) % 4)
+    return base64.urlsafe_b64decode(s + pad)
+
+def _build_payload(mid8: str, typ: str, exp8: str,
+                   nonce: str, issued_at: str) -> bytes:
+    """Payload signé (convention à garder IDENTIQUE dans Master)."""
+    return f"v2|{mid8}|{typ}|{exp8}|{nonce}|{issued_at}".encode("utf-8")
+# ══════════════════════════════════════════════════════════════════
+# Chargement de la clé publique
+# ══════════════════════════════════════════════════════════════════
+_PUBLIC_KEY_CACHE: Optional[Ed25519PublicKey] = None
+
+
+def _get_public_key() -> Ed25519PublicKey:
+    """Charge la clé publique Ed25519 depuis Core/public.pem."""
+    global _PUBLIC_KEY_CACHE
+    if _PUBLIC_KEY_CACHE is not None:
+        return _PUBLIC_KEY_CACHE
+
+    if not PUBLIC_KEY_PATH.exists():
+        raise RuntimeError(
+            f"Clé publique absente : {PUBLIC_KEY_PATH}\n"
+            "Lance tools/generate_ed25519_keys.py sur le PC Master.")
+
+    pem = PUBLIC_KEY_PATH.read_bytes()
+    _PUBLIC_KEY_CACHE = serialization.load_pem_public_key(pem)
+    logger.info(
+        "Clé publique Ed25519 chargée (fingerprint=%s)",
+        hashlib.sha256(pem).hexdigest()[:16])
+    return _PUBLIC_KEY_CACHE
+
 
 # ══════════════════════════════════════════════════════════════════
-# Vérification de la licence stockée
+# Machine ID
 # ══════════════════════════════════════════════════════════════════
-def _verify_license(key: str) -> tuple[bool, dict, str]:
-    """Vérifie une clé de licence."""
-    if not key or not key.startswith("NOVA-"):
-        return False, {}, "Format de licence invalide"
-
-    mid = machine_id.get_machine_id()
-
+def _get_mid() -> str:
+    """Machine ID complet (SHA-256 hex)."""
     try:
-        parts = key[5:].split("-")
-        if len(parts) != 5:
-            return False, {}, "Format de licence invalide"
+        from Database import machine_id
+        return machine_id.get_machine_id()
+    except Exception:
+        logger.exception("Impossible de lire le Machine ID")
+        return "unknown"
 
-        mid8, typ, exp8, nonce6, sig = parts
 
-        if typ not in ("L", "T"):
-            return False, {}, "Type de licence invalide"
+def _get_mid8() -> str:
+    """8 premiers caractères du Machine ID (identifiant visuel)."""
+    return _get_mid()[:8].upper()
 
-        # Vérifie signature
-        payload_to_sign = f"{mid8}|{typ}|{exp8}|{nonce6}".encode()
-        expected_sig = hmac.new(
-            MASTER_SECRET, payload_to_sign, hashlib.sha256
-        ).hexdigest()[:16].upper()
 
-        if not hmac.compare_digest(sig, expected_sig):
-            return False, {}, "Signature invalide"
+# ══════════════════════════════════════════════════════════════════
+# Parsing / vérification licence v2
+# ══════════════════════════════════════════════════════════════════
+def _parse_license(key: str) -> Optional[dict]:
+    """Parse NOVA2-{mid8}-{type}-{exp8}-{nonce6}-{issued6}-{sig_b64}."""
+    key = key.strip()
+    if not key.startswith("NOVA2-"):
+        return None
 
-        # Vérifie machine
-        mid_hash = hashlib.sha256(mid.encode()).hexdigest().upper()
-        if mid_hash[:8] != mid8:
-            return False, {}, "Cette licence ne correspond pas à ce PC"
+    parts = key.split("-")
+    if len(parts) != 7:
+        return None
 
-        # Vérifie expiration
-        if typ == "T":
-            try:
-                exp_ts = int(exp8, 16)
-            except ValueError:
-                return False, {}, "Date d'expiration invalide"
-            if exp_ts < datetime.now().timestamp():
-                return False, {}, "Licence expirée"
-            return True, {
-                "lifetime": False,
-                "exp": exp_ts,
-            }, "Licence valide"
+    _, mid8, typ, exp8, nonce6, issued6, sig_b64 = parts
+    if len(mid8) != 8 or typ not in ("L", "T"):
+        return None
+    if typ == "L" and exp8 != "00000000":
+        return None
+    if typ == "T":
+        try:
+            datetime.strptime(exp8, "%Y%m%d")
+        except ValueError:
+            return None
+    if len(nonce6) != 6 or len(issued6) != 6:
+        return None
 
-        # À vie
-        return True, {"lifetime": True, "exp": 0}, "Licence à vie valide"
+    return {
+        "mid8": mid8, "type": typ, "exp8": exp8,
+        "nonce": nonce6, "issued": issued6,
+        "sig_b64": sig_b64,
+    }
 
+
+def _verify_license(key: str) -> tuple[bool, dict, str]:
+    """Vérifie une clé de licence v2.1."""
+    parsed = _parse_license(key)
+    if not parsed:
+        return False, {}, "Format de clé invalide"
+
+    # 1. Vérif MID8
+    if parsed["mid8"] != _get_mid8():
+        return False, {}, (
+            f"Clé liée à un autre poste "
+            f"(attendu {parsed['mid8']}, actuel {_get_mid8()})")
+
+    # 2. Reconstruit payload
+    issued_iso = _issued6_to_iso(parsed["issued"])
+    if not issued_iso:
+        return False, {}, "Date d'émission invalide"
+
+    payload = _build_payload(
+        parsed["mid8"], parsed["type"],
+        parsed["exp8"], parsed["nonce"], issued_iso)
+
+    # 3. Vérifie signature
+    try:
+        sig = _b64url_decode(parsed["sig_b64"])
+        if len(sig) != 64:
+            return False, {}, "Signature Ed25519 invalide (longueur)"
+        _get_public_key().verify(sig, payload)
+    except InvalidSignature:
+        return False, {}, "Signature cryptographique invalide"
     except Exception as e:
-        logger.exception("Erreur vérification licence")
-        return False, {}, f"Erreur : {e}"
+        logger.exception("Erreur vérification Ed25519")
+        return False, {}, f"Erreur de vérification : {e}"
+
+    # 4. Vérifie expiration (si temporaire)
+    lifetime = parsed["type"] == "L"
+    exp_ts = 0
+    if not lifetime:
+        try:
+            exp_dt = datetime.strptime(parsed["exp8"], "%Y%m%d")
+            exp_dt = exp_dt.replace(hour=23, minute=59, second=59)
+            exp_ts = exp_dt.timestamp()
+            if time.time() > exp_ts:
+                return False, {}, (
+                    f"Licence expirée le "
+                    f"{exp_dt.strftime('%d/%m/%Y')}")
+        except Exception:
+            return False, {}, "Date d'expiration invalide"
+
+    return True, {
+        "mid8": parsed["mid8"],
+        "type": parsed["type"],
+        "lifetime": lifetime,
+        "exp8": parsed["exp8"],
+        "exp_ts": exp_ts,
+        "nonce": parsed["nonce"],
+        "issued": parsed["issued"],
+    }, "Licence valide"
 
 
+def _issued6_to_iso(issued6: str) -> str:
+    """Convertit YYMMDD → ISO 8601."""
+    try:
+        dt = datetime.strptime(issued6, "%y%m%d")
+        return dt.strftime("%Y-%m-%dT00:00:00")
+    except Exception:
+        return ""
+
+
+# ══════════════════════════════════════════════════════════════════
+# Persistance licence (DB)
+# ══════════════════════════════════════════════════════════════════
 def _get_stored_license() -> str:
+    """Retourne la licence stockée en DB, ou ''."""
     try:
         return db.get_config("license_key", "") or ""
     except Exception:
@@ -116,288 +212,142 @@ def _get_stored_license() -> str:
 
 
 def save_license(key: str) -> bool:
-    """Enregistre une clé dans la DB (si elle est valide)."""
-    ok, _, _ = _verify_license(key)
+    """Enregistre une licence en DB (après vérification)."""
+    ok, payload, msg = _verify_license(key)
     if not ok:
+        logger.warning("save_license refusé : %s", msg)
         return False
     try:
-        with db.transaction():
-            db.set_config("license_key", key, type_="str")
+        db.set_config("license_key", key.strip().upper(), type_="str")
+        db.set_config("license_type",
+                      payload["type"], type_="str")
+        db.set_config("license_exp_ts",
+                      str(payload["exp_ts"]), type_="str")
+        db.set_config("license_issued",
+                      payload["issued"], type_="str")
         return True
     except Exception:
-        logger.exception("Erreur sauvegarde licence")
+        logger.exception("Erreur save_license")
         return False
 
 
 # ══════════════════════════════════════════════════════════════════
-# Fichier de trial caché (invisible pour l'utilisateur)
+# Essai gratuit (trial) — conservé de l'ancien code
 # ══════════════════════════════════════════════════════════════════
-def _get_trial_file_path() -> str:
-    """Retourne le chemin du fichier caché selon l'OS."""
-    if platform.system() == "Windows":
-        base = os.environ.get("APPDATA", os.path.expanduser("~"))
-    elif platform.system() == "Darwin":
-        base = os.path.expanduser("~/Library/Application Support")
-    else:
-        base = os.path.expanduser("~/.local/share")
+def _write_trial(stamp: dict) -> None:
+    """Écrit le stamp d'essai dans les 2 emplacements (signé)."""
+    payload = json.dumps(stamp, sort_keys=True).encode("utf-8")
+    mac = hmac.new(b"trial-v2", payload, hashlib.sha256).digest()
+    blob = b"V2" + payload + b"|" + mac
 
-    folder = os.path.join(base, "NovaPharma")
-    os.makedirs(folder, exist_ok=True)
-    return os.path.join(folder, ".sys_cache.dat")
-
-
-def _get_trial_backup_path() -> str:
-    """2ème emplacement caché (backup redondant) pour détecter falsification."""
-    if platform.system() == "Windows":
-        base = os.environ.get("LOCALAPPDATA", os.path.expanduser("~"))
-    elif platform.system() == "Darwin":
-        base = os.path.expanduser("~/Library/Preferences")
-    else:
-        base = os.path.expanduser("~/.config")
-
-    folder = os.path.join(base, "NovaPharma")
-    os.makedirs(folder, exist_ok=True)
-    return os.path.join(folder, ".cache_np")
+    for path in (TRIAL_FILE_MAIN, TRIAL_FILE_BAK):
+        try:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(blob)
+        except Exception:
+            logger.exception("Erreur écriture trial %s", path)
 
 
-def _sign(data: dict, mid: str) -> str:
-    key = MASTER_SECRET + mid.encode()
-    payload = json.dumps(data, sort_keys=True).encode()
-    return hmac.new(key, payload, hashlib.sha256).hexdigest()
+def _read_trial() -> Optional[dict]:
+    """Lit le stamp d'essai (essaie les 2 emplacements)."""
+    for path in (TRIAL_FILE_MAIN, TRIAL_FILE_BAK):
+        try:
+            if not path.exists():
+                continue
+            blob = path.read_bytes()
+            if not blob.startswith(b"V2"):
+                continue
+            parts = blob[2:].rsplit(b"|", 1)
+            if len(parts) != 2:
+                continue
+            payload, mac = parts
+            expected = hmac.new(
+                b"trial-v2", payload, hashlib.sha256).digest()
+            if not hmac.compare_digest(mac, expected):
+                logger.warning("Trial falsifié : %s", path)
+                continue
+            return json.loads(payload)
+        except Exception:
+            continue
+    return None
 
 
-def _read_trial_from(path: str) -> tuple[dict | None, bool]:
-    """
-    Lit un fichier trial.
-    Returns: (data, is_corrupted)
-      - (dict, False) : fichier valide
-      - (None, False) : fichier absent (premier lancement)
-      - (None, True)  : fichier présent MAIS falsifié (fraude !)
-    """
-    if not os.path.exists(path):
-        return None, False
+def _init_trial() -> dict:
+    """Initialise ou recharge le stamp d'essai."""
+    stamp = _read_trial()
+    if stamp:
+        # Anti-recul d'horloge
+        last = stamp.get("last_seen", 0)
+        now = time.time()
+        if now < last - CLOCK_TOLERANCE_SECONDS:
+            logger.error("Recul d'horloge détecté")
+            stamp["clock_tampered"] = True
+        stamp["last_seen"] = now
+        _write_trial(stamp)
+        return stamp
 
-    try:
-        with open(path, "r") as f:
-            content = json.load(f)
-    except Exception:
-        # Fichier existe mais illisible → falsification
-        return None, True
-
-    try:
-        data = content.get("data")
-        sig = content.get("signature")
-        if not data or not sig:
-            return None, True
-
-        mid = machine_id.get_machine_id()
-        expected = _sign(data, mid)
-        if not hmac.compare_digest(sig, expected):
-            return None, True
-
-        return data, False
-    except Exception:
-        return None, True
-
-
-def _write_trial_to(path: str, data: dict):
-    mid = machine_id.get_machine_id()
-    sig = _sign(data, mid)
-    try:
-        with open(path, "w") as f:
-            json.dump({"data": data, "signature": sig}, f, indent=2)
-    except Exception:
-        logger.exception(f"Erreur écriture trial : {path}")
-
-
-def _write_trial(data: dict):
-    """Écrit dans les 2 emplacements (principal + backup)."""
-    _write_trial_to(_get_trial_file_path(), data)
-    _write_trial_to(_get_trial_backup_path(), data)
-
-
-def _read_trial() -> tuple[dict | None, bool]:
-    """
-    Lit les 2 fichiers.
-    Returns: (data, is_corrupted)
-      - (dict, False) : OK
-      - (None, False) : premier lancement
-      - (None, True)  : FRAUDE détectée
-    """
-    main_data, main_corrupt = _read_trial_from(_get_trial_file_path())
-    backup_data, backup_corrupt = _read_trial_from(_get_trial_backup_path())
-
-    # Cas fraude : un fichier existe mais est falsifié
-    if main_corrupt or backup_corrupt:
-        logger.warning("⚠️ Fichier de licence falsifié détecté !")
-        return None, True
-
-    # Cas premier lancement : aucun des 2 n'existe
-    if main_data is None and backup_data is None:
-        return None, False
-
-    # Cas restauration : un des 2 manque (utilisateur a supprimé)
-    # → On restaure depuis celui qui existe
-    if main_data is None and backup_data is not None:
-        logger.warning("Fichier trial principal absent → restauration depuis backup")
-        _write_trial_to(_get_trial_file_path(), backup_data)
-        return backup_data, False
-
-    if backup_data is None and main_data is not None:
-        logger.warning("Fichier trial backup absent → restauration depuis principal")
-        _write_trial_to(_get_trial_backup_path(), main_data)
-        return main_data, False
-
-    # Les 2 existent : on prend le plus restrictif (install_date le plus ancien)
-    # pour éviter que l'utilisateur modifie un seul des 2
-    try:
-        install_main = datetime.fromisoformat(main_data["install_date"])
-        install_backup = datetime.fromisoformat(backup_data["install_date"])
-
-        # Prend la date la plus ancienne (= plus de jours écoulés = plus stricte)
-        if install_backup < install_main:
-            logger.warning(
-                "Dates incohérentes → utilisation du backup (plus restrictif)")
-            _write_trial_to(_get_trial_file_path(), backup_data)
-            return backup_data, False
-        else:
-            # Synchro le backup avec le principal
-            _write_trial_to(_get_trial_backup_path(), main_data)
-            return main_data, False
-    except Exception:
-        return None, True
+    # Première initialisation
+    stamp = {
+        "start": time.time(),
+        "last_seen": time.time(),
+        "install_id": hashlib.sha256(
+            os.urandom(32)).hexdigest()[:16],
+    }
+    _write_trial(stamp)
+    return stamp
 
 
 # ══════════════════════════════════════════════════════════════════
-# Point d'entrée principal (version renforcée)
-# ══════════════════════════════════════════════════════════════════
-def check_license_and_trial() -> tuple[bool, int, str]:
-    """
-    Vérifie l'état de la licence / essai.
-    Returns: (ok, days_left, message)
-      - ok=True, days_left>0 : essai en cours
-      - ok=True, days_left=-1 : licence valide (illimité)
-      - ok=False : blocage (trial expiré / horloge suspecte / FRAUDE)
-    """
-    # ═══ Garde-fou : en mode client, la licence est gérée par le serveur ═══
-    try:
-        from Client.api_singleton import is_client_mode
-        if is_client_mode():
-            return True, -1, "Licence gérée par le serveur"
-    except Exception:
-        pass  # Sur serveur, l'import échoue silencieusement → OK
-
-    mid = machine_id.get_machine_id()
-
-    # ═══ 1. Mode test (DEV uniquement) ═══
-    try:
-        if db.get_config("trial_force_expired", False):
-            return False, 0, (
-                "MODE TEST : L'essai a été forcé comme expiré.\n\n"
-                "Désactivez 'trial_force_expired' dans la DB "
-                "pour revenir à la normale."
-            )
-        if db.get_config("trial_force_corrupted", False):
-            return False, 0, (
-                "⚠️ Le fichier de licence a été falsifié ou est corrompu.\n\n"
-                "Contactez TEAM NOVA pour régulariser votre situation."
-            )
-    except Exception:
-        pass
-
-    # ═══ 2. Licence enregistrée ? ═══
-    stored = _get_stored_license()
-    if stored:
-        ok, payload, msg = _verify_license(stored)
-        if ok:
-            return True, -1, "Licence valide"
-
-    # ═══ 3. Vérification du trial ═══
-    trial, is_corrupted = _read_trial()
-
-    # ═══ 4. FRAUDE DÉTECTÉE ═══
-    if is_corrupted:
-        logger.warning("⚠️ Falsification du fichier trial détectée")
-        return False, 0, (
-            "⚠️ Le fichier de licence a été modifié ou est corrompu.\n\n"
-            "Si vous pensez qu'il s'agit d'une erreur, "
-            "contactez TEAM NOVA pour régulariser votre situation.\n\n"
-            "Email : teamnovaoff@gmail.com\n"
-            "WhatsApp : +243 808 775 085"
-        )
-
-    now = datetime.now()
-
-    # ═══ 5. Premier lancement ═══
-    if trial is None:
-        _write_trial({
-            "install_date": now.isoformat(),
-            "last_run": now.isoformat(),
-            "machine_id": mid[:32],
-        })
-        logger.info(f"Essai démarré : {TRIAL_DAYS} jours")
-        return True, TRIAL_DAYS, f"Essai de {TRIAL_DAYS} jours démarré"
-
-    # ═══ 6. Protection anti-recul d'horloge ═══
-    try:
-        last_run = datetime.fromisoformat(trial["last_run"])
-    except Exception:
-        return False, 0, (
-            "Le fichier de licence est corrompu.\n\n"
-            "Contactez TEAM NOVA."
-        )
-
-    if now < last_run - timedelta(hours=CLOCK_TOLERANCE_HOURS):
-        return False, 0, (
-            "⚠ L'heure de votre système a été reculée.\n\n"
-            "Veuillez corriger la date et l'heure de votre PC "
-            "dans les paramètres système, puis relancez Nova Pharma.\n\n"
-            "Si le problème persiste, contactez TEAM NOVA."
-        )
-
-    # Met à jour last_run
-    trial["last_run"] = now.isoformat()
-    _write_trial(trial)
-
-    # ═══ 7. Calcul des jours restants ═══
-    try:
-        install = datetime.fromisoformat(trial["install_date"])
-    except Exception:
-        return False, 0, "Fichier de licence corrompu. Contactez TEAM NOVA."
-
-    elapsed = (now - install).days
-    remaining = TRIAL_DAYS - elapsed
-
-    if remaining > 0:
-        return True, remaining, f"Essai : {remaining} jour(s) restant(s)"
-
-    return False, 0, (
-        f"Votre période d'essai de {TRIAL_DAYS} jours est terminée.\n\n"
-        "Veuillez saisir votre clé de licence pour continuer à "
-        "utiliser Nova Pharma."
-    )
-
-
-# ══════════════════════════════════════════════════════════════════
-# Helper pour l'UI : nombre de jours restants
+# API publique (compatible avec l'ancien code)
 # ══════════════════════════════════════════════════════════════════
 def get_trial_days_left() -> int:
     """
-    Retourne le nombre de jours restants d'essai.
-    -1 si licence valide (illimité)
-    0 si essai expiré
-    -2 si erreur (horloge / fichier corrompu)
+    Retourne :
+      -1 : licence valide (pas d'essai en cours)
+      -2 : erreur (horloge falsifiée)
+       0 : essai expiré
+      >0 : jours restants d'essai
     """
-    try:
-        ok, days, _ = check_license_and_trial()
+    # 1. Licence valide ?
+    stored = _get_stored_license()
+    if stored:
+        ok, _, _ = _verify_license(stored)
         if ok:
-            return days
-        # Vérifier si c'est une licence valide malgré tout
-        stored = _get_stored_license()
-        if stored:
-            v_ok, _, _ = _verify_license(stored)
-            if v_ok:
-                return -1
-        return 0
-    except Exception:
+            return -1
+
+    # 2. Essai en cours ?
+    stamp = _init_trial()
+
+    if stamp.get("clock_tampered"):
         return -2
+
+    start = stamp.get("start", 0)
+    if not start:
+        return 0
+
+    elapsed = time.time() - start
+    remaining = TRIAL_DAYS * 86400 - elapsed
+    if remaining <= 0:
+        return 0
+    return int(remaining // 86400) + 1
+
+
+def is_license_valid() -> bool:
+    """Raccourci pour savoir si une licence valide est active."""
+    stored = _get_stored_license()
+    if not stored:
+        return False
+    ok, _, _ = _verify_license(stored)
+    return ok
+
+
+def reset_trial():
+    """⚠️ Réservé aux tests — supprime le stamp d'essai."""
+    for path in (TRIAL_FILE_MAIN, TRIAL_FILE_BAK):
+        try:
+            if path.exists():
+                path.unlink()
+        except Exception:
+            pass
+
+

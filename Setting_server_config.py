@@ -3,7 +3,9 @@
 """
 Setting_server_config.py — Configuration réseau (serveur / client).
 ====================================================================
-Design Nova Pharma : cartes, icônes SVG, zéro emoji, zéro bordure parasite.
+Design Nova Pharma : cartes aérées, icônes SVG, zéro emoji.
+
+v2.1 — Refonte UI : padding généreux, scroll, radios en cartes.
 """
 
 import logging
@@ -24,7 +26,7 @@ class ServerConfigDialog(QtWidgets.QDialog):
         super().__init__(parent)
         self.setObjectName("ServerConfigDialog")
         self.setWindowTitle("Configuration réseau — Nova Pharma")
-        self.setMinimumSize(700, 680)
+        self.setMinimumSize(760, 720)
         self.setModal(True)
 
         self._build_ui()
@@ -38,7 +40,7 @@ class ServerConfigDialog(QtWidgets.QDialog):
                 background: #f0f4f8;
             }
 
-            /* ═══ RESET global : annule l'héritage du MainWindow ═══ */
+            /* ═══ RESET global ═══ */
             QDialog#ServerConfigDialog QLabel {
                 background: transparent;
                 border: none;
@@ -47,6 +49,33 @@ class ServerConfigDialog(QtWidgets.QDialog):
             }
             QDialog#ServerConfigDialog QFrame {
                 border: none;
+                background: transparent;
+            }
+
+            /* ═══ SCROLL AREA ═══ */
+            QDialog#ServerConfigDialog QScrollArea {
+                background: transparent;
+                border: none;
+            }
+            QDialog#ServerConfigDialog QScrollBar:vertical {
+                background: transparent;
+                width: 10px;
+                margin: 4px 2px 4px 0;
+            }
+            QDialog#ServerConfigDialog QScrollBar::handle:vertical {
+                background: #cbd5e1;
+                border-radius: 5px;
+                min-height: 32px;
+            }
+            QDialog#ServerConfigDialog QScrollBar::handle:vertical:hover {
+                background: #94a3b8;
+            }
+            QDialog#ServerConfigDialog QScrollBar::add-line:vertical,
+            QDialog#ServerConfigDialog QScrollBar::sub-line:vertical {
+                height: 0;
+            }
+            QDialog#ServerConfigDialog QScrollBar::add-page:vertical,
+            QDialog#ServerConfigDialog QScrollBar::sub-page:vertical {
                 background: transparent;
             }
 
@@ -67,13 +96,13 @@ class ServerConfigDialog(QtWidgets.QDialog):
                 border-radius: 14px;
             }
             QDialog#ServerConfigDialog QLabel#header_title {
-                font-size: 20px;
+                font-size: 21px;
                 font-weight: 800;
                 color: #ffffff;
             }
             QDialog#ServerConfigDialog QLabel#header_sub {
-                font-size: 11px;
-                color: rgba(255,255,255,0.85);
+                font-size: 12px;
+                color: rgba(255,255,255,0.88);
             }
 
             /* ═══ CORPS ═══ */
@@ -85,29 +114,30 @@ class ServerConfigDialog(QtWidgets.QDialog):
             QDialog#ServerConfigDialog QFrame#card {
                 background: #ffffff;
                 border: 1px solid #e6ebf2;
-                border-radius: 16px;
+                border-radius: 18px;
             }
 
             /* ═══ TITRES CARTES ═══ */
             QDialog#ServerConfigDialog QLabel#card_title {
                 color: #0f172a;
-                font-size: 13px;
+                font-size: 15px;
                 font-weight: 800;
-                letter-spacing: 0.3px;
+                letter-spacing: 0.2px;
                 border: none;
             }
             QDialog#ServerConfigDialog QLabel#card_sub {
                 color: #64748b;
-                font-size: 11px;
+                font-size: 12px;
+                line-height: 1.5;
                 border: none;
             }
 
             /* ═══ LABELS DE CHAMPS ═══ */
             QDialog#ServerConfigDialog QLabel#field_label {
                 color: #64748b;
-                font-size: 10px;
+                font-size: 11px;
                 font-weight: 800;
-                letter-spacing: 1px;
+                letter-spacing: 1.1px;
                 border: none;
                 background: transparent;
             }
@@ -116,17 +146,17 @@ class ServerConfigDialog(QtWidgets.QDialog):
             QDialog#ServerConfigDialog QLabel#icon_pill_blue {
                 background: #eff6ff;
                 border: 1px solid #dbeafe;
-                border-radius: 10px;
+                border-radius: 11px;
             }
             QDialog#ServerConfigDialog QLabel#icon_pill_orange {
                 background: #fef3c7;
                 border: 1px solid #fde68a;
-                border-radius: 10px;
+                border-radius: 11px;
             }
             QDialog#ServerConfigDialog QLabel#icon_pill_green {
                 background: #dcfce7;
                 border: 1px solid #bbf7d0;
-                border-radius: 10px;
+                border-radius: 11px;
             }
 
             /* ═══ CHAMPS ═══ */
@@ -136,10 +166,10 @@ class ServerConfigDialog(QtWidgets.QDialog):
                 background: #ffffff;
                 border: 1.5px solid #dbe3ec;
                 border-radius: 10px;
-                padding: 8px 12px;
-                font-size: 12px;
+                padding: 12px 16px;
+                font-size: 13px;
                 color: #0f172a;
-                min-height: 22px;
+                min-height: 44px;
             }
             QDialog#ServerConfigDialog QLineEdit:hover,
             QDialog#ServerConfigDialog QSpinBox:hover,
@@ -150,29 +180,40 @@ class ServerConfigDialog(QtWidgets.QDialog):
             QDialog#ServerConfigDialog QSpinBox:focus,
             QDialog#ServerConfigDialog QTimeEdit:focus {
                 border-color: #2563eb;
+                background: #ffffff;
             }
 
-            /* ═══ RADIOS ═══ */
-            QDialog#ServerConfigDialog QRadioButton {
+            /* ═══ RADIOS (cartes cliquables) ═══ */
+            QDialog#ServerConfigDialog QRadioButton#mode_card {
                 color: #334155;
-                font-size: 12px;
+                font-size: 13px;
                 font-weight: 600;
-                padding: 10px 4px;
-                spacing: 10px;
-                background: transparent;
-                border: none;
+                padding: 18px 20px;
+                spacing: 14px;
+                background: #ffffff;
+                border: 2px solid #e6ebf2;
+                border-radius: 14px;
             }
-            QDialog#ServerConfigDialog QRadioButton::indicator {
-                width: 18px;
-                height: 18px;
-                border-radius: 9px;
+            QDialog#ServerConfigDialog QRadioButton#mode_card:hover {
+                background: #f8fafc;
+                border-color: #c3cedd;
+            }
+            QDialog#ServerConfigDialog QRadioButton#mode_card:checked {
+                background: #eff6ff;
+                border-color: #2563eb;
+                color: #0f172a;
+            }
+            QDialog#ServerConfigDialog QRadioButton#mode_card::indicator {
+                width: 20px;
+                height: 20px;
+                border-radius: 10px;
                 border: 2px solid #cbd5e1;
                 background: #ffffff;
             }
-            QDialog#ServerConfigDialog QRadioButton::indicator:hover {
+            QDialog#ServerConfigDialog QRadioButton#mode_card::indicator:hover {
                 border-color: #2563eb;
             }
-            QDialog#ServerConfigDialog QRadioButton::indicator:checked {
+            QDialog#ServerConfigDialog QRadioButton#mode_card::indicator:checked {
                 background: #2563eb;
                 border-color: #2563eb;
             }
@@ -180,18 +221,18 @@ class ServerConfigDialog(QtWidgets.QDialog):
             /* ═══ CHECKBOX ═══ */
             QDialog#ServerConfigDialog QCheckBox {
                 color: #334155;
-                font-size: 12px;
+                font-size: 13px;
                 font-weight: 600;
-                padding: 6px 0;
-                spacing: 10px;
+                padding: 8px 0;
+                spacing: 12px;
                 background: transparent;
                 border: none;
             }
             QDialog#ServerConfigDialog QCheckBox::indicator {
-                width: 18px;
-                height: 18px;
+                width: 20px;
+                height: 20px;
                 border: 2px solid #cbd5e1;
-                border-radius: 5px;
+                border-radius: 6px;
                 background: #ffffff;
             }
             QDialog#ServerConfigDialog QCheckBox::indicator:hover {
@@ -208,15 +249,18 @@ class ServerConfigDialog(QtWidgets.QDialog):
                 color: #475569;
                 border: 1.5px solid #dbe3ec;
                 border-radius: 10px;
-                padding: 8px 18px;
+                padding: 10px 22px;
                 font-weight: 700;
-                font-size: 12px;
-                min-height: 38px;
+                font-size: 13px;
+                min-height: 48px;
             }
             QDialog#ServerConfigDialog QPushButton#btn_test:hover {
                 background: #f8fafc;
                 border-color: #c3cedd;
                 color: #0f172a;
+            }
+            QDialog#ServerConfigDialog QPushButton#btn_test:pressed {
+                background: #eff6ff;
             }
 
             /* ═══ FOOTER ═══ */
@@ -229,12 +273,12 @@ class ServerConfigDialog(QtWidgets.QDialog):
                 background: #ffffff;
                 color: #475569;
                 border: 1.5px solid #dbe3ec;
-                border-radius: 10px;
-                padding: 10px 24px;
+                border-radius: 11px;
+                padding: 12px 28px;
                 font-weight: 700;
-                font-size: 12px;
-                min-height: 42px;
-                min-width: 120px;
+                font-size: 13px;
+                min-height: 50px;
+                min-width: 130px;
             }
             QDialog#ServerConfigDialog QPushButton#btn_cancel:hover {
                 background: #f8fafc;
@@ -245,15 +289,16 @@ class ServerConfigDialog(QtWidgets.QDialog):
                     stop:0 #3b82f6, stop:1 #2563eb);
                 color: #ffffff;
                 border: 1px solid #1d4ed8;
-                border-radius: 10px;
-                padding: 10px 24px;
+                border-radius: 11px;
+                padding: 12px 32px;
                 font-weight: 800;
-                font-size: 12px;
-                min-height: 42px;
-                min-width: 150px;
+                font-size: 13px;
+                min-height: 50px;
+                min-width: 170px;
             }
             QDialog#ServerConfigDialog QPushButton#btn_save:hover {
-                background: #1d4ed8;
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #2563eb, stop:1 #1d4ed8);
             }
             QDialog#ServerConfigDialog QPushButton#btn_save:pressed {
                 background: #1e40af;
@@ -269,27 +314,25 @@ class ServerConfigDialog(QtWidgets.QDialog):
         # ═══════════════════════════════════════════════════════════
         header = QtWidgets.QFrame()
         header.setObjectName("header")
-        header.setMinimumHeight(100)
-        header.setMaximumHeight(100)
+        header.setMinimumHeight(110)
+        header.setMaximumHeight(110)
 
         h = QtWidgets.QHBoxLayout(header)
-        h.setContentsMargins(24, 16, 24, 16)
-        h.setSpacing(16)
+        h.setContentsMargins(28, 20, 28, 20)
+        h.setSpacing(18)
 
-        # Icône serveur
         ico = QtWidgets.QLabel()
         ico.setObjectName("header_ico")
-        ico.setFixedSize(56, 56)
+        ico.setFixedSize(60, 60)
         ico.setAlignment(Qt.AlignCenter)
         pix = QtGui.QPixmap(":/Icon/Icons/server_white.svg")
         if not pix.isNull():
             ico.setPixmap(pix.scaled(
-                28, 28, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+                30, 30, Qt.KeepAspectRatio, Qt.SmoothTransformation))
         h.addWidget(ico)
 
-        # Titres
         titles = QtWidgets.QVBoxLayout()
-        titles.setSpacing(2)
+        titles.setSpacing(3)
 
         t1 = QtWidgets.QLabel("Configuration réseau")
         t1.setObjectName("header_title")
@@ -306,25 +349,54 @@ class ServerConfigDialog(QtWidgets.QDialog):
         root.addWidget(header)
 
         # ═══════════════════════════════════════════════════════════
-        # CORPS
+        # CORPS (avec scroll)
         # ═══════════════════════════════════════════════════════════
         body = QtWidgets.QWidget()
         body.setObjectName("body")
-        v = QtWidgets.QVBoxLayout(body)
-        v.setContentsMargins(24, 20, 24, 20)
-        v.setSpacing(14)
 
-        # ─── CARTE 1 : Rôle du poste ───
-        v.addWidget(self._make_role_card())
+        # ─── Scroll ───
+        scroll = QtWidgets.QScrollArea(body)
+        scroll.setWidgetResizable(True)
+        scroll.setFrameShape(QtWidgets.QFrame.NoFrame)
+        scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
-        # ─── CARTE 2 : Connexion serveur (masquée si serveur local) ───
+        inner = QtWidgets.QWidget()
+        inner.setStyleSheet("background: transparent;")
+        v_inner = QtWidgets.QVBoxLayout(inner)
+        v_inner.setContentsMargins(28, 24, 28, 24)
+        v_inner.setSpacing(18)
+
+        # ─── Wrapper centré max 760px ───
+        wrapper = QtWidgets.QHBoxLayout()
+        wrapper.setContentsMargins(0, 0, 0, 0)
+        wrapper.addStretch()
+
+        container = QtWidgets.QWidget()
+        container.setMaximumWidth(760)
+        container.setStyleSheet("background: transparent;")
+        v_container = QtWidgets.QVBoxLayout(container)
+        v_container.setContentsMargins(0, 0, 0, 0)
+        v_container.setSpacing(18)
+
+        # ─── Cartes ───
+        v_container.addWidget(self._make_role_card())
+
         self.card2 = self._make_connexion_card()
-        v.addWidget(self.card2)
+        v_container.addWidget(self.card2)
 
-        # ─── CARTE 3 : Plage horaire ───
-        v.addWidget(self._make_horaires_card())
+        v_container.addWidget(self._make_horaires_card())
+        v_container.addStretch()
 
-        v.addStretch()
+        wrapper.addWidget(container)
+        wrapper.addStretch()
+
+        v_inner.addLayout(wrapper)
+        scroll.setWidget(inner)
+
+        v_body = QtWidgets.QVBoxLayout(body)
+        v_body.setContentsMargins(0, 0, 0, 0)
+        v_body.setSpacing(0)
+        v_body.addWidget(scroll)
 
         root.addWidget(body, 1)
 
@@ -333,10 +405,10 @@ class ServerConfigDialog(QtWidgets.QDialog):
         # ═══════════════════════════════════════════════════════════
         footer = QtWidgets.QFrame()
         footer.setObjectName("footer")
-        footer.setMinimumHeight(70)
+        footer.setMinimumHeight(82)
         hf = QtWidgets.QHBoxLayout(footer)
-        hf.setContentsMargins(24, 14, 24, 14)
-        hf.setSpacing(12)
+        hf.setContentsMargins(28, 18, 28, 18)
+        hf.setSpacing(14)
         hf.addStretch()
 
         btn_cancel = QtWidgets.QPushButton("Annuler")
@@ -351,53 +423,67 @@ class ServerConfigDialog(QtWidgets.QDialog):
         icon_save = QtGui.QIcon(":/Icon/Icons/save_white.svg")
         if not icon_save.isNull():
             btn_save.setIcon(icon_save)
-            btn_save.setIconSize(QtCore.QSize(16, 16))
+            btn_save.setIconSize(QtCore.QSize(18, 18))
         btn_save.clicked.connect(self._on_save)
         hf.addWidget(btn_save)
 
         root.addWidget(footer)
 
-        # Toggle visibilité carte 2
         self.radio_client.toggled.connect(self._on_mode_changed)
 
     # ══════════════════════════════════════════════════════════════
-    # CARTE 1 — Rôle du poste
+    # CARTE 1 — Rôle du poste (radios en cartes)
     # ══════════════════════════════════════════════════════════════
     def _make_role_card(self) -> QtWidgets.QFrame:
         card = QtWidgets.QFrame()
         card.setObjectName("card")
         v = QtWidgets.QVBoxLayout(card)
-        v.setContentsMargins(20, 16, 20, 16)
-        v.setSpacing(10)
+        v.setContentsMargins(28, 24, 28, 24)
+        v.setSpacing(16)
 
-        # Header
+        # ─── Header carte ───
         h = QtWidgets.QHBoxLayout()
-        h.setSpacing(10)
+        h.setSpacing(12)
 
         ico = QtWidgets.QLabel()
         ico.setObjectName("icon_pill_blue")
-        ico.setFixedSize(32, 32)
+        ico.setFixedSize(38, 38)
         ico.setAlignment(Qt.AlignCenter)
         pix = QtGui.QPixmap(":/Icon/Icons/server.svg")
         if not pix.isNull():
             ico.setPixmap(pix.scaled(
-                18, 18, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+                20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation))
         h.addWidget(ico)
+
+        v_head = QtWidgets.QVBoxLayout()
+        v_head.setSpacing(2)
 
         title = QtWidgets.QLabel("Rôle de ce poste")
         title.setObjectName("card_title")
-        h.addWidget(title)
-        h.addStretch()
+        v_head.addWidget(title)
 
+        sub = QtWidgets.QLabel(
+            "Choisissez comment ce poste participe au réseau.")
+        sub.setObjectName("card_sub")
+        sub.setWordWrap(True)
+        v_head.addWidget(sub)
+
+        h.addLayout(v_head, 1)
         v.addLayout(h)
 
-        # Radios
+        # ─── Radio 1 : Serveur (carte cliquable) ───
         self.radio_serveur = QtWidgets.QRadioButton(
             "Serveur principal  —  héberge la base et l'API pour les "
             "autres postes")
+        self.radio_serveur.setObjectName("mode_card")
+        self.radio_serveur.setCursor(Qt.PointingHandCursor)
+        v.addWidget(self.radio_serveur)
+
+        # ─── Radio 2 : Client (carte cliquable) ───
         self.radio_client = QtWidgets.QRadioButton(
             "Client  —  se connecte à un serveur distant en réseau")
-        v.addWidget(self.radio_serveur)
+        self.radio_client.setObjectName("mode_card")
+        self.radio_client.setCursor(Qt.PointingHandCursor)
         v.addWidget(self.radio_client)
 
         return card
@@ -409,33 +495,42 @@ class ServerConfigDialog(QtWidgets.QDialog):
         card = QtWidgets.QFrame()
         card.setObjectName("card")
         v = QtWidgets.QVBoxLayout(card)
-        v.setContentsMargins(20, 16, 20, 16)
-        v.setSpacing(12)
+        v.setContentsMargins(28, 24, 28, 24)
+        v.setSpacing(16)
 
-        # Header
+        # ─── Header ───
         h = QtWidgets.QHBoxLayout()
-        h.setSpacing(10)
+        h.setSpacing(12)
 
         ico = QtWidgets.QLabel()
         ico.setObjectName("icon_pill_orange")
-        ico.setFixedSize(32, 32)
+        ico.setFixedSize(38, 38)
         ico.setAlignment(Qt.AlignCenter)
         pix = QtGui.QPixmap(":/Icon/Icons/globe.svg")
         if not pix.isNull():
             ico.setPixmap(pix.scaled(
-                18, 18, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+                20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation))
         h.addWidget(ico)
+
+        v_head = QtWidgets.QVBoxLayout()
+        v_head.setSpacing(2)
 
         title = QtWidgets.QLabel("Connexion au serveur distant")
         title.setObjectName("card_title")
-        h.addWidget(title)
-        h.addStretch()
+        v_head.addWidget(title)
 
+        sub = QtWidgets.QLabel(
+            "Adresse IP et port du serveur principal à joindre.")
+        sub.setObjectName("card_sub")
+        sub.setWordWrap(True)
+        v_head.addWidget(sub)
+
+        h.addLayout(v_head, 1)
         v.addLayout(h)
 
-        # Champs
+        # ─── Form ───
         form = QtWidgets.QFormLayout()
-        form.setSpacing(10)
+        form.setSpacing(16)
         form.setLabelAlignment(Qt.AlignLeft | Qt.AlignVCenter)
         form.setFieldGrowthPolicy(
             QtWidgets.QFormLayout.AllNonFixedFieldsGrow)
@@ -455,9 +550,9 @@ class ServerConfigDialog(QtWidgets.QDialog):
 
         v.addLayout(form)
 
-        # Bouton tester + statut
+        # ─── Test + statut ───
         h_test = QtWidgets.QHBoxLayout()
-        h_test.setSpacing(10)
+        h_test.setSpacing(14)
 
         self.btn_test = QtWidgets.QPushButton("  Tester la connexion")
         self.btn_test.setObjectName("btn_test")
@@ -465,7 +560,7 @@ class ServerConfigDialog(QtWidgets.QDialog):
         icon_wifi = QtGui.QIcon(":/Icon/Icons/wifi.svg")
         if not icon_wifi.isNull():
             self.btn_test.setIcon(icon_wifi)
-            self.btn_test.setIconSize(QtCore.QSize(16, 16))
+            self.btn_test.setIconSize(QtCore.QSize(18, 18))
         self.btn_test.clicked.connect(self._on_test)
         h_test.addWidget(self.btn_test)
 
@@ -473,8 +568,8 @@ class ServerConfigDialog(QtWidgets.QDialog):
 
         self.lbl_test = QtWidgets.QLabel("")
         self.lbl_test.setStyleSheet(
-            "font-size: 11px; font-weight: 700; background: transparent; "
-            "border: none;")
+            "font-size: 12px; font-weight: 700; "
+            "background: transparent; border: none;")
         h_test.addWidget(self.lbl_test)
 
         v.addLayout(h_test)
@@ -488,43 +583,49 @@ class ServerConfigDialog(QtWidgets.QDialog):
         card = QtWidgets.QFrame()
         card.setObjectName("card")
         v = QtWidgets.QVBoxLayout(card)
-        v.setContentsMargins(20, 16, 20, 16)
-        v.setSpacing(10)
+        v.setContentsMargins(28, 24, 28, 24)
+        v.setSpacing(16)
 
-        # Header
+        # ─── Header ───
         h = QtWidgets.QHBoxLayout()
-        h.setSpacing(10)
+        h.setSpacing(12)
 
         ico = QtWidgets.QLabel()
         ico.setObjectName("icon_pill_green")
-        ico.setFixedSize(32, 32)
+        ico.setFixedSize(38, 38)
         ico.setAlignment(Qt.AlignCenter)
         pix = QtGui.QPixmap(":/Icon/Icons/clock.svg")
         if not pix.isNull():
             ico.setPixmap(pix.scaled(
-                18, 18, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+                20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation))
         h.addWidget(ico)
+
+        v_head = QtWidgets.QVBoxLayout()
+        v_head.setSpacing(2)
 
         title = QtWidgets.QLabel("Plage horaire d'ouverture")
         title.setObjectName("card_title")
-        h.addWidget(title)
-        h.addStretch()
-
-        v.addLayout(h)
+        v_head.addWidget(title)
 
         sub = QtWidgets.QLabel(
             "En dehors de ces horaires, le serveur refuse toute "
             "requête (sauf le ping de santé).")
         sub.setObjectName("card_sub")
         sub.setWordWrap(True)
-        v.addWidget(sub)
+        v_head.addWidget(sub)
 
+        h.addLayout(v_head, 1)
+        v.addLayout(h)
+
+        # ─── Checkbox ───
         self.chk_horaires = QtWidgets.QCheckBox(
             "Activer la plage horaire")
+        self.chk_horaires.setCursor(Qt.PointingHandCursor)
         v.addWidget(self.chk_horaires)
 
+        # ─── Form horaires ───
         form = QtWidgets.QFormLayout()
-        form.setSpacing(10)
+        form.setSpacing(16)
         form.setFieldGrowthPolicy(
             QtWidgets.QFormLayout.AllNonFixedFieldsGrow)
 
@@ -546,7 +647,7 @@ class ServerConfigDialog(QtWidgets.QDialog):
 
     # ══════════════════════════════════════════════════════════════
     def _on_mode_changed(self):
-        """Affiche TOUJOURS la carte de connexion (IP/Port modifiables à tout moment)."""
+        """Carte connexion toujours visible (IP/Port modifiables)."""
         self.card2.setVisible(True)
 
     # ══════════════════════════════════════════════════════════════
@@ -606,24 +707,21 @@ class ServerConfigDialog(QtWidgets.QDialog):
     def _set_status(self, msg, color):
         self.lbl_test.setText(f"●  {msg}")
         self.lbl_test.setStyleSheet(
-            f"color: {color}; font-size: 11px; font-weight: 700; "
+            f"color: {color}; font-size: 12px; font-weight: 700; "
             f"background: transparent; border: none;")
 
     # ══════════════════════════════════════════════════════════════
     def _on_save(self):
         """Sauvegarde avec double confirmation."""
         try:
-            # ─── Valeurs à enregistrer ───
             new_mode = "client" if self.radio_client.isChecked() else "serveur"
             new_host = self.edit_host.text().strip()
             new_port = self.edit_port.value()
 
-            # ─── Valeurs actuelles ───
             old_mode = db.get_config("server_mode", "autonome") or "autonome"
             old_host = db.get_config("server_host", "127.0.0.1") or "127.0.0.1"
             old_port = int(db.get_config("server_port", 5001) or 5001)
 
-            # ─── Aucun changement ───
             if (new_mode == old_mode
                     and new_host == old_host
                     and new_port == old_port):
@@ -632,16 +730,13 @@ class ServerConfigDialog(QtWidgets.QDialog):
                     "La configuration n'a pas été modifiée.")
                 return
 
-            # ─── Validation ───
             if new_mode == "client" and not new_host:
                 QtWidgets.QMessageBox.warning(
                     self, "IP manquante",
                     "L'adresse IP est obligatoire en mode client.")
                 return
 
-            # ═══════════════════════════════════════════════════════════
-            # CONFIRMATION 1 — Avertissement
-            # ═══════════════════════════════════════════════════════════
+            # ─── Confirmation 1 ───
             msg = (
                 "<b>⚠️  Modifier la configuration réseau ?</b><br><br>"
                 f"<b>Mode</b> : {old_mode} → <b>{new_mode}</b><br>"
@@ -654,16 +749,13 @@ class ServerConfigDialog(QtWidgets.QDialog):
                 "Continuer ?"
             )
             rep = QtWidgets.QMessageBox.warning(
-                self, "Confirmation",
-                msg,
+                self, "Confirmation", msg,
                 QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
                 QtWidgets.QMessageBox.No)
             if rep != QtWidgets.QMessageBox.Yes:
                 return
 
-            # ═══════════════════════════════════════════════════════════
-            # CONFIRMATION 2 — Saisie manuelle
-            # ═══════════════════════════════════════════════════════════
+            # ─── Confirmation 2 ───
             text, ok = QtWidgets.QInputDialog.getText(
                 self, "Confirmation finale",
                 "Tapez CONFIRMER pour valider le changement :",
@@ -673,9 +765,7 @@ class ServerConfigDialog(QtWidgets.QDialog):
                     self, "Annulé", "Modification annulée.")
                 return
 
-            # ═══════════════════════════════════════════════════════════
-            # SAUVEGARDE
-            # ═══════════════════════════════════════════════════════════
+            # ─── Sauvegarde ───
             with db.transaction():
                 db.set_config("server_mode", new_mode, type_="str")
                 db.set_config("server_host", new_host, type_="str")
@@ -689,7 +779,6 @@ class ServerConfigDialog(QtWidgets.QDialog):
                               self.edit_h_fin.time().toString("HH:mm"),
                               type_="str")
 
-            # ─── Audit ───
             try:
                 from Database import audit
                 audit.log(
@@ -711,9 +800,6 @@ class ServerConfigDialog(QtWidgets.QDialog):
                 "Config réseau : %s → %s | %s:%d → %s:%d",
                 old_mode, new_mode, old_host, old_port, new_host, new_port)
 
-            # ═══════════════════════════════════════════════════════════
-            # PROPOSE REDÉMARRAGE
-            # ═══════════════════════════════════════════════════════════
             rep2 = QtWidgets.QMessageBox.question(
                 self, "Configuration enregistrée ✅",
                 "<b>Configuration sauvegardée.</b><br><br>"
@@ -745,6 +831,8 @@ class ServerConfigDialog(QtWidgets.QDialog):
             QtWidgets.QMessageBox.critical(
                 self, "Redémarrage manuel requis",
                 "Fermez et relancez l'application manuellement.")
+
+
 if __name__ == "__main__":
     import sys
     logging.basicConfig(level=logging.INFO)

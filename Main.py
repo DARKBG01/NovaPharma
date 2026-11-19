@@ -128,14 +128,6 @@ def main() -> int:
     setup_logging()
     logger = logging.getLogger("main")
 
-    # ═══════════════════════════════════════════════════════════
-    # HighDPI : DOIT être fait AVANT QApplication
-    # ═══════════════════════════════════════════════════════════
-    QtCore.QCoreApplication.setAttribute(
-        QtCore.Qt.AA_EnableHighDpiScaling, True)
-    QtCore.QCoreApplication.setAttribute(
-        QtCore.Qt.AA_UseHighDpiPixmaps, True)
-
     # Politique d'arrondi : RoundPreferFloor évite les décalages de 1px
     try:
         QtGui.QGuiApplication.setHighDpiScaleFactorRoundingPolicy(

@@ -1308,74 +1308,74 @@ class Setting_main_window(QtWidgets.QMainWindow, Ui_MainWindow):
         except Exception:
             logger.exception("Erreur installation indicateur serveur")
 
-        def _check_unread_notifs(self):
-            """Vérifie s'il y a des notifications non lues et met à jour la cloche."""
-            try:
-                if not hasattr(self, "btn_notif"):
-                    return
+    def _check_unread_notifs(self):
+        """Vérifie s'il y a des notifications non lues et met à jour la cloche."""
+        try:
+            if not hasattr(self, "btn_notif"):
+                return
 
-                if is_client_mode():
-                    unread = 0
-                else:
-                    row = db.query_one("SELECT COUNT(*) AS n FROM Notification WHERE lu = 0")
-                    unread = int(row["n"] or 0) if row else 0
+            if is_client_mode():
+                unread = 0
+            else:
+                row = db.query_one("SELECT COUNT(*) AS n FROM Notification WHERE lu = 0")
+                unread = int(row["n"] or 0) if row else 0
 
-                if unread > 0:
-                    # Icône + badge texte si non-lu
-                    self.btn_notif.setText(f" {unread} ")
-                    self.btn_notif.setIcon(QtGui.QIcon(":/Icon/Icons/bell_white.svg"))
-                    self.btn_notif.setStyleSheet("""
-                        QPushButton {
-                            background: #dc2626;
-                            color: #ffffff;
-                            border: 1px solid #b91c1c;
-                            border-radius: 10px;
-                            font-size: 11px;
-                            font-weight: 800;
-                        }
-                    """)
-                else:
-                    # Icône seule si tout est lu
-                    self.btn_notif.setText("")
-                    self.btn_notif.setIcon(QtGui.QIcon(":/Icon/Icons/bell.svg"))
-                    self.btn_notif.setStyleSheet("""
-                        QPushButton {
-                            background: #ffffff;
-                            border: 1px solid #e2e8f0;
-                            border-radius: 10px;
-                        }
-                        QPushButton:hover { background: #f8fafc; border-color: #cbd5e1; }
-                    """)
-            except Exception:
-                pass
+            if unread > 0:
+                # Icône + badge texte si non-lu
+                self.btn_notif.setText(f" {unread} ")
+                self.btn_notif.setIcon(QtGui.QIcon(":/Icon/Icons/bell_white.svg"))
+                self.btn_notif.setStyleSheet("""
+                    QPushButton {
+                        background: #dc2626;
+                        color: #ffffff;
+                        border: 1px solid #b91c1c;
+                        border-radius: 10px;
+                        font-size: 11px;
+                        font-weight: 800;
+                    }
+                """)
+            else:
+                # Icône seule si tout est lu
+                self.btn_notif.setText("")
+                self.btn_notif.setIcon(QtGui.QIcon(":/Icon/Icons/bell.svg"))
+                self.btn_notif.setStyleSheet("""
+                    QPushButton {
+                        background: #ffffff;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 10px;
+                    }
+                    QPushButton:hover { background: #f8fafc; border-color: #cbd5e1; }
+                """)
+        except Exception:
+            pass
 
-        def _show_notifications_center(self):
-            """Ouvre le panneau des notifications."""
-            try:
-                # Pour l'instant, simple QMessageBox avec les dernières notifs.
-                # Plus tard, on fera un vrai dialog UI.
-                rows = db.query("SELECT * FROM Notification ORDER BY created_at DESC LIMIT 20")
+    def _show_notifications_center(self):
+        """Ouvre le panneau des notifications."""
+        try:
+            # Pour l'instant, simple QMessageBox avec les dernières notifs.
+            # Plus tard, on fera un vrai dialog UI.
+            rows = db.query("SELECT * FROM Notification ORDER BY created_at DESC LIMIT 20")
 
-                if not rows:
-                    from Notification_manager import notify
-                    notify.info("Aucune notification pour le moment.")
-                    return
+            if not rows:
+                from Notification_manager import notify
+                notify.info("Aucune notification pour le moment.")
+                return
 
-                html = "<h3>Notifications récentes</h3><ul>"
-                for r in rows:
-                    dt = str(r["created_at"])[11:16]
-                    html += f"<li><b>[{dt}] {r['title']}</b> : {r['message']}</li>"
-                html += "</ul>"
+            html = "<h3>Notifications récentes</h3><ul>"
+            for r in rows:
+                dt = str(r["created_at"])[11:16]
+                html += f"<li><b>[{dt}] {r['title']}</b> : {r['message']}</li>"
+            html += "</ul>"
 
-                # Marquer comme lu
-                db.execute("UPDATE Notification SET lu = 1")
-                self._check_unread_notifs()
+            # Marquer comme lu
+            db.execute("UPDATE Notification SET lu = 1")
+            self._check_unread_notifs()
 
-                QtWidgets.QMessageBox.information(
-                    self, "Centre de notifications", html
-                )
-            except Exception as e:
-                logger.exception("Erreur ouverture notifs")
+            QtWidgets.QMessageBox.information(
+                self, "Centre de notifications", html
+            )
+        except Exception as e:
+            logger.exception("Erreur ouverture notifs")
 
     def _open_printer_config(self):
         try:

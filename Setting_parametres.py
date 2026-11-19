@@ -912,59 +912,96 @@ class PageParametres(QtWidgets.QWidget, Ui_PageParametres):
     # Onglet Système (dynamique)
     # ══════════════════════════════════════════════════════════════
     def _install_system_tab(self):
-        """Onglet Système : disque, réseau, logs."""
+        """Onglet Système : disque, réseau, DB, logs — design aéré."""
         try:
+            if getattr(self, "_system_tab_installed", False):
+                return
+            self._system_tab_installed = True
+
             tab = QtWidgets.QWidget()
-            v = QtWidgets.QVBoxLayout(tab)
-            v.setContentsMargins(24, 24, 24, 24)
-            v.setSpacing(14)
+            tab.setObjectName("tab_systeme")
+            tab.setStyleSheet(
+                "QWidget#tab_systeme { background: transparent; }")
 
-            card_disk = self._make_status_card("💾 Espace disque")
-            self._lbl_disk = QtWidgets.QLabel("—")
-            self._lbl_disk.setStyleSheet(
-                "color: #0f172a; font-size: 13px; font-weight: 600;")
-            card_disk.layout().addWidget(self._lbl_disk)
+            # ─── Scroll ───
+            scroll = QtWidgets.QScrollArea(tab)
+            scroll.setWidgetResizable(True)
+            scroll.setFrameShape(QtWidgets.QFrame.NoFrame)
+            scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+            scroll.setStyleSheet("""
+                QScrollArea { background: transparent; border: none; }
+                QScrollBar:vertical {
+                    background: transparent; width: 10px;
+                    margin: 4px 2px 4px 0;
+                }
+                QScrollBar::handle:vertical {
+                    background: #cbd5e1; border-radius: 5px;
+                    min-height: 32px;
+                }
+                QScrollBar::handle:vertical:hover { background: #94a3b8; }
+                QScrollBar::add-line:vertical,
+                QScrollBar::sub-line:vertical { height: 0; }
+                QScrollBar::add-page:vertical,
+                QScrollBar::sub-page:vertical { background: transparent; }
+            """)
 
-            self._bar_disk = QtWidgets.QProgressBar()
-            self._bar_disk.setRange(0, 100)
-            self._bar_disk.setFixedHeight(10)
-            card_disk.layout().addWidget(self._bar_disk)
-            v.addWidget(card_disk)
+            inner = QtWidgets.QWidget()
+            inner.setStyleSheet("background: transparent;")
+            v_inner = QtWidgets.QVBoxLayout(inner)
+            v_inner.setContentsMargins(32, 28, 32, 28)
+            v_inner.setSpacing(20)
 
-            card_net = self._make_status_card("🌐 État réseau")
-            self._lbl_net = QtWidgets.QLabel("—")
-            self._lbl_net.setStyleSheet(
-                "color: #0f172a; font-size: 13px; font-weight: 600;")
-            card_net.layout().addWidget(self._lbl_net)
-            v.addWidget(card_net)
+            # ─── Cartes ───
+            v_inner.addWidget(self._make_sys_header_card())
+            v_inner.addWidget(self._make_sys_disk_card())
+            v_inner.addWidget(self._make_sys_network_card())
+            v_inner.addWidget(self._make_sys_database_card())
+            v_inner.addWidget(self._make_sys_logs_card())
 
-            card_db = self._make_status_card("🗄️ Base de données")
-            self._lbl_db = QtWidgets.QLabel("—")
-            self._lbl_db.setStyleSheet(
-                "color: #0f172a; font-size: 13px; font-weight: 600;")
-            self._lbl_db.setWordWrap(True)
-            card_db.layout().addWidget(self._lbl_db)
-            v.addWidget(card_db)
+            # ─── Bouton refresh ───
+            h_btn = QtWidgets.QHBoxLayout()
+            h_btn.addStretch()
 
-            card_logs = self._make_status_card("📋 Logs récents")
-            self._lbl_logs = QtWidgets.QLabel("—")
-            self._lbl_logs.setStyleSheet(
-                "color: #64748b; font-size: 12px;")
-            self._lbl_logs.setWordWrap(True)
-            card_logs.layout().addWidget(self._lbl_logs)
-            v.addWidget(card_logs)
+            btn_refresh = QtWidgets.QPushButton("  Actualiser l'état")
+            btn_refresh.setMinimumHeight(48)
+            btn_refresh.setCursor(Qt.PointingHandCursor)
+            ico_refresh = QtGui.QIcon(":/Icon/Icons/refresh_white.svg")
+            if not ico_refresh.isNull():
+                btn_refresh.setIcon(ico_refresh)
+                btn_refresh.setIconSize(QtCore.QSize(18, 18))
+            btn_refresh.setStyleSheet("""
+                QPushButton {
+                    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                        stop:0 #3b82f6, stop:1 #2563eb);
+                    color: #ffffff;
+                    border: 1px solid #1d4ed8;
+                    border-radius: 11px;
+                    padding: 12px 28px;
+                    font-size: 13px;
+                    font-weight: 800;
+                }
+                QPushButton:hover {
+                    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                        stop:0 #2563eb, stop:1 #1d4ed8);
+                }
+                QPushButton:pressed { background: #1e40af; }
+            """)
+            btn_refresh.clicked.connect(self._refresh_system_status)
+            h_btn.addWidget(btn_refresh)
 
-            v.addStretch()
+            v_inner.addLayout(h_btn)
+            v_inner.addStretch()
 
-            h = QtWidgets.QHBoxLayout()
-            h.addStretch()
-            btn = QtWidgets.QPushButton("  Actualiser l'état")
-            btn.clicked.connect(self._refresh_system_status)
-            h.addWidget(btn)
-            v.addLayout(h)
+            scroll.setWidget(inner)
+
+            v_tab = QtWidgets.QVBoxLayout(tab)
+            v_tab.setContentsMargins(0, 0, 0, 0)
+            v_tab.setSpacing(0)
+            v_tab.addWidget(scroll)
 
             if hasattr(self, "tabs"):
                 self.tabs.addTab(tab, "Système")
+                logger.info("Onglet 'Système' ajouté (refonte v2)")
 
             self._refresh_system_status()
 
@@ -985,57 +1022,510 @@ class PageParametres(QtWidgets.QWidget, Ui_PageParametres):
         v.addWidget(lbl)
         return card
 
+    # ══════════════════════════════════════════════════════════════
+    # Onglet Système — Cartes (refonte v2)
+    # ══════════════════════════════════════════════════════════════
+    def _make_sys_header_card(self) -> QtWidgets.QFrame:
+        """Carte header gradient — état global."""
+        card = QtWidgets.QFrame()
+        card.setObjectName("sys_header_card")
+        card.setStyleSheet("""
+            QFrame#sys_header_card {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                    stop:0 #1d4ed8, stop:1 #4f46e5);
+                border: none;
+                border-radius: 18px;
+            }
+            QFrame#sys_header_card QLabel {
+                background: transparent;
+                border: none;
+                color: #ffffff;
+            }
+        """)
+        v = QtWidgets.QVBoxLayout(card)
+        v.setContentsMargins(32, 26, 32, 26)
+        v.setSpacing(14)
+
+        h_head = QtWidgets.QHBoxLayout()
+        h_head.setSpacing(14)
+
+        ico = QtWidgets.QLabel()
+        ico.setFixedSize(46, 46)
+        ico.setAlignment(Qt.AlignCenter)
+        ico.setStyleSheet("""
+            QLabel {
+                background: rgba(255,255,255,0.18);
+                border: 1px solid rgba(255,255,255,0.28);
+                border-radius: 12px;
+            }
+        """)
+        pix = QtGui.QPixmap(":/Icon/Icons/activity_white.svg")
+        if not pix.isNull():
+            ico.setPixmap(pix.scaled(
+                24, 24, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        h_head.addWidget(ico)
+
+        v_head = QtWidgets.QVBoxLayout()
+        v_head.setSpacing(3)
+
+        t1 = QtWidgets.QLabel("ÉTAT DU SYSTÈME")
+        t1.setStyleSheet(
+            "font-size: 11px; font-weight: 800; "
+            "color: rgba(255,255,255,0.80); letter-spacing: 1.3px;")
+        v_head.addWidget(t1)
+
+        self._lbl_sys_global = QtWidgets.QLabel("Vérification…")
+        self._lbl_sys_global.setStyleSheet(
+            "font-size: 26px; font-weight: 800; color: #ffffff; "
+            "padding-top: 2px;")
+        v_head.addWidget(self._lbl_sys_global)
+
+        h_head.addLayout(v_head, 1)
+        v.addLayout(h_head)
+
+        sep = QtWidgets.QFrame()
+        sep.setFixedHeight(1)
+        sep.setStyleSheet(
+            "background: rgba(255,255,255,0.18); border: none;")
+        v.addWidget(sep)
+
+        self._lbl_sys_last_check = QtWidgets.QLabel("Dernière vérification : —")
+        self._lbl_sys_last_check.setStyleSheet(
+            "font-size: 12px; color: rgba(255,255,255,0.90);")
+        v.addWidget(self._lbl_sys_last_check)
+
+        return card
+
+    def _make_sys_disk_card(self) -> QtWidgets.QFrame:
+        """Carte disque avec KPI + progress bar colorée."""
+        card = QtWidgets.QFrame()
+        card.setObjectName("sys_disk_card")
+        card.setStyleSheet("""
+            QFrame#sys_disk_card {
+                background: #ffffff;
+                border: 1px solid #e6ebf2;
+                border-radius: 18px;
+            }
+            QFrame#sys_disk_card QLabel {
+                background: transparent;
+                border: none;
+            }
+        """)
+        v = QtWidgets.QVBoxLayout(card)
+        v.setContentsMargins(32, 28, 32, 28)
+        v.setSpacing(16)
+
+        # ─── Header ───
+        h = QtWidgets.QHBoxLayout()
+        h.setSpacing(12)
+
+        ico = QtWidgets.QLabel()
+        ico.setFixedSize(40, 40)
+        ico.setAlignment(Qt.AlignCenter)
+        ico.setStyleSheet("""
+            QLabel {
+                background: #eff6ff;
+                border: 1px solid #dbeafe;
+                border-radius: 11px;
+            }
+        """)
+        pix = QtGui.QPixmap(":/Icon/Icons/hard-drive.svg")
+        if not pix.isNull():
+            ico.setPixmap(pix.scaled(
+                20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        h.addWidget(ico)
+
+        v_head = QtWidgets.QVBoxLayout()
+        v_head.setSpacing(2)
+        t = QtWidgets.QLabel("Espace disque")
+        t.setStyleSheet(
+            "font-size: 15px; font-weight: 800; color: #0f172a;")
+        v_head.addWidget(t)
+        sub = QtWidgets.QLabel(
+            "Capacité de stockage disponible pour la base et les factures.")
+        sub.setStyleSheet("font-size: 12px; color: #64748b;")
+        sub.setWordWrap(True)
+        v_head.addWidget(sub)
+        h.addLayout(v_head, 1)
+        v.addLayout(h)
+
+        # ─── KPI ───
+        h_kpi = QtWidgets.QHBoxLayout()
+        h_kpi.setSpacing(28)
+
+        v_kpi1 = QtWidgets.QVBoxLayout()
+        v_kpi1.setSpacing(2)
+        lbl1 = QtWidgets.QLabel("LIBRE")
+        lbl1.setStyleSheet(
+            "font-size: 10px; font-weight: 800; color: #94a3b8; "
+            "letter-spacing: 1.2px;")
+        v_kpi1.addWidget(lbl1)
+        self._lbl_disk = QtWidgets.QLabel("—")
+        self._lbl_disk.setStyleSheet(
+            "font-size: 24px; font-weight: 800; color: #15803d;")
+        v_kpi1.addWidget(self._lbl_disk)
+        h_kpi.addLayout(v_kpi1)
+
+        v_kpi2 = QtWidgets.QVBoxLayout()
+        v_kpi2.setSpacing(2)
+        lbl2 = QtWidgets.QLabel("TOTAL")
+        lbl2.setStyleSheet(
+            "font-size: 10px; font-weight: 800; color: #94a3b8; "
+            "letter-spacing: 1.2px;")
+        v_kpi2.addWidget(lbl2)
+        self._lbl_disk_total = QtWidgets.QLabel("—")
+        self._lbl_disk_total.setStyleSheet(
+            "font-size: 24px; font-weight: 800; color: #0f172a;")
+        v_kpi2.addWidget(self._lbl_disk_total)
+        h_kpi.addLayout(v_kpi2)
+
+        h_kpi.addStretch()
+        v.addLayout(h_kpi)
+
+        # ─── Progress bar ───
+        self._bar_disk = QtWidgets.QProgressBar()
+        self._bar_disk.setRange(0, 100)
+        self._bar_disk.setFixedHeight(12)
+        self._bar_disk.setTextVisible(False)
+        self._bar_disk.setStyleSheet("""
+            QProgressBar {
+                background: #f1f5f9;
+                border: none;
+                border-radius: 6px;
+            }
+            QProgressBar::chunk {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                    stop:0 #10b981, stop:1 #16a34a);
+                border-radius: 6px;
+            }
+        """)
+        v.addWidget(self._bar_disk)
+
+        self._lbl_disk_pct = QtWidgets.QLabel("")
+        self._lbl_disk_pct.setStyleSheet(
+            "font-size: 11px; color: #64748b; font-weight: 600;")
+        v.addWidget(self._lbl_disk_pct)
+
+        return card
+
+    def _make_sys_network_card(self) -> QtWidgets.QFrame:
+        """Carte réseau avec badge status."""
+        card = QtWidgets.QFrame()
+        card.setObjectName("sys_network_card")
+        card.setStyleSheet("""
+            QFrame#sys_network_card {
+                background: #ffffff;
+                border: 1px solid #e6ebf2;
+                border-radius: 18px;
+            }
+            QFrame#sys_network_card QLabel {
+                background: transparent;
+                border: none;
+            }
+        """)
+        v = QtWidgets.QVBoxLayout(card)
+        v.setContentsMargins(32, 28, 32, 28)
+        v.setSpacing(16)
+
+        h = QtWidgets.QHBoxLayout()
+        h.setSpacing(12)
+
+        ico = QtWidgets.QLabel()
+        ico.setFixedSize(40, 40)
+        ico.setAlignment(Qt.AlignCenter)
+        ico.setStyleSheet("""
+            QLabel {
+                background: #fef3c7;
+                border: 1px solid #fde68a;
+                border-radius: 11px;
+            }
+        """)
+        pix = QtGui.QPixmap(":/Icon/Icons/wifi.svg")
+        if not pix.isNull():
+            ico.setPixmap(pix.scaled(
+                20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        h.addWidget(ico)
+
+        v_head = QtWidgets.QVBoxLayout()
+        v_head.setSpacing(2)
+        t = QtWidgets.QLabel("État réseau")
+        t.setStyleSheet(
+            "font-size: 15px; font-weight: 800; color: #0f172a;")
+        v_head.addWidget(t)
+        sub = QtWidgets.QLabel(
+            "Connectivité au serveur physique (mode client uniquement).")
+        sub.setStyleSheet("font-size: 12px; color: #64748b;")
+        sub.setWordWrap(True)
+        v_head.addWidget(sub)
+        h.addLayout(v_head, 1)
+        v.addLayout(h)
+
+        self._lbl_net = QtWidgets.QLabel("—")
+        self._lbl_net.setStyleSheet(
+            "font-size: 13px; font-weight: 700; color: #0f172a; "
+            "padding: 14px 18px; background: #f8fafc; "
+            "border-radius: 10px; border: 1px solid #e6ebf2;")
+        self._lbl_net.setWordWrap(True)
+        v.addWidget(self._lbl_net)
+
+        return card
+
+    def _make_sys_database_card(self) -> QtWidgets.QFrame:
+        """Carte DB avec taille + grid des tables."""
+        card = QtWidgets.QFrame()
+        card.setObjectName("sys_database_card")
+        card.setStyleSheet("""
+            QFrame#sys_database_card {
+                background: #ffffff;
+                border: 1px solid #e6ebf2;
+                border-radius: 18px;
+            }
+            QFrame#sys_database_card QLabel {
+                background: transparent;
+                border: none;
+            }
+        """)
+        v = QtWidgets.QVBoxLayout(card)
+        v.setContentsMargins(32, 28, 32, 28)
+        v.setSpacing(16)
+
+        h = QtWidgets.QHBoxLayout()
+        h.setSpacing(12)
+
+        ico = QtWidgets.QLabel()
+        ico.setFixedSize(40, 40)
+        ico.setAlignment(Qt.AlignCenter)
+        ico.setStyleSheet("""
+            QLabel {
+                background: #dcfce7;
+                border: 1px solid #bbf7d0;
+                border-radius: 11px;
+            }
+        """)
+        pix = QtGui.QPixmap(":/Icon/Icons/database.svg")
+        if not pix.isNull():
+            ico.setPixmap(pix.scaled(
+                20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        h.addWidget(ico)
+
+        v_head = QtWidgets.QVBoxLayout()
+        v_head.setSpacing(2)
+        t = QtWidgets.QLabel("Base de données")
+        t.setStyleSheet(
+            "font-size: 15px; font-weight: 800; color: #0f172a;")
+        v_head.addWidget(t)
+        sub = QtWidgets.QLabel(
+            "Taille et contenu de la base SQLite.")
+        sub.setStyleSheet("font-size: 12px; color: #64748b;")
+        sub.setWordWrap(True)
+        v_head.addWidget(sub)
+        h.addLayout(v_head, 1)
+        v.addLayout(h)
+
+        self._lbl_db = QtWidgets.QLabel("—")
+        self._lbl_db.setStyleSheet(
+            "font-size: 13px; color: #334155; font-family: 'Courier New'; "
+            "padding: 14px 18px; background: #f8fafc; "
+            "border-radius: 10px; border: 1px solid #e6ebf2;")
+        self._lbl_db.setWordWrap(True)
+        v.addWidget(self._lbl_db)
+
+        return card
+
+    def _make_sys_logs_card(self) -> QtWidgets.QFrame:
+        """Carte logs avec liste des fichiers."""
+        card = QtWidgets.QFrame()
+        card.setObjectName("sys_logs_card")
+        card.setStyleSheet("""
+            QFrame#sys_logs_card {
+                background: #ffffff;
+                border: 1px solid #e6ebf2;
+                border-radius: 18px;
+            }
+            QFrame#sys_logs_card QLabel {
+                background: transparent;
+                border: none;
+            }
+        """)
+        v = QtWidgets.QVBoxLayout(card)
+        v.setContentsMargins(32, 28, 32, 28)
+        v.setSpacing(16)
+
+        h = QtWidgets.QHBoxLayout()
+        h.setSpacing(12)
+
+        ico = QtWidgets.QLabel()
+        ico.setFixedSize(40, 40)
+        ico.setAlignment(Qt.AlignCenter)
+        ico.setStyleSheet("""
+            QLabel {
+                background: #ede9fe;
+                border: 1px solid #ddd6fe;
+                border-radius: 11px;
+            }
+        """)
+        pix = QtGui.QPixmap(":/Icon/Icons/file-text.svg")
+        if not pix.isNull():
+            ico.setPixmap(pix.scaled(
+                20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        h.addWidget(ico)
+
+        v_head = QtWidgets.QVBoxLayout()
+        v_head.setSpacing(2)
+        t = QtWidgets.QLabel("Logs récents")
+        t.setStyleSheet(
+            "font-size: 15px; font-weight: 800; color: #0f172a;")
+        v_head.addWidget(t)
+        sub = QtWidgets.QLabel(
+            "Fichiers .log présents dans le projet.")
+        sub.setStyleSheet("font-size: 12px; color: #64748b;")
+        sub.setWordWrap(True)
+        v_head.addWidget(sub)
+        h.addLayout(v_head, 1)
+        v.addLayout(h)
+
+        self._lbl_logs = QtWidgets.QLabel("—")
+        self._lbl_logs.setStyleSheet(
+            "font-size: 12px; color: #475569; font-family: 'Courier New'; "
+            "padding: 14px 18px; background: #f8fafc; "
+            "border-radius: 10px; border: 1px solid #e6ebf2;")
+        self._lbl_logs.setWordWrap(True)
+        v.addWidget(self._lbl_logs)
+
+        return card
+
     def _refresh_system_status(self):
-        """Rafraîchit les 4 cartes système."""
+        """Rafraîchit toutes les cartes de l'onglet Système."""
         from Database import system_status
+        from datetime import datetime as _dt
 
-        disk = system_status.get_disk_status()
-        if disk:
-            txt = (f"{disk['free_gb']} Go libres sur {disk['total_gb']} Go "
-                   f"({disk['used_pct']}% utilisé)")
-            if disk["alerte"]:
-                txt += " ⚠️ ESPACE CRITIQUE"
+        try:
+            problems = 0
+
+            # ═══════════════════════════════════════════════════════════
+            # 1. DISQUE
+            # ═══════════════════════════════════════════════════════════
+            disk = system_status.get_disk_status()
+            if disk:
+                free_gb = disk["free_gb"]
+                total_gb = disk["total_gb"]
+                used_pct = disk["used_pct"]
+                alerte = disk.get("alerte", False)
+
+                # KPI free
+                self._lbl_disk.setText(f"{free_gb} Go")
+                self._lbl_disk_total.setText(f"{total_gb} Go")
+
+                # Couleur
+                if alerte:
+                    color = "#b91c1c"
+                    problems += 1
+                    bar_grad = "stop:0 #ef4444, stop:1 #dc2626"
+                    pct_label = f"⚠  {used_pct}% utilisé — espace critique"
+                elif used_pct > 80:
+                    color = "#ea580c"
+                    bar_grad = "stop:0 #f59e0b, stop:1 #ea580c"
+                    pct_label = f"{used_pct}% utilisé — surveiller"
+                else:
+                    color = "#15803d"
+                    bar_grad = "stop:0 #10b981, stop:1 #16a34a"
+                    pct_label = f"{used_pct}% utilisé"
+
                 self._lbl_disk.setStyleSheet(
-                    "color: #b91c1c; font-size: 13px; font-weight: 700;")
+                    f"font-size: 24px; font-weight: 800; color: {color};")
+
+                self._bar_disk.setValue(int(used_pct))
+                self._bar_disk.setStyleSheet(f"""
+                    QProgressBar {{
+                        background: #f1f5f9; border: none;
+                        border-radius: 6px;
+                    }}
+                    QProgressBar::chunk {{
+                        background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+                            {bar_grad});
+                        border-radius: 6px;
+                    }}
+                """)
+                self._lbl_disk_pct.setText(pct_label)
+                self._lbl_disk_pct.setStyleSheet(
+                    f"font-size: 11px; color: {color}; font-weight: 700;")
+
+            # ═══════════════════════════════════════════════════════════
+            # 2. RÉSEAU
+            # ═══════════════════════════════════════════════════════════
+            net = system_status.get_network_status()
+            if net["reachable"]:
+                txt = (f"✅  Connecté — {net['host']}:{net['port']}  "
+                       f"·  Latence {net['latency_ms']} ms")
+                self._lbl_net.setStyleSheet(
+                    "font-size: 13px; font-weight: 700; color: #15803d; "
+                    "padding: 14px 18px; background: #f0fdf4; "
+                    "border-radius: 10px; border: 1px solid #bbf7d0;")
             else:
-                self._lbl_disk.setStyleSheet(
-                    "color: #15803d; font-size: 13px; font-weight: 600;")
-            self._lbl_disk.setText(txt)
-            self._bar_disk.setValue(int(disk["used_pct"]))
+                txt = (f"❌  Injoignable — {net['host']}:{net['port']}  "
+                       f"·  {net.get('error', 'timeout')}")
+                self._lbl_net.setStyleSheet(
+                    "font-size: 13px; font-weight: 700; color: #b91c1c; "
+                    "padding: 14px 18px; background: #fef2f2; "
+                    "border-radius: 10px; border: 1px solid #fecaca;")
+            self._lbl_net.setText(txt)
 
-        net = system_status.get_network_status()
-        if net["reachable"]:
-            txt = (f"✅ Serveur joignable — {net['host']}:{net['port']} "
-                   f"({net['latency_ms']} ms)")
-            self._lbl_net.setStyleSheet(
-                "color: #15803d; font-size: 13px; font-weight: 600;")
-        else:
-            txt = (f"❌ Serveur injoignable — {net['host']}:{net['port']} "
-                   f"({net.get('error', '')})")
-            self._lbl_net.setStyleSheet(
-                "color: #b91c1c; font-size: 13px; font-weight: 700;")
-        self._lbl_net.setText(txt)
+            # ═══════════════════════════════════════════════════════════
+            # 3. BASE DE DONNÉES
+            # ═══════════════════════════════════════════════════════════
+            db_st = system_status.get_db_status()
+            if db_st:
+                lines = [f"📁  {db_st['path']}",
+                         f"💾  Taille : {db_st['size_mb']} Mo",
+                         ""]
+                # Affiche uniquement les tables non vides
+                tables = sorted(
+                    [(t, n) for t, n in db_st["tables"].items() if n > 0],
+                    key=lambda x: -x[1])
+                for t, n in tables[:10]:  # max 10 lignes
+                    n_str = f"{n:,}".replace(",", " ")
+                    lines.append(f"  •  {t:<22} {n_str:>10}")
+                if len(tables) > 10:
+                    lines.append(f"  … et {len(tables) - 10} autre(s) table(s)")
+                self._lbl_db.setText("\n".join(lines))
 
-        db_st = system_status.get_db_status()
-        if db_st:
-            lines = [f"📁 {db_st['path']}",
-                     f"📊 Taille : {db_st['size_mb']} Mo"]
-            for t, n in db_st["tables"].items():
-                if n > 0:
+            # ═══════════════════════════════════════════════════════════
+            # 4. LOGS
+            # ═══════════════════════════════════════════════════════════
+            logs = system_status.get_logs_status()
+            if logs:
+                lines = [f"📄  {len(logs)} fichier(s) de log", ""]
+                for lg in logs[:5]:
                     lines.append(
-                        f"  • {t:<20} : {n:>8,}".replace(",", " "))
-            self._lbl_db.setText("\n".join(lines))
+                        f"  •  {lg['path']:<30} "
+                        f"{lg['size_kb']:>6} Ko  ({lg['modified']})")
+                self._lbl_logs.setText("\n".join(lines))
+            else:
+                self._lbl_logs.setText(
+                    "Aucun fichier .log trouvé dans logs/, Logs/ ou ./")
 
-        logs = system_status.get_logs_status()
-        if logs:
-            lines = [f"📄 {len(logs)} fichier(s) de log"]
-            for lg in logs[:5]:
-                lines.append(f"  • {lg['path']} ({lg['size_kb']} Ko, "
-                             f"{lg['modified']})")
-            self._lbl_logs.setText("\n".join(lines))
-        else:
-            self._lbl_logs.setText(
-                "Aucun fichier .log trouvé dans logs/, Logs/ ou ./")
+            # ═══════════════════════════════════════════════════════════
+            # 5. HEADER GLOBAL
+            # ═══════════════════════════════════════════════════════════
+            if problems == 0:
+                self._lbl_sys_global.setText("✓  Tout fonctionne")
+                self._lbl_sys_global.setStyleSheet(
+                    "font-size: 26px; font-weight: 800; color: #ffffff; "
+                    "padding-top: 2px;")
+            else:
+                self._lbl_sys_global.setText(
+                    f"⚠  {problems} problème(s) détecté(s)")
+                self._lbl_sys_global.setStyleSheet(
+                    "font-size: 26px; font-weight: 800; color: #fef3c7; "
+                    "padding-top: 2px;")
+
+            self._lbl_sys_last_check.setText(
+                f"Dernière vérification : "
+                f"{_dt.now().strftime('%H:%M:%S')}")
+
+        except Exception:
+            logger.exception("Erreur refresh système")
+            self._lbl_sys_global.setText("Erreur de vérification")
 
     def _refresh_server_status(self) -> None:
         """Met à jour l'affichage du mode serveur."""
@@ -1988,7 +2478,7 @@ class PageParametres(QtWidgets.QWidget, Ui_PageParametres):
     # ONGLET LICENCE (Phase 2+)
     # ══════════════════════════════════════════════════════════════
     def _install_license_tab(self) -> None:
-        """Crée l'onglet Licence avec Machine ID, activation et contact."""
+        """Crée l'onglet Licence — pleine largeur, scroll, padding aéré."""
         try:
             if getattr(self, "_license_tab_installed", False):
                 return
@@ -1999,34 +2489,59 @@ class PageParametres(QtWidgets.QWidget, Ui_PageParametres):
             tab.setStyleSheet(
                 "QWidget#tab_licence { background: transparent; }")
 
-            v = QtWidgets.QVBoxLayout(tab)
-            v.setContentsMargins(24, 24, 24, 24)
-            v.setSpacing(16)
+            # ─── Scroll ───
+            scroll = QtWidgets.QScrollArea(tab)
+            scroll.setWidgetResizable(True)
+            scroll.setFrameShape(QtWidgets.QFrame.NoFrame)
+            scroll.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+            scroll.setStyleSheet("""
+                QScrollArea { background: transparent; border: none; }
+                QScrollBar:vertical {
+                    background: transparent; width: 10px;
+                    margin: 4px 2px 4px 0;
+                }
+                QScrollBar::handle:vertical {
+                    background: #cbd5e1; border-radius: 5px;
+                    min-height: 32px;
+                }
+                QScrollBar::handle:vertical:hover { background: #94a3b8; }
+                QScrollBar::add-line:vertical,
+                QScrollBar::sub-line:vertical { height: 0; }
+                QScrollBar::add-page:vertical,
+                QScrollBar::sub-page:vertical { background: transparent; }
+            """)
 
-            # Carte 1 : État actuel
-            self._license_status_card = self._make_license_status_card()
-            v.addWidget(self._license_status_card)
+            # ─── Container (pleine largeur, pas de wrapper) ───
+            inner = QtWidgets.QWidget()
+            inner.setStyleSheet("background: transparent;")
+            v_inner = QtWidgets.QVBoxLayout(inner)
+            v_inner.setContentsMargins(32, 28, 32, 28)
+            v_inner.setSpacing(22)
 
-            # Carte 2 : Machine ID + clé
-            v.addWidget(self._make_license_key_card())
+            # ⬇️ Cartes directement en pleine largeur (plus de wrapper centré)
+            v_inner.addWidget(self._make_license_status_card())
+            v_inner.addWidget(self._make_license_key_card())
+            v_inner.addWidget(self._make_license_contact_card())
+            v_inner.addStretch()
 
-            # Carte 3 : Contact
-            v.addWidget(self._make_license_contact_card())
+            scroll.setWidget(inner)
 
-            v.addStretch()
+            v_tab = QtWidgets.QVBoxLayout(tab)
+            v_tab.setContentsMargins(0, 0, 0, 0)
+            v_tab.setSpacing(0)
+            v_tab.addWidget(scroll)
 
             if hasattr(self, "tabs"):
                 self.tabs.addTab(tab, "Licence")
-                logger.info("Onglet 'Licence' ajouté aux paramètres")
+                logger.info("Onglet 'Licence' ajouté (pleine largeur)")
 
-            # Met à jour l'état
             self._refresh_license_status()
 
         except Exception:
             logger.exception("Erreur installation onglet Licence")
 
     def _make_license_status_card(self) -> QtWidgets.QFrame:
-        """Carte qui montre l'état actuel de la licence."""
+        """Carte d'état (gradient bleu) avec padding généreux."""
         card = QtWidgets.QFrame()
         card.setObjectName("license_status_card")
         card.setStyleSheet("""
@@ -2034,7 +2549,7 @@ class PageParametres(QtWidgets.QWidget, Ui_PageParametres):
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
                     stop:0 #1d4ed8, stop:1 #4f46e5);
                 border: none;
-                border-radius: 16px;
+                border-radius: 18px;
             }
             QFrame#license_status_card QLabel {
                 background: transparent;
@@ -2043,40 +2558,76 @@ class PageParametres(QtWidgets.QWidget, Ui_PageParametres):
             }
         """)
         v = QtWidgets.QVBoxLayout(card)
-        v.setContentsMargins(24, 20, 24, 20)
-        v.setSpacing(8)
+        v.setContentsMargins(32, 26, 32, 26)  # ⬆️ 24,20 → 32,26
+        v.setSpacing(14)  # ⬆️ 8 → 14
 
-        # Titre
+        # ─── Header : icône + titre ───
+        h_head = QtWidgets.QHBoxLayout()
+        h_head.setSpacing(12)
+
+        ico = QtWidgets.QLabel()
+        ico.setFixedSize(44, 44)
+        ico.setAlignment(Qt.AlignCenter)
+        ico.setStyleSheet("""
+            QLabel {
+                background: rgba(255,255,255,0.18);
+                border: 1px solid rgba(255,255,255,0.28);
+                border-radius: 12px;
+            }
+        """)
+        pix = QtGui.QPixmap(":/Icon/Icons/shield-check.svg")
+        if pix.isNull():
+            pix = QtGui.QPixmap(":/Icon/Icons/lock.svg")
+        if not pix.isNull():
+            ico.setPixmap(pix.scaled(
+                22, 22, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        h_head.addWidget(ico)
+
+        v_head = QtWidgets.QVBoxLayout()
+        v_head.setSpacing(2)
+
         t1 = QtWidgets.QLabel("État de votre licence")
         t1.setStyleSheet(
-            "font-size: 14px; font-weight: 700; "
-            "color: rgba(255,255,255,0.85);")
-        v.addWidget(t1)
+            "font-size: 12px; font-weight: 700; "
+            "color: rgba(255,255,255,0.80); "
+            "letter-spacing: 1.2px; text-transform: uppercase;")
+        v_head.addWidget(t1)
 
-        # Statut principal
         self._lbl_license_status = QtWidgets.QLabel("—")
         self._lbl_license_status.setStyleSheet(
-            "font-size: 26px; font-weight: 800; color: #ffffff; "
-            "padding-top: 4px;")
-        v.addWidget(self._lbl_license_status)
+            "font-size: 28px; font-weight: 800; color: #ffffff; "
+            "padding-top: 2px;")
+        v_head.addWidget(self._lbl_license_status)
 
-        # Détail
+        h_head.addLayout(v_head, 1)
+        v.addLayout(h_head)
+
+        # ─── Séparateur ───
+        sep = QtWidgets.QFrame()
+        sep.setFixedHeight(1)
+        sep.setStyleSheet(
+            "background: rgba(255,255,255,0.18); border: none;")
+        v.addWidget(sep)
+
+        # ─── Détail ───
         self._lbl_license_detail = QtWidgets.QLabel("")
         self._lbl_license_detail.setStyleSheet(
-            "font-size: 12px; color: rgba(255,255,255,0.85);")
+            "font-size: 13px; color: rgba(255,255,255,0.90); "
+            "line-height: 1.5;")
+        self._lbl_license_detail.setWordWrap(True)
         v.addWidget(self._lbl_license_detail)
 
         return card
 
     def _make_license_key_card(self) -> QtWidgets.QFrame:
-        """Carte avec Machine ID + champ clé + bouton activer."""
+        """Carte Machine ID + activation avec padding généreux."""
         card = QtWidgets.QFrame()
         card.setObjectName("license_key_card")
         card.setStyleSheet("""
             QFrame#license_key_card {
                 background: #ffffff;
                 border: 1px solid #e6ebf2;
-                border-radius: 16px;
+                border-radius: 18px;
             }
             QFrame#license_key_card QLabel {
                 background: transparent;
@@ -2084,65 +2635,84 @@ class PageParametres(QtWidgets.QWidget, Ui_PageParametres):
             }
         """)
         v = QtWidgets.QVBoxLayout(card)
-        v.setContentsMargins(24, 20, 24, 20)
-        v.setSpacing(12)
+        v.setContentsMargins(32, 28, 32, 28)  # ⬆️ 24,20 → 32,28
+        v.setSpacing(16)  # ⬆️ 12 → 16
 
-        # Header
-        h = QtWidgets.QHBoxLayout()
-        ico = QtWidgets.QLabel("🔐")
-        ico.setStyleSheet("font-size: 18px;")
-        h.addWidget(ico)
+        # ─── Header ───
+        h_head = QtWidgets.QHBoxLayout()
+        h_head.setSpacing(12)
+
+        ico = QtWidgets.QLabel()
+        ico.setFixedSize(40, 40)
+        ico.setAlignment(Qt.AlignCenter)
+        ico.setStyleSheet("""
+            QLabel {
+                background: #eff6ff;
+                border: 1px solid #dbeafe;
+                border-radius: 11px;
+            }
+        """)
+        pix = QtGui.QPixmap(":/Icon/Icons/key.svg")
+        if not pix.isNull():
+            ico.setPixmap(pix.scaled(
+                20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        h_head.addWidget(ico)
+
         title = QtWidgets.QLabel("Activation de la licence")
         title.setStyleSheet(
-            "font-size: 15px; font-weight: 800; color: #0f172a;")
-        h.addWidget(title)
-        h.addStretch()
-        v.addLayout(h)
+            "font-size: 16px; font-weight: 800; color: #0f172a;")
+        h_head.addWidget(title)
+        h_head.addStretch()
+        v.addLayout(h_head)
 
-        # Machine ID
+        # ─── Bloc Machine ID ───
         lbl_mid = QtWidgets.QLabel("VOTRE MACHINE ID")
         lbl_mid.setStyleSheet(
-            "color: #94a3b8; font-size: 10px; font-weight: 800; "
-            "letter-spacing: 1px;")
+            "color: #64748b; font-size: 11px; font-weight: 800; "
+            "letter-spacing: 1.2px;")
         v.addWidget(lbl_mid)
 
         h_mid = QtWidgets.QHBoxLayout()
-        h_mid.setSpacing(8)
+        h_mid.setSpacing(10)
 
         from Database import machine_id as mid_module
         self._license_mid = mid_module.get_machine_id()
 
         inp_mid = QtWidgets.QLineEdit(self._license_mid)
         inp_mid.setReadOnly(True)
+        inp_mid.setMinimumHeight(52)  # ⬆️ 42 → 52
         inp_mid.setStyleSheet("""
             QLineEdit {
                 background: #f1f5f9;
                 border: 1px solid #cbd5e1;
-                border-radius: 8px;
-                padding: 10px 14px;
-                color: #64748b;
+                border-radius: 10px;
+                padding: 12px 16px;
+                color: #475569;
                 font-family: 'Courier New';
-                font-size: 11px;
+                font-size: 12px;
             }
         """)
         h_mid.addWidget(inp_mid, 1)
 
-        btn_copy = QtWidgets.QPushButton("📋")
-        btn_copy.setFixedSize(42, 42)
+        btn_copy = QtWidgets.QPushButton()
+        btn_copy.setFixedSize(52, 52)  # ⬆️ 42 → 52
         btn_copy.setCursor(Qt.PointingHandCursor)
         btn_copy.setToolTip("Copier le Machine ID")
+        btn_copy.setIcon(QtGui.QIcon(":/Icon/Icons/copy.svg"))
+        btn_copy.setIconSize(QtCore.QSize(18, 18))
         btn_copy.setStyleSheet("""
             QPushButton {
                 background: #f8fafc;
                 border: 1px solid #dbe3ec;
-                border-radius: 8px;
-                font-size: 14px;
+                border-radius: 10px;
             }
-            QPushButton:hover { background: #eff6ff; }
+            QPushButton:hover {
+                background: #eff6ff;
+                border-color: #bfdbfe;
+            }
+            QPushButton:pressed { background: #dbeafe; }
         """)
-        btn_copy.clicked.connect(
-            lambda: QtWidgets.QApplication.clipboard().setText(
-                self._license_mid))
+        btn_copy.clicked.connect(self._copy_machine_id)
         h_mid.addWidget(btn_copy)
         v.addLayout(h_mid)
 
@@ -2150,69 +2720,96 @@ class PageParametres(QtWidgets.QWidget, Ui_PageParametres):
             "Envoyez ce Machine ID à TEAM NOVA pour recevoir votre clé "
             "de licence.")
         hint.setStyleSheet(
-            "color: #94a3b8; font-size: 10px; font-style: italic;")
+            "color: #94a3b8; font-size: 11px; font-style: italic;")
         hint.setWordWrap(True)
         v.addWidget(hint)
 
-        # Champ clé
+        # ─── Séparateur ───
+        sep = QtWidgets.QFrame()
+        sep.setFixedHeight(1)
+        sep.setStyleSheet("background: #e6ebf2; border: none;")
+        v.addWidget(sep)
+
+        # ─── Bloc Clé ───
         lbl_key = QtWidgets.QLabel("CLÉ DE LICENCE")
         lbl_key.setStyleSheet(
-            "color: #94a3b8; font-size: 10px; font-weight: 800; "
-            "letter-spacing: 1px; padding-top: 6px;")
+            "color: #64748b; font-size: 11px; font-weight: 800; "
+            "letter-spacing: 1.2px;")
         v.addWidget(lbl_key)
 
         self._license_input_key = QtWidgets.QLineEdit()
         self._license_input_key.setPlaceholderText(
-            "NOVA-XXXX-XXXX-XXXX-XXXX")
-        self._license_input_key.setMinimumHeight(46)
+            "NOVA-XXXXXXXX-X-XXXXXXXX-XXXXXX-XXXXXXXXXXXXXXXX")
+        self._license_input_key.setMinimumHeight(56)  # ⬆️ 46 → 56
         self._license_input_key.setStyleSheet("""
             QLineEdit {
                 background: #f8fafc;
                 border: 1.5px solid #dbe3ec;
-                border-radius: 10px;
-                padding: 12px 14px;
+                border-radius: 12px;
+                padding: 14px 18px;
                 color: #0f172a;
                 font-family: 'Courier New';
                 font-size: 13px;
                 font-weight: 700;
+                letter-spacing: 0.5px;
             }
-            QLineEdit:focus { border-color: #0077B6; }
+            QLineEdit:focus {
+                border-color: #0077B6;
+                background: #ffffff;
+            }
         """)
         self._license_input_key.returnPressed.connect(
             self._on_activate_license)
         v.addWidget(self._license_input_key)
 
-        # Bouton activer
+        # ─── Bouton activer ───
         btn_activate = QtWidgets.QPushButton("  Activer ma licence")
-        btn_activate.setMinimumHeight(46)
+        btn_activate.setMinimumHeight(54)  # ⬆️ 46 → 54
         btn_activate.setCursor(Qt.PointingHandCursor)
+        btn_activate.setIcon(
+            QtGui.QIcon(":/Icon/Icons/check-circle_white.svg"))
+        btn_activate.setIconSize(QtCore.QSize(18, 18))
         btn_activate.setStyleSheet("""
             QPushButton {
                 background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
                     stop:0 #3b82f6, stop:1 #2563eb);
                 color: #ffffff;
                 border: 1px solid #1d4ed8;
-                border-radius: 10px;
-                padding: 12px 24px;
-                font-size: 13px;
+                border-radius: 12px;
+                padding: 14px 28px;
+                font-size: 14px;
                 font-weight: 800;
+                letter-spacing: 0.3px;
             }
-            QPushButton:hover { background: #1d4ed8; }
+            QPushButton:hover {
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 #2563eb, stop:1 #1d4ed8);
+            }
+            QPushButton:pressed { background: #1e40af; }
         """)
         btn_activate.clicked.connect(self._on_activate_license)
         v.addWidget(btn_activate)
 
         return card
 
+    def _copy_machine_id(self):
+        """Copie le Machine ID + feedback visuel."""
+        try:
+            QtWidgets.QApplication.clipboard().setText(self._license_mid)
+            notify.success("Machine ID copié dans le presse-papiers.")
+        except Exception:
+            logger.exception("Erreur copie Machine ID")
+
     def _make_license_contact_card(self) -> QtWidgets.QFrame:
-        """Carte avec les 3 canaux de contact."""
+        """Carte contact avec 3 boutons aérés et lisibles."""
         card = QtWidgets.QFrame()
         card.setObjectName("license_contact_card")
         card.setStyleSheet("""
             QFrame#license_contact_card {
-                background: #eff6ff;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+                    stop:0 #eff6ff, stop:1 #dbeafe);
                 border: 1px solid #bfdbfe;
-                border-radius: 16px;
+                border-radius: 18px;
             }
             QFrame#license_contact_card QLabel {
                 background: transparent;
@@ -2220,83 +2817,116 @@ class PageParametres(QtWidgets.QWidget, Ui_PageParametres):
             }
         """)
         v = QtWidgets.QVBoxLayout(card)
-        v.setContentsMargins(24, 20, 24, 20)
-        v.setSpacing(12)
+        v.setContentsMargins(32, 28, 32, 28)  # ⬆️ 24,20 → 32,28
+        v.setSpacing(16)  # ⬆️ 12 → 16
 
-        # Titre
-        title = QtWidgets.QLabel("💡 Besoin d'une licence ?")
+        # ─── Header ───
+        h_head = QtWidgets.QHBoxLayout()
+        h_head.setSpacing(12)
+
+        ico = QtWidgets.QLabel()
+        ico.setFixedSize(40, 40)
+        ico.setAlignment(Qt.AlignCenter)
+        ico.setStyleSheet("""
+            QLabel {
+                background: #ffffff;
+                border: 1px solid #bfdbfe;
+                border-radius: 11px;
+            }
+        """)
+        pix = QtGui.QPixmap(":/Icon/Icons/help-circle.svg")
+        if not pix.isNull():
+            ico.setPixmap(pix.scaled(
+                20, 20, Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        h_head.addWidget(ico)
+
+        v_head = QtWidgets.QVBoxLayout()
+        v_head.setSpacing(2)
+
+        title = QtWidgets.QLabel("Besoin d'une licence ?")
         title.setStyleSheet(
-            "font-size: 14px; font-weight: 800; color: #023E8A;")
-        v.addWidget(title)
+            "font-size: 16px; font-weight: 800; color: #023E8A;")
+        v_head.addWidget(title)
 
         sub = QtWidgets.QLabel(
-            "Contactez TEAM NOVA pour obtenir votre clé d'activation :")
-        sub.setStyleSheet("font-size: 11px; color: #1e40af;")
-        v.addWidget(sub)
+            "Contactez TEAM NOVA pour obtenir votre clé d'activation.")
+        sub.setStyleSheet(
+            "font-size: 12px; color: #1e40af;")
+        sub.setWordWrap(True)
+        v_head.addWidget(sub)
 
-        # 3 boutons
-        h = QtWidgets.QHBoxLayout()
-        h.setSpacing(10)
+        h_head.addLayout(v_head, 1)
+        v.addLayout(h_head)
+
+        # ─── 3 boutons en grille ───
+        h_btns = QtWidgets.QHBoxLayout()
+        h_btns.setSpacing(14)  # ⬆️ 10 → 14
 
         # WhatsApp
-        btn_wa = QtWidgets.QPushButton(
-            "  WhatsApp\n  +243 808 775 085")
-        btn_wa.setMinimumHeight(52)
-        btn_wa.setCursor(Qt.PointingHandCursor)
-        btn_wa.setStyleSheet("""
-            QPushButton {
-                background: #25D366; color: #ffffff;
-                border: 1px solid #1eb955;
-                border-radius: 10px;
-                padding: 8px 16px;
-                font-size: 11px; font-weight: 700;
-                text-align: left;
-            }
-            QPushButton:hover { background: #1eb955; }
-        """)
+        btn_wa = self._make_contact_button(
+            icon_path=":/Icon/Icons/whatsapp.svg",
+            title="WhatsApp",
+            subtitle="+243 808 775 085",
+            bg="#25D366", hover="#1eb955", border="#1eb955",
+        )
         btn_wa.clicked.connect(self._open_whatsapp_license)
-        h.addWidget(btn_wa, 1)
+        h_btns.addWidget(btn_wa, 1)
 
         # Email
-        btn_mail = QtWidgets.QPushButton(
-            "  Email\n  teamnovaoff@gmail.com")
-        btn_mail.setMinimumHeight(52)
-        btn_mail.setCursor(Qt.PointingHandCursor)
-        btn_mail.setStyleSheet("""
-            QPushButton {
-                background: #dc2626; color: #ffffff;
-                border: 1px solid #b91c1c;
-                border-radius: 10px;
-                padding: 8px 16px;
-                font-size: 11px; font-weight: 700;
-                text-align: left;
-            }
-            QPushButton:hover { background: #b91c1c; }
-        """)
+        btn_mail = self._make_contact_button(
+            icon_path=":/Icon/Icons/mail.svg",
+            title="Email",
+            subtitle="teamnovaoff@gmail.com",
+            bg="#dc2626", hover="#b91c1c", border="#b91c1c",
+        )
         btn_mail.clicked.connect(self._open_email_license)
-        h.addWidget(btn_mail, 1)
+        h_btns.addWidget(btn_mail, 1)
 
         # Facebook
-        btn_fb = QtWidgets.QPushButton(
-            "  Facebook\n  Team Nova")
-        btn_fb.setMinimumHeight(52)
-        btn_fb.setCursor(Qt.PointingHandCursor)
-        btn_fb.setStyleSheet("""
-            QPushButton {
-                background: #1877F2; color: #ffffff;
-                border: 1px solid #1560c4;
-                border-radius: 10px;
-                padding: 8px 16px;
-                font-size: 11px; font-weight: 700;
-                text-align: left;
-            }
-            QPushButton:hover { background: #1560c4; }
-        """)
+        btn_fb = self._make_contact_button(
+            icon_path=":/Icon/Icons/facebook.svg",
+            title="Facebook",
+            subtitle="Team Nova",
+            bg="#1877F2", hover="#1560c4", border="#1560c4",
+        )
         btn_fb.clicked.connect(self._open_facebook_license)
-        h.addWidget(btn_fb, 1)
+        h_btns.addWidget(btn_fb, 1)
 
-        v.addLayout(h)
+        v.addLayout(h_btns)
         return card
+
+    def _make_contact_button(self, icon_path: str, title: str,
+                             subtitle: str,
+                             bg: str, hover: str, border: str
+                             ) -> QtWidgets.QPushButton:
+        """Crée un bouton de contact 72px avec icône + 2 lignes."""
+        btn = QtWidgets.QPushButton()
+        btn.setMinimumHeight(72)  # ⬆️ 52 → 72
+        btn.setCursor(Qt.PointingHandCursor)
+
+        # Contenu 2 lignes
+        btn.setText(f"  {title}\n  {subtitle}")
+        btn.setIcon(QtGui.QIcon(icon_path))
+        btn.setIconSize(QtCore.QSize(22, 22))
+
+        btn.setStyleSheet(f"""
+            QPushButton {{
+                background: {bg};
+                color: #ffffff;
+                border: 1px solid {border};
+                border-radius: 12px;
+                padding: 12px 16px;
+                font-size: 12px;
+                font-weight: 700;
+                text-align: left;
+                line-height: 1.5;
+            }}
+            QPushButton:hover {{ background: {hover}; }}
+            QPushButton:pressed {{
+                background: {border};
+            }}
+        """)
+        return btn
 
     def _refresh_license_status(self) -> None:
         """Met à jour la carte d'état (essai / licence / à vie)."""

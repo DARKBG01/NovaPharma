@@ -10,6 +10,8 @@
 *.db-wal
 *.zip
 *.md
+*.pdf
+*.pem
 
 
 
@@ -25,3 +27,7 @@ logs
 .idea
 .vscode
 tools/
+Deploy/
+
+
+Core/public.pem (optionnel, mais plus propre)

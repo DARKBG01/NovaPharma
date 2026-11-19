@@ -33,7 +33,7 @@ class Setting_encaissement(QtWidgets.QDialog):
 
         self.setWindowTitle("Encaissement")
         from Ui_helpers import make_dialog_responsive
-        make_dialog_responsive(self, 560, 520)
+        #make_dialog_responsive(self, 560, 520)
         self.setModal(True)
         self._build_ui()
         self._recalc()
